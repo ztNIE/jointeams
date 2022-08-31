@@ -1,3 +1,4 @@
+
 package com.jointeams.backend.pojo;
 
 //CREATE TABLE `User` (
@@ -18,5 +19,33 @@ package com.jointeams.backend.pojo;
 //        );
 
 
+import lombok.Data;
+
+import javax.persistence.*;
+
+@Entity
+//@Table(name = "User")
+@Data
 public class User {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+//    @Column(name="id")
+    private long id;
+//    @Column(name = "first_name")
+    private String firstName;
+//    @Column(name = "last_name")
+    private String lastName;
+//    @Column(name = "email")
+    private String email;
+//    @Column(name = "university_id")
+    private long universityId;
+//    @Column(name = "degree")
+    private String degree;
+    private String faculty;
+    private String password;
+    private boolean isAdmin;
+    private String description;
+    private String filename;
+    private boolean isActivate;
+
 }

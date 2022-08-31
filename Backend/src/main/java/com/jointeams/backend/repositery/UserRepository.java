@@ -1,4 +1,9 @@
 package com.jointeams.backend.repositery;
 
-public class UserRepository{
+import com.jointeams.backend.pojo.User;
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository extends CrudRepository<User, Long> {
 }
+
+
