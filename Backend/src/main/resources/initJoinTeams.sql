@@ -1,3 +1,6 @@
+CREATE database jointeams;
+USE jointeams;
+
 CREATE TABLE `Semester` (
   `id` bigint,
   `year` int,
