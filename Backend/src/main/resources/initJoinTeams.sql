@@ -11,7 +11,7 @@ CREATE TABLE `Semester` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Univerisity` (
+CREATE TABLE `University` (
   `id` bigint,
   `name` varchar(50),
   PRIMARY KEY (`id`)
