@@ -1,6 +1,6 @@
 ## Run Backend Application
 
-1. (Optional) Initialize database
+1. Initialize database
    - Open mysql CLI in /Backend directory, run 
 ```
 source emptyDatabase.sql
@@ -19,7 +19,7 @@ localhost:your_port/user/greeting?id=1 # 2, 3 should also work
 6. Change the application.properties like below if you want to run it again.
 ```
 spring.sql.init.mode=never
-spring.jpa.hibernate.ddl-auto=update # (optional: change to this spring would not drop tables every time.)
+spring.jpa.hibernate.ddl-auto=update
 ```
 7. TODO:
     - Set cascade level for ManyToOne, OneToMany, ManyToMany annotations
