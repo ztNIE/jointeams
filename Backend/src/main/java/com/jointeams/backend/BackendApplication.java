@@ -19,18 +19,18 @@ public class BackendApplication {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return (args) -> {
-            UserRepository userRepository = (UserRepository) ctx.getBean("userRepository");
-            User user1 = new User();
-            user1.setLastName("lastName");
-            user1.setFirstName("firstName");
-            user1.setActivate(true);
-            user1.setAdmin(false);
-            user1.setUniversityId(1L);
-            userRepository.save(user1);
-            logger.info("Add user1: " + user1);
-        };
-    }
+//    @Bean
+//    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+//        return (args) -> {
+//
+//            UserRepository userRepository = (UserRepository) ctx.getBean("userRepository");
+//            User user1 = new User();
+//            user1.setLastName("lastName");
+//            user1.setFirstName("firstName");
+//            user1.setActivate(true);
+//            user1.setAdmin(false);
+//            userRepository.save(user1);
+//            logger.info("Add user1: " + user1);
+//        };
+//    }
 }
