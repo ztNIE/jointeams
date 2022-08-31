@@ -1,6 +1,8 @@
 CREATE database jointeams;
 USE jointeams;
 
+CREATE User 'jointeams'@'localhost' IDENTIFIED BY '12345678';
+
 CREATE TABLE `Semester` (
   `id` bigint,
   `year` int,
@@ -138,3 +140,4 @@ CREATE TABLE `TagUserSelf` (
   FOREIGN KEY (`user_id`) REFERENCES `User`(`id`)
 );
 
+GRANT ALL privileges ON jointeams.* TO 'jointeams'@'localhost';
