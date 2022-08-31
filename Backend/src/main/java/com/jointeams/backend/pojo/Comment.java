@@ -17,12 +17,15 @@ public class Comment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private User receiver;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Tag tag;
 
     @Override

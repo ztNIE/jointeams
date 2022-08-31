@@ -19,16 +19,16 @@ public class User {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String firstName;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String lastName;
 
     @Column(length = 65, nullable = false)
     private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private University university;
 
     @Column(length = 50)
@@ -62,7 +62,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "user_id")})
     private List<Course> interestedCourses;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     private List<PastCourse> pastCourses;
 
     @Override

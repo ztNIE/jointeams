@@ -17,6 +17,7 @@ public class Group {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Course course;
 
     @Override

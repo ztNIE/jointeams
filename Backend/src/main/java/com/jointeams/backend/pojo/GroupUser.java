@@ -17,5 +17,4 @@ public class GroupUser {
     private GroupUserId groupUserId;
 
     private boolean isLeader;
-
 }
