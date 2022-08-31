@@ -48,4 +48,7 @@ public class User {
     private String filename;
     private boolean isActivate;
 
+    public String getName() {
+        return firstName + " " + lastName;
+    }
 }
