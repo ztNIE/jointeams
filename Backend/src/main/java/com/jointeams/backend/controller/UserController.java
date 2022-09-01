@@ -14,7 +14,7 @@ public class UserController {
     @GetMapping(path="/greeting")
     public String greeting(@RequestParam Long id) {
         User user = userService.findById(id);
-        return "Hello " + user.getName() + "!";
+        return "Hello " + user.getFirstName() + " " + user.getLastName() + "!";
     }
 
     @PostMapping(path="/add")
