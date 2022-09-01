@@ -1,6 +1,6 @@
 # Usage: source /path/to/sql/file (in mysql CLI)
 # UPDATED:
-# 1. Just create the database
+# 1. Create an empty database
 
 DROP database jointeams;
 DROP USER 'jointeams'@'localhost';
