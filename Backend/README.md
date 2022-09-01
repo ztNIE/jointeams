@@ -14,7 +14,8 @@ spring.sql.init.mode=always
 4. If you refresh the database in Intellij now, you would see 13 tables created and data is loaded into user, tag and university
 5. Test get method on UserService
 ```
-localhost:your_port/user/greeting?id=1 # 2, 3 should also work
+localhost:your_port/user/greeting?id=1 
+# 2, 3 should also work
 ```
 6. Change the application.properties like below if you want to run it again.
 ```
