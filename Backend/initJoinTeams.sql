@@ -1,7 +1,12 @@
+############################################
+# DO NOT USE THIS FILE, JUST FOR REFERENCE #
+############################################
+
+DROP database jointeams;
+DROP USER 'jointeams'@'localhost';
+
 CREATE database jointeams;
 USE jointeams;
-
-CREATE User 'jointeams'@'localhost' IDENTIFIED BY '12345678';
 
 CREATE TABLE `Semester` (
   `id` bigint,
@@ -31,7 +36,7 @@ CREATE TABLE `User` (
   `filename` varchar(50),
   `is_activate` boolean,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`university_id`) REFERENCES `Univerisity`(`id`)
+  FOREIGN KEY (`university_id`) REFERENCES `University`(`id`)
 );
 
 CREATE TABLE `Course` (
@@ -41,7 +46,7 @@ CREATE TABLE `Course` (
   `uni_id` bigint,
   `is_locked` boolean,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`uni_id`) REFERENCES `Univerisity`(`id`)
+  FOREIGN KEY (`uni_id`) REFERENCES `University`(`id`)
 );
 
 CREATE TABLE `Group` (
@@ -140,4 +145,10 @@ CREATE TABLE `TagUserSelf` (
   FOREIGN KEY (`user_id`) REFERENCES `User`(`id`)
 );
 
+CREATE User 'jointeams'@'localhost' IDENTIFIED BY '12345678';
 GRANT ALL privileges ON jointeams.* TO 'jointeams'@'localhost';
+
+INSERT INTO University (id, name) VALUES (1, 'University of Sydney');
+
+INSERT INTO User(id, first_name, last_name, university_id, is_admin, is_activate)
+VALUES (1, 'John', 'Snow', 1, 0, 1);

@@ -3,7 +3,10 @@ package com.jointeams.backend.pojo;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
@@ -11,21 +14,22 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class University {
+public class Semester {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50)
-    private String name;
+    private int year;
+    private int semesterNumber;
+    private boolean isCurrent;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        University that = (University) o;
-        return id != null && Objects.equals(id, that.id);
+        Semester semester = (Semester) o;
+        return id != null && Objects.equals(id, semester.id);
     }
 
     @Override

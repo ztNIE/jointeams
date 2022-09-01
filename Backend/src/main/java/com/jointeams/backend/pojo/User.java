@@ -1,54 +1,80 @@
 
 package com.jointeams.backend.pojo;
 
-//CREATE TABLE `User` (
-//        `id` bigint,
-//        `first_name` varchar(50),
-//        `last_name` varchar(50),
-//        `email` varchar(65),
-//        `university_id` bigint,
-//        `degree` varchar(50),
-//        `faculty` varchar(50),
-//        `password` varchar(32),
-//        `is_admin` boolean,
-//        `description` varchar(300),
-//        `filename` varchar(50),
-//        `is_activate` boolean,
-//        PRIMARY KEY (`id`),
-//        FOREIGN KEY (`university_id`) REFERENCES `Univerisity`(`id`)
-//        );
 
-
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-//@Table(name = "User")
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-//    @Column(name="id")
-    private long id;
-//    @Column(name = "first_name")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 50)
     private String firstName;
-//    @Column(name = "last_name")
+
+    @Column(length = 50)
     private String lastName;
-//    @Column(name = "email")
+
+    @Column(length = 65, nullable = false)
     private String email;
-//    @Column(name = "university_id")
-    private long universityId;
-//    @Column(name = "degree")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private University university;
+
+    @Column(length = 50)
     private String degree;
+
+    @Column(length = 50)
     private String faculty;
+
+    @Column(length = 32)
     private String password;
+
     private boolean isAdmin;
+
+    @Column(length = 300)
     private String description;
+
+    @Column(length = 50)
     private String filename;
+
     private boolean isActivate;
 
-    public String getName() {
-        return firstName + " " + lastName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Tag selfTag;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_id")
+    private List<Comment> receivedComments;
+
+    @ManyToMany
+    @JoinTable(name = "interested_course", joinColumns = {@JoinColumn(name = "course_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private List<Course> interestedCourses;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<PastCourse> pastCourses;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

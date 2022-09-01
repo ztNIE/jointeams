@@ -1,9 +1,11 @@
 package com.jointeams.backend.pojo;
 
+import com.jointeams.backend.pojo.id.PastCourseId;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import java.util.Objects;
 
 @Entity
@@ -11,25 +13,21 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class University {
+public class PastCourse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(length = 50)
-    private String name;
+    @EmbeddedId
+    private PastCourseId pastCourseId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        University that = (University) o;
-        return id != null && Objects.equals(id, that.id);
+        PastCourse that = (PastCourse) o;
+        return pastCourseId != null && Objects.equals(pastCourseId, that.pastCourseId);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(pastCourseId);
     }
 }

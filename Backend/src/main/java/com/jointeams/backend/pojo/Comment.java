@@ -11,21 +11,32 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class University {
-
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private User sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private User receiver;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Tag tag;
+
+    @Column(length = 300)
+    private String content;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        University that = (University) o;
-        return id != null && Objects.equals(id, that.id);
+        Comment comment = (Comment) o;
+        return id != null && Objects.equals(id, comment.id);
     }
 
     @Override
