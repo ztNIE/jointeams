@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Semester {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int year;
