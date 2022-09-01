@@ -11,7 +11,7 @@ spring.jpa.hibernate.ddl-auto=create
 spring.sql.init.mode=always
 ```
 3. Run the application. It's normal that you would see lots of warnings: spring are trying to drop non-exist tables.
-4. If you refresh the database in Intellij now, you would see 14 tables created and data is loaded into user, tag and university
+4. If you refresh the database in Intellij now, you would see 13 tables created and data is loaded into user, tag and university
 5. Test get method on UserService
 ```
 localhost:your_port/user/greeting?id=1 # 2, 3 should also work
