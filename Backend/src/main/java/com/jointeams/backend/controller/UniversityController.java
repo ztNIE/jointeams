@@ -16,7 +16,7 @@ public class UniversityController {
     private UniversityService universityService;
 
     @PostMapping(path="/add")
-    public University addUser(@RequestBody University university) {
+    public University addUniversity(@RequestBody University university) {
         return universityService.addUniversity(university);
     }
 }
