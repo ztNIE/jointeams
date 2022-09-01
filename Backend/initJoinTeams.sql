@@ -1,7 +1,6 @@
-# Usage: source /path/to/sql/file (in mysql CLI)
-# UPDATED:
-# 1. Change table Univerisity to University
-# 2. Add two init data into University and User
+############################################
+# DO NOT USE THIS FILE, JUST FOR REFERENCE #
+############################################
 
 DROP database jointeams;
 DROP USER 'jointeams'@'localhost';
