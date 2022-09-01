@@ -28,6 +28,9 @@ public class Comment {
     @ToString.Exclude
     private Tag tag;
 
+    @Column(length = 300)
+    private String content;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

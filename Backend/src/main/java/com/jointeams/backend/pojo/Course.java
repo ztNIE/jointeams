@@ -23,7 +23,8 @@ public class Course {
     @Column(length = 50)
     private String name;
 
-    private long uniId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private University university;
 
     @OneToMany(mappedBy = "id")
     @ToString.Exclude
