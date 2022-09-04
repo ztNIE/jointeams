@@ -8,7 +8,7 @@ insert into user (id, degree, description, email,
 values
     (1, 'MSC', 'hahahaha', '12314@edu.au',
      'faculty1', 'avator1.jpg', 'firstname1',
-     true, false, 'lastname2',
+     true, false, 'lastname1',
      'password', 1, 1),
     (2, 'BSc', 'lallalala', '544321@edu.au',
      'faculty2', 'avator2.jpg', 'firstname2',
