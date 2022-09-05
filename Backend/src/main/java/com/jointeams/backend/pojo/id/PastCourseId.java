@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
-
+//TODO
 @Embeddable
 public class PastCourseId implements Serializable {
     @Column(name = "user_id")

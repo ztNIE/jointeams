@@ -21,19 +21,30 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // set cascade level
     @ManyToOne(fetch = FetchType.LAZY)
-    private User sender;
+    @ToString.Exclude
+    private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User receiver;
+    @ToString.Exclude
+    private User user;
 
+    // 0 -> send invitation: group leader -> sender, user -> receiver
+    // 1 -> send join request: user -> sender, group leader -> receiver
+    // 2 -> invitation response: user -> sender, group leader -> receiver
+    // 3 -> join request response: group leader -> sender, user -> receiver
     private Integer type;
+
+    @Column(length = 100)
+    private String message;
 
     @CreationTimestamp
     private Timestamp timestamp;
 
     @Column(length = 300)
     private String content;
+
 
     @Override
     public boolean equals(Object o) {

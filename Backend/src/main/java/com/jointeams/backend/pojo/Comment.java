@@ -2,8 +2,10 @@ package com.jointeams.backend.pojo;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -30,6 +32,15 @@ public class Comment {
 
     @Column(length = 300)
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Group group;
+
+    @CreationTimestamp
+    private Timestamp timestamp;
+
+    private Boolean isHide;
 
     @Override
     public boolean equals(Object o) {

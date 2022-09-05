@@ -14,6 +14,9 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+
+//TODO delete this table
+
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

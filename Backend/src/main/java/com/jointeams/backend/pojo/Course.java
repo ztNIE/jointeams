@@ -24,11 +24,16 @@ public class Course {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private University university;
 
     @OneToMany(mappedBy = "id")
     @ToString.Exclude
     private List<Group> groups;
+
+    private Integer nextGroupNameId;
+
+    private Boolean isLocked;
 
     @Override
     public boolean equals(Object o) {

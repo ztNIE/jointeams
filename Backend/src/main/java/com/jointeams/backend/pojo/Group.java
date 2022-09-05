@@ -20,6 +20,13 @@ public class Group {
     @ToString.Exclude
     private Course course;
 
+    private Integer nameId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Semester semester;
+
+    //TODO tutorial, capacity, description
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

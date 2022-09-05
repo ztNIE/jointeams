@@ -1,4 +1,5 @@
-insert into university (id, name) value (1, 'University of Sydney');
+insert into university (id, name, post_fix) value
+    (1, 'University of Sydney', 'uni.sydney.edu.au');
 insert into tag (id, type) values (1, 1),
                                   (2, 2);
 insert into user (id, degree, description, email,

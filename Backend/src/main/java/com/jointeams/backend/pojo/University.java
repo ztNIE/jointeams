@@ -20,6 +20,9 @@ public class University {
     @Column(length = 50)
     private String name;
 
+    @Column(length = 20)
+    private String postFix;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
