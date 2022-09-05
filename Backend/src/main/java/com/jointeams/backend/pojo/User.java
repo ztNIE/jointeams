@@ -50,8 +50,7 @@ public class User {
 
     private boolean isActivate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Tag selfTag;
+    private Integer selfTag;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")

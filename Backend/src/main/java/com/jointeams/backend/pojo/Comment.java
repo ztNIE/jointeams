@@ -26,9 +26,7 @@ public class Comment {
     @ToString.Exclude
     private User receiver;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Tag tag;
+    private Integer tag;
 
     @Column(length = 300)
     private String content;
