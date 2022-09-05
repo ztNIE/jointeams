@@ -1,5 +1,7 @@
 ## Run Backend Application
 
+### IMPORTANT: If the schema has changed, plesae run the emptyDatabase.sql in mysql
+
 1. Initialize database
    - Open mysql CLI in /Backend directory, run 
 ```
