@@ -1,5 +1,6 @@
 package com.jointeams.backend.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -17,10 +18,9 @@ public class University {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String name;
-
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String postFix;
 
     @Override

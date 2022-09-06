@@ -9,4 +9,6 @@ public interface UserService {
     public User findByFullName(String firstName, String lastName);
     public User findByFullName2(String firstName, String lastName);
     public User findByIncompleteFullName(String firstName, String lastName);
+
+    public User verifyUserIdentityByJsonWebToken(Long userId, String encryptedPassword);
 }
