@@ -5,4 +5,6 @@ import com.jointeams.backend.pojo.User;
 
 public interface RegisterService {
     User registerUser (UserModel userModel);
+
+    void saveVerificationTokenForUser(String token, User user);
 }

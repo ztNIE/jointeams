@@ -3,8 +3,10 @@ package com.jointeams.backend.service.serviceImpl;
 import com.jointeams.backend.model.UserModel;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.VerificationToken;
 import com.jointeams.backend.repositery.UniversityRepository;
 import com.jointeams.backend.repositery.UserRepository;
+import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     UniversityRepository universityRepository;
+
+    @Autowired
+    VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -45,5 +50,11 @@ public class RegisterServiceImpl implements RegisterService {
 
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public void saveVerificationTokenForUser(String token, User user) {
+        VerificationToken verificationToken = new VerificationToken(token, user);
+        verificationTokenRepository.save(verificationToken);
     }
 }

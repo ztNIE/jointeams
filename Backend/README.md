@@ -20,7 +20,7 @@ localhost:your_port/user/greetingById?id=1
 ```
 6. If you want to run the program again, commend the following property (or change it to embedded) in application.properties .
 ```
-spring.sql.init.mode=always
+spring.sql.init.mode=never  # otherwise duplicate data inserted
 ```
 7. TODO:
     - Set cascade level for ManyToOne, OneToMany, ManyToMany annotations

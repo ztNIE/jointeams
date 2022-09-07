@@ -1,4 +1,5 @@
-
+// TODO
+// Fix starting exceptions
 package com.jointeams.backend.pojo;
 
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -37,7 +39,7 @@ public class User {
     @Column(length = 50)
     private String faculty;
 
-    @Column(length = 32)
+    @Column(length = 64)
     private String password;
 
     private boolean isAdmin;
