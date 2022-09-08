@@ -7,6 +7,7 @@ import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.GroupRepository;
 import com.jointeams.backend.repositery.GroupUserRepository;
 import com.jointeams.backend.service.GroupService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,26 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<User> getAllMembers(Long id) {
-        return null;
+    public JSONArray getAllMembers(Long id) {
+        List<Object[]> members = groupUserRepository.getGroupUserDetailByGroupId(id).orElse(null);
+
+        if(members == null) {
+            return null;
+        } else {
+            JSONArray jsonResult = new JSONArray();
+            for(Object[] member : members) {
+                JSONObject obj = new JSONObject();
+                obj.put("id", member[0]);
+                obj.put("is_leader", member[1]);
+                obj.put("name", member[2] + " " + member[3]);
+                obj.put("filename", member[4]);
+                obj.put("email", member[5]);
+                obj.put("degree", member[6]);
+
+                jsonResult.add(obj);
+            }
+            return jsonResult;
+        }
     }
 
     @Override

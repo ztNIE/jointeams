@@ -2,6 +2,7 @@ package com.jointeams.backend.controller;
 
 import com.jointeams.backend.pojo.Group;
 import com.jointeams.backend.service.GroupService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,21 @@ public class GroupController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<JSONObject>(groupObj, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(path = "getAllMembers")
+    public  ResponseEntity<JSONArray> getAllMembersByGroupId(@RequestParam("id") Long id) {
+        if(id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONArray allMembers = groupService.getAllMembers(id);
+
+        if(allMembers == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONArray>(allMembers, HttpStatus.OK);
         }
     }
 }
