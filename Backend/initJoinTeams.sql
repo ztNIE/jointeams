@@ -152,3 +152,4 @@ INSERT INTO University (id, name) VALUES (1, 'University of Sydney');
 
 INSERT INTO User(id, first_name, last_name, university_id, is_admin, is_activate)
 VALUES (1, 'John', 'Snow', 1, 0, 1);
+b
