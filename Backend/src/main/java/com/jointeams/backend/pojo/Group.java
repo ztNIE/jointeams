@@ -28,12 +28,22 @@ public class Group {
     @ManyToOne(fetch = FetchType.LAZY)
     private Semester semester;
 
-    //TODO tutorial, capacity, description
+    @Column(length = 10)
+    private String tutorial;
+
+    private Integer capacity;
+
+    @Column(length = 300)
+    private String description;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
+            return false;
+        }
         Group group = (Group) o;
         return id != null && Objects.equals(id, group.id);
     }
