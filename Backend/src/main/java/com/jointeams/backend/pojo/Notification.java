@@ -1,5 +1,6 @@
 package com.jointeams.backend.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -32,8 +33,10 @@ public class Notification {
 
     // 0 -> send invitation: group leader -> sender, user -> receiver
     // 1 -> send join request: user -> sender, group leader -> receiver
-    // 2 -> invitation response: user -> sender, group leader -> receiver
-    // 3 -> join request response: group leader -> sender, user -> receiver
+    // 2 -> join request response(accepted): group leader -> sender, user -> receiver
+    // 3 -> join request response(declined): group leader -> sender, user -> receiver
+    // 4 -> invitation response(accepted): user -> sender, group leader -> receiver
+    // 5 -> invitation response(declined): user -> sender, group leader -> receiver
     private Integer type;
 
     @Column(length = 100)

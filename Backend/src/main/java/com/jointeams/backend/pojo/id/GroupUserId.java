@@ -1,5 +1,7 @@
 package com.jointeams.backend.pojo.id;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -21,6 +23,7 @@ public class GroupUserId implements Serializable {
         this.groupId = groupId;
         this.userId = userId;
     }
+
 
     public Long getGroupId() {
         return groupId;
