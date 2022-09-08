@@ -48,24 +48,24 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
-    public User verifyUserIdentityByJsonWebToken(Long userId, String encryptedPassword) {
-        User user = findById(userId);
-        if(user != null)
-        {
-            try {
-                String passwordSHA1 = SHAUtils.sha1(user.getPassword());
-                if(passwordSHA1.equals(encryptedPassword))
-                    return user;// userId and encryptedPassword are matched
-                else
-                    return null;// userId and encryptedPassword are NOT matched
-            } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        else
-            return null; // 1: no user is found
-    }
+//    @Override
+//    public User verifyUserIdentityByEncryptedPassword(Long userId, String encryptedPassword) {
+//        User user = findById(userId);
+//        if(user != null)
+//        {
+//            try {
+//                String passwordSHA1 = SHAUtils.sha1(user.getPassword());
+//                if(passwordSHA1.equals(encryptedPassword))
+//                    return user;// userId and encryptedPassword are matched
+//                else
+//                    return null;// userId and encryptedPassword are NOT matched
+//            } catch (NoSuchAlgorithmException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        else
+//            return null; // 1: no user is found
+//    }
 
 
 

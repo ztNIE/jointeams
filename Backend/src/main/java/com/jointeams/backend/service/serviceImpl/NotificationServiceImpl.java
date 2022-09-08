@@ -23,10 +23,11 @@ public class NotificationServiceImpl implements NotificationService {
     public List<Notification> findAllByUser(Long userId) {
         List<Notification> result = notificationRepository.findAllByUserId(userId);
         List<GroupUser> groupUsers = groupuserRepository.findALLAsLeaderByUserId(userId);
-        for(GroupUser groupUser: groupUsers)
-        {
-            result.addAll(notificationRepository.findAllByGroupId(groupUser.getGroupUserId().getGroupId()));
-        }
+//        for(GroupUser groupUser: groupUsers)
+//        {
+//            result.addAll(notificationRepository.findAllByGroupId(groupUser.getGroupUserId().getGroupId()));
+//        }
+        groupUsers.forEach(groupUser->result.addAll(notificationRepository.findAllByGroupId(groupUser.getGroupUserId().getGroupId())));
         return result;
     }
 }

@@ -1,4 +1,4 @@
-package com.jointeams.backend.pojo;
+package com.jointeams.backend;
 
 import lombok.*;
 
