@@ -66,7 +66,7 @@ public class GroupController {
 
         JSONObject result = groupService.deleteAMember(groupId, userId);
 
-        if(result.get("msg") == "Unable to find this user in this group!") {
+        if(result.get("msg").equals("Unable to find this user in this group!")) {
             return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
@@ -80,5 +80,54 @@ public class GroupController {
         return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
     }
 
-//    @GetMapping(path = )
+    @GetMapping(path = "checkCommentExistence")
+    public ResponseEntity<JSONObject> checkCommentExistence(@RequestParam("groupId") Long groupId, @RequestParam("senderId") Long senderId, @RequestParam("receiverId") Long receiverId) {
+        if(groupId == null || senderId == null || receiverId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } else if(senderId.equals(receiverId)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.getCommentById(groupId, senderId, receiverId);
+
+        return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "sendInvitation")
+    public ResponseEntity<JSONObject> sendInvitation(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
+        if(groupId == null || userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.addInvitationNotification(groupId, userId);
+
+        if(result.get("msg").equals("You have already sent an invitation to this user!")) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else if(result.get("msg").equals("This student is already in your group!")) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }else if(result.get("msg").equals("Your group is already full!")) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(path = "sendJoinRequest")
+    public ResponseEntity<JSONObject> sendJoinRequest(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
+        if(groupId == null || userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.addJoinRequestNotification(groupId, userId);
+
+        if(result.get("msg").equals("You have already sent a joining request to this group!")) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else if(result.get("msg").equals("You are already in this group!")) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }else if(result.get("msg").equals("This group is already full!")) {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
 }
