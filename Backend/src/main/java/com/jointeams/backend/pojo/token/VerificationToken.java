@@ -1,5 +1,6 @@
-package com.jointeams.backend.pojo;
+package com.jointeams.backend.pojo.token;
 
+import com.jointeams.backend.pojo.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,13 +8,11 @@ import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
-@Data
 @Entity
 @NoArgsConstructor
-public class VerificationToken {
-
+@Data
+public class VerificationToken{
     private static final int EXPIRATION_TIME = 10;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

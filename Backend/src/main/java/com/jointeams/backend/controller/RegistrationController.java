@@ -1,9 +1,10 @@
 package com.jointeams.backend.controller;
 
+import com.jointeams.backend.event.SendResetPasswordEmail;
 import com.jointeams.backend.event.SendVerifyEmailEvent;
+import com.jointeams.backend.model.PasswordModel;
 import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.User;
-import com.jointeams.backend.pojo.VerificationToken;
 import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,22 @@ public class RegistrationController {
         if (result.equalsIgnoreCase("valid")) {
             return "User verified successfully";
         } else if (result.equalsIgnoreCase("timeout")) {
-            VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
-            User user = verificationToken.getUser();
+            User user = registerService.deleteOldToken(token);
             publisher.publishEvent(new SendVerifyEmailEvent(user, getApplicationUrl(request)));
-            verificationTokenRepository.delete(verificationToken);
             return "Token expired. Resend token";
         } else {
             return "Token not found";
         }
+    }
+
+    @PostMapping("/resetPassword")
+    public String resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest request) {
+        User user = registerService.findUserByEmail(passwordModel.getEmail());
+        if (user == null) {
+            return "User not exist";
+        }
+        publisher.publishEvent(new SendResetPasswordEmail(user, getApplicationUrl(request)));
+        return "Reset link sent";
     }
 
     private String getApplicationUrl(HttpServletRequest request) {

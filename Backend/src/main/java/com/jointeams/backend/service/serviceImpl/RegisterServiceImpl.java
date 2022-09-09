@@ -3,7 +3,9 @@ package com.jointeams.backend.service.serviceImpl;
 import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
-import com.jointeams.backend.pojo.VerificationToken;
+import com.jointeams.backend.pojo.token.PasswordToken;
+import com.jointeams.backend.pojo.token.VerificationToken;
+import com.jointeams.backend.repositery.PasswordTokenRepository;
 import com.jointeams.backend.repositery.UniversityRepository;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.repositery.VerificationTokenRepository;
@@ -30,6 +32,9 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    PasswordTokenRepository passwordTokenRepository;
 
     @Override
     public User registerUser(RegisterUserModel registerUserModel) {
@@ -74,5 +79,28 @@ public class RegisterServiceImpl implements RegisterService {
         user.setActivate(true);
         userRepository.save(user);
         return "VALID";
+    }
+
+    @Override
+    public User deleteOldToken(String token) {
+        User user = null;
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
+        if (verificationToken != null) {
+            user = verificationToken.getUser();
+            verificationTokenRepository.delete(verificationToken);
+        }
+        return user;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
+
+    @Override
+    public void savePasswordToken(User user, String token) {
+        PasswordToken passwordToken = new PasswordToken(token, user);
+        passwordTokenRepository.save(passwordToken);
     }
 }

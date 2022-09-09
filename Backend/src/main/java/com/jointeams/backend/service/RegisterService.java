@@ -9,4 +9,10 @@ public interface RegisterService {
     void saveVerificationTokenForUser(String token, User user);
 
     String validateVerificationToken(String token);
+
+    User deleteOldToken(String token);
+
+    User findUserByEmail(String email);
+
+    void savePasswordToken(User user, String token);
 }

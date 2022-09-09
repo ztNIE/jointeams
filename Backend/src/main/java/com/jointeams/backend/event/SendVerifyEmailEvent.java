@@ -1,20 +1,15 @@
 package com.jointeams.backend.event;
 
 import com.jointeams.backend.pojo.User;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.context.ApplicationEvent;
 
-@Getter
-@Setter
-public class SendVerifyEmailEvent extends ApplicationEvent {
+public class SendVerifyEmailEvent extends SendEmailEvent {
 
-    private User user;
-    private String applicationUrl;
+    private final String path = "/register/verify";
+    public SendVerifyEmailEvent(User user, String url) {
+        super(user, url);
+    }
 
-    public SendVerifyEmailEvent(User user, String applicationUrl) {
-        super(user);
-        this.user = user;
-        this.applicationUrl = applicationUrl;
+    public String getFullUrl() {
+        return getUrl()+path;
     }
 }
