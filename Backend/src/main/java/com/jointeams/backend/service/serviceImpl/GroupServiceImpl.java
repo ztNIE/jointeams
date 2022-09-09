@@ -65,6 +65,7 @@ public class GroupServiceImpl implements GroupService {
 
                 jsonResult.add(obj);
             }
+
             return jsonResult;
         }
     }
