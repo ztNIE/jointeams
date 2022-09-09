@@ -1,6 +1,5 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.SHAUtils;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.CommentRepository;
 import com.jointeams.backend.repositery.EnrollmentRepository;
@@ -11,8 +10,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

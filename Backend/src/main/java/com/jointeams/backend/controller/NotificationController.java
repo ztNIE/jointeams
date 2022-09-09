@@ -1,12 +1,10 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.Cookie;
 import com.jointeams.backend.pojo.Notification;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.service.NotificationService;
 import com.jointeams.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
