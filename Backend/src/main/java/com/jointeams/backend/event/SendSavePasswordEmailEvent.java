@@ -2,13 +2,13 @@ package com.jointeams.backend.event;
 
 import com.jointeams.backend.pojo.User;
 
-public class SendResetPasswordEmail extends SendEmailEvent {
+public class SendSavePasswordEmailEvent extends SendEmailEvent {
 
-    private final String path = "/register/verifyResetPassword";
+    private final String path = "/register/savePassword";
 
     private User user;
     private String url;
-    public SendResetPasswordEmail(User user, String url) {
+    public SendSavePasswordEmailEvent(User user, String url) {
         super(user, url);
     }
 

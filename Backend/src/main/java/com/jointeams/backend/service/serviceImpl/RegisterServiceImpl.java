@@ -1,5 +1,6 @@
 package com.jointeams.backend.service.serviceImpl;
 
+import com.jointeams.backend.model.PasswordModel;
 import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
@@ -82,7 +83,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public User deleteOldToken(String token) {
+    public User deleteOldVerifyToken(String token) {
         User user = null;
         VerificationToken verificationToken = verificationTokenRepository.findByToken(token);
         if (verificationToken != null) {
@@ -102,5 +103,36 @@ public class RegisterServiceImpl implements RegisterService {
     public void savePasswordToken(User user, String token) {
         PasswordToken passwordToken = new PasswordToken(token, user);
         passwordTokenRepository.save(passwordToken);
+    }
+
+    @Override
+    public String validatePasswordToken(String token) {
+        PasswordToken passwordToken = passwordTokenRepository.findByToken(token);
+        if (passwordToken == null) {
+            return "NOTFOUND";
+        }
+        User user = passwordToken.getUser();
+        Calendar calendar = Calendar.getInstance();
+        if ((passwordToken.getExpirationTime().getTime() - calendar.getTime().getTime()) <= 0) {
+            return "TIMEOUT";
+        }
+        return "VALID";
+    }
+
+    @Override
+    public User deleteOldPasswordToken(String token) {
+        User user = null;
+        PasswordToken passwordToken = passwordTokenRepository.findByToken(token);
+        if (passwordToken != null) {
+            user = passwordToken.getUser();
+            passwordTokenRepository.delete(passwordToken);
+        }
+        return user;
+    }
+
+    @Override
+    public void savePassword(User user, PasswordModel passwordModel) {
+        user.setPassword(passwordEncoder.encode(passwordModel.getNewPassword()));
+        userRepository.save(user);
     }
 }

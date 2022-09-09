@@ -1,6 +1,6 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.event.SendResetPasswordEmail;
+import com.jointeams.backend.event.SendSavePasswordEmailEvent;
 import com.jointeams.backend.event.SendVerifyEmailEvent;
 import com.jointeams.backend.model.PasswordModel;
 import com.jointeams.backend.model.RegisterUserModel;
@@ -44,7 +44,7 @@ public class RegistrationController {
         if (result.equalsIgnoreCase("valid")) {
             return "User verified successfully";
         } else if (result.equalsIgnoreCase("timeout")) {
-            User user = registerService.deleteOldToken(token);
+            User user = registerService.deleteOldVerifyToken(token);
             publisher.publishEvent(new SendVerifyEmailEvent(user, getApplicationUrl(request)));
             return "Token expired. Resend token";
         } else {
@@ -58,9 +58,34 @@ public class RegistrationController {
         if (user == null) {
             return "User not exist";
         }
-        publisher.publishEvent(new SendResetPasswordEmail(user, getApplicationUrl(request)));
+        publisher.publishEvent(new SendSavePasswordEmailEvent(user, getApplicationUrl(request)));
         return "Reset link sent";
     }
+
+    @PostMapping("/savePassword")
+    public String savePassword(@RequestParam("token") String token,
+                               @RequestBody PasswordModel passwordModel,
+                               HttpServletRequest request) {
+        String result = registerService.validatePasswordToken(token);
+        if (result.equalsIgnoreCase("notfound")) {
+            return "bad token";
+        }
+
+        User user = registerService.deleteOldPasswordToken(token);
+
+        if (result.equalsIgnoreCase("timeout")) {
+            publisher.publishEvent(new SendSavePasswordEmailEvent(user, getApplicationUrl(request)));
+            return "Token expired. Resend token";
+        }
+        registerService.savePassword(user, passwordModel);
+        return "Reset Password Successfully";
+    }
+
+//    TODO
+//    @GetMapping("verifyResetPassword")
+//    public String verifyResetPassword(@RequestParam("token") String token, final HttpServletRequest request) {
+//    }
+
 
     private String getApplicationUrl(HttpServletRequest request) {
         return "http://" +
