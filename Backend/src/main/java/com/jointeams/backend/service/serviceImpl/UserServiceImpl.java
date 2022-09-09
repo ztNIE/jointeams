@@ -63,10 +63,7 @@ public class UserServiceImpl implements UserService {
             data.put("lastName", user.getLastName());
             data.put("avatar", user.getFilename());
             data.put("email", user.getEmail());
-
-            University university = user.getUniversity();
-            data.put("email", university.getName());
-
+            data.put("university", user.getUniversity().getName());
             data.put("faculty", user.getFaculty());
             data.put("degree", user.getDegree());
             data.put("description", user.getDescription());
