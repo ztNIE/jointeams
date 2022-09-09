@@ -10,9 +10,14 @@ import com.jointeams.backend.repositery.GroupUserRepository;
 import com.jointeams.backend.service.GroupService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -147,8 +152,33 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Boolean isCommented(Long groupId, Long senderId, Long receiverId) {
-        return null;
+    public JSONObject isCommentFunctionAvailable() {
+        JSONObject jsonResult = new JSONObject();
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader reader = new FileReader("Backend/src/main/resources/config/globalConfig.json");
+            Object obj = parser.parse(reader);
+            JSONObject jsonObj = (JSONObject) obj;
+            boolean isCommentAvailable = (boolean) jsonObj.get("isCommentFunctionAvailable");
+
+            jsonResult.put("msg", "Success");
+            jsonResult.put("data", isCommentAvailable);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Fail");
+            jsonResult.put("data", null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Fail");
+            jsonResult.put("data", null);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Fail");
+            jsonResult.put("data", null);
+        }
+
+        return jsonResult;
     }
 
     @Override

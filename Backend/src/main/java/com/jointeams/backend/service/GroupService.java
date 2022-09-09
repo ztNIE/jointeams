@@ -14,7 +14,7 @@ public interface GroupService {
     public JSONObject getAllMembers(Long id);
     public JSONObject updateDescription(Long id, String newDescription);
     public JSONObject deleteAMember(Long groupId, Long userId);
-    public Boolean isCommented(Long groupId, Long senderId, Long receiverId);
+    public JSONObject isCommentFunctionAvailable();
     public Comment getCommentbyId(Long groupId, Long userId, Long receiverId);
     public List<User> getStudentsNotInAGroup(Long courseId);
 
