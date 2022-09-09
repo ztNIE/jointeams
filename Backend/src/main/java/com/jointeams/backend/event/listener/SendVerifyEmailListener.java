@@ -23,7 +23,8 @@ public class SendVerifyEmailListener implements ApplicationListener<SendVerifyEm
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
         registerService.saveVerificationTokenForUser(token, user);
-        String url = event.getApplicationUrl() + "verify?token=" + token;
+        String url = event.getApplicationUrl() + "/register/verify?token=" + token;
+        // TODO String url = event.getApplicationUrl() + "verify?token=" + token;
 
         // TODO
         // Send Email to the User using gmail
