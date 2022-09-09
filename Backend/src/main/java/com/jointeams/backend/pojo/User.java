@@ -57,9 +57,9 @@ public class User {
     private List<Comment> receivedComments;
 
     @ManyToMany
-    @JoinTable(name = "interested_course", joinColumns = {@JoinColumn(name = "course_id", referencedColumnName="id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName="id")})
-    @MapsId("id")
+    @JoinTable(name = "interested_course", joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//    @MapsId("id")
     private List<Course> interestedCourses;
 
 //    @OneToMany(fetch = FetchType.LAZY)
