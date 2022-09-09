@@ -19,6 +19,44 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
 
     @Query(value = "select id, is_leader, first_name, last_name, filename, email, degree from group_user inner join user on group_user.user_id = user.id where group_id = ?1", nativeQuery = true)
     public Optional<List<Object[]>> getGroupUserDetailByGroupId(Long groupId);
+
+    @Query(value = "select u.id, u.first_name, u.last_name, u.filename\n" +
+            "from user as u\n" +
+            "    inner join enrollment as e\n" +
+            "        on u.id = e.user_id\n" +
+            "    inner join semester as s\n" +
+            "        on s.id = e.semester_id\n" +
+            "where s.is_current = true\n" +
+            "  and e.course_id = ?1\n" +
+            "  and u.is_activate = true\n" +
+            "  and u.is_admin = false\n" +
+            "  and u.id not in (select u.id\n" +
+            "  from user as u\n" +
+            "      inner join enrollment as e\n" +
+            "          on u.id = e.user_id\n" +
+            "      inner join semester as s\n" +
+            "          on s.id = e.semester_id\n" +
+            "      inner join group_user as gu\n" +
+            "          on u.id = gu.user_id\n" +
+            "  where s.is_current = true\n" +
+            "  and e.course_id = ?1\n" +
+            "  and u.is_activate = true\n" +
+            "  and u.is_admin = false)", nativeQuery = true)
+    public Optional<List<Object[]>> getUserEnrolledInACurrentSemesterCourseWithoutAGroup(Long courseId);
+
+    @Query(value = "select u.id, u.first_name, u.last_name, u.filename\n" +
+            "from user as u\n" +
+            "         inner join enrollment as e\n" +
+            "                    on u.id = e.user_id\n" +
+            "         inner join semester as s\n" +
+            "                    on s.id = e.semester_id\n" +
+            "         inner join group_user as gu\n" +
+            "                    on u.id = gu.user_id\n" +
+            "where s.is_current = true\n" +
+            "  and e.course_id = ?1\n" +
+            "  and u.is_activate = true\n" +
+            "  and u.is_admin = false", nativeQuery = true)
+    public Optional<List<Object[]>> getUserEnrolledInACurrentSemesterCourseWithAGroup(Long courseId);
 }
 
 

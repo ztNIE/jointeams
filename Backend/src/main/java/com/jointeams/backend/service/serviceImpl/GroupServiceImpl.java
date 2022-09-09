@@ -218,7 +218,28 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public JSONObject getStudentsNotInAGroup(Long courseId) {
-        return null;
+        JSONObject jsonResult = new JSONObject();
+        List<Object[]> users = groupUserRepository.getUserEnrolledInACurrentSemesterCourseWithoutAGroup(courseId).orElse(null);
+
+        if(users.size() == 0) {
+            jsonResult.put("msg", "No such a student!");
+            jsonResult.put("data", null);
+        } else {
+            JSONArray jsonArray = new JSONArray();
+            for(Object[] user : users) {
+                JSONObject obj = new JSONObject();
+                obj.put("id", user[0]);
+                obj.put("name", user[1] + " " + user[2]);
+                obj.put("filename", user[3]);
+
+                jsonArray.add(obj);
+            }
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", jsonArray);
+
+        }
+
+        return jsonResult;
     }
 
     @Override

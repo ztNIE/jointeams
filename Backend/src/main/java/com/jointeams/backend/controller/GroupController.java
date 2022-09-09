@@ -130,4 +130,14 @@ public class GroupController {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
     }
+
+    @GetMapping(path = "listStudentsNotInAGroup")
+    public ResponseEntity<JSONObject> listStudentsNotInAGroup(@RequestParam("courseId") Long courseId) {
+        if(courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.getStudentsNotInAGroup(courseId);
+        return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+    }
 }
