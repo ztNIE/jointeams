@@ -11,8 +11,8 @@ import org.json.simple.JSONObject;
 
 public interface GroupService {
     public JSONObject getGroupById(Long id);
-    public JSONArray getAllMembers(Long id);
-    public Integer updateDescription(Long id, String newDescription);
+    public JSONObject getAllMembers(Long id);
+    public JSONObject updateDescription(Long id, String newDescription);
     public Integer deleteAMember(Long groupId, Long userId);
     public Boolean isCommented(Long groupId, Long senderId, Long receiverId);
     public Comment getCommentbyId(Long groupId, Long userId, Long receiverId);

@@ -7,10 +7,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/group")
@@ -26,25 +23,40 @@ public class GroupController {
 
         JSONObject groupObj = groupService.getGroupById(id);
 
-        if(groupObj == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(groupObj.get("data") == null) {
+            return new ResponseEntity<>(groupObj, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<JSONObject>(groupObj, HttpStatus.OK);
         }
     }
 
     @GetMapping(path = "getAllMembers")
-    public  ResponseEntity<JSONArray> getAllMembersByGroupId(@RequestParam("id") Long id) {
+    public  ResponseEntity<JSONObject> getAllMembersByGroupId(@RequestParam("id") Long id) {
         if(id == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        JSONArray allMembers = groupService.getAllMembers(id);
+        JSONObject allMembers = groupService.getAllMembers(id);
 
-        if(allMembers == null) {
+        if(allMembers.get("data") == null) {
+            return new ResponseEntity<>(allMembers, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(allMembers, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(path = "updateDescription")
+    public ResponseEntity<JSONObject> updateDescription(@RequestParam("id") Long id, @RequestParam("newDescription") String newDescription) {
+        if(id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.updateDescription(id, newDescription);
+
+        if(result == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<JSONArray>(allMembers, HttpStatus.OK);
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
     }
 }

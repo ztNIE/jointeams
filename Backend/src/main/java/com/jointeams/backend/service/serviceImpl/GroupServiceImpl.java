@@ -26,34 +26,43 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public JSONObject getGroupById(Long id) {
         Group group = groupRepository.findById(id).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
         List<GroupUser> groupUsers = groupUserRepository.getGroupUserByGroupId(id).orElse(null);
         if(group == null) {
-            return null;
+            jsonResult.put("msg", "Unable to find this group!");
+            jsonResult.put("data", null);
         } else {
-            JSONObject jsonResult = new JSONObject();
-            jsonResult.put("id", id);
-            jsonResult.put("name", group.getNameId());
-            jsonResult.put("course", group.getCourse().getName());
-            jsonResult.put("tutorial", group.getTutorial());
-            jsonResult.put("capacity", group.getCapacity());
-            jsonResult.put("description", group.getDescription());
+            JSONObject data = new JSONObject();
+            data.put("id", id);
+            data.put("name", group.getNameId());
+            data.put("course", group.getCourse().getName());
+            data.put("tutorial", group.getTutorial());
+            data.put("capacity", group.getCapacity());
+            data.put("description", group.getDescription());
             if(groupUsers == null) {
-                jsonResult.put("number of students", 0);
+                data.put("number of students", 0);
             } else {
-                jsonResult.put("number of students", groupUsers.size());
+                data.put("number of students", groupUsers.size());
             }
-            return jsonResult;
+
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", data);
         }
+
+        return jsonResult;
     }
 
     @Override
-    public JSONArray getAllMembers(Long id) {
+    public JSONObject getAllMembers(Long id) {
         List<Object[]> members = groupUserRepository.getGroupUserDetailByGroupId(id).orElse(null);
 
-        if(members == null) {
-            return null;
+        JSONObject jsonResult = new JSONObject();
+        if(members.size() == 0) {
+            jsonResult.put("msg", "Unable to find this group!");
+            jsonResult.put("data", null);
         } else {
-            JSONArray jsonResult = new JSONArray();
+            JSONArray jsonArray = new JSONArray();
             for(Object[] member : members) {
                 JSONObject obj = new JSONObject();
                 obj.put("id", member[0]);
@@ -63,16 +72,34 @@ public class GroupServiceImpl implements GroupService {
                 obj.put("email", member[5]);
                 obj.put("degree", member[6]);
 
-                jsonResult.add(obj);
+                jsonArray.add(obj);
             }
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", jsonArray);
 
-            return jsonResult;
         }
+        return jsonResult;
     }
 
     @Override
-    public Integer updateDescription(Long id, String newDescription) {
-        return null;
+    public JSONObject updateDescription(Long id, String newDescription) {
+        Group group = groupRepository.findById(id).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if(group == null) {
+            jsonResult.put("msg", "Unable to find this group!");
+            jsonResult.put("data", null);
+        } else {
+            group.setDescription(newDescription);
+            Group result = groupRepository.save(group);
+            JSONObject data = new JSONObject();
+            data.put("description", result.getDescription());
+
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", data);
+        }
+
+        return jsonResult;
     }
 
     @Override
