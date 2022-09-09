@@ -53,8 +53,23 @@ public class GroupController {
 
         JSONObject result = groupService.updateDescription(id, newDescription);
 
-        if(result == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(path = "leaveGroup")
+    public ResponseEntity<JSONObject> leaveGroup(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
+        if(groupId == null || userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.deleteAMember(groupId, userId);
+
+        if(result.get("msg") == "Unable to find this user in this group!") {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }

@@ -19,9 +19,6 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
 
     @Query(value = "select id, is_leader, first_name, last_name, filename, email, degree from group_user inner join user on group_user.user_id = user.id where group_id = ?1", nativeQuery = true)
     public Optional<List<Object[]>> getGroupUserDetailByGroupId(Long groupId);
-
-//    @Query(value = "")
-//    public Optional<Integer> updateDescription(Long groupId, String newDescription);
 }
 
 

@@ -4,6 +4,7 @@ import com.jointeams.backend.pojo.Comment;
 import com.jointeams.backend.pojo.Group;
 import com.jointeams.backend.pojo.GroupUser;
 import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.id.GroupUserId;
 import com.jointeams.backend.repositery.GroupRepository;
 import com.jointeams.backend.repositery.GroupUserRepository;
 import com.jointeams.backend.service.GroupService;
@@ -103,8 +104,46 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Integer deleteAMember(Long groupId, Long userId) {
-        return null;
+    public JSONObject deleteAMember(Long groupId, Long userId) {
+        JSONObject jsonResult = new JSONObject();
+        // Check whether the current user is leader.
+        // If yes, check the number of students in this group; otherwise, delete this student from this group directly.
+        // If only one student in this group and is leader, delete this student and this group.
+        // If more than one student in this group, delete this student and update is_leader state for other students.
+        GroupUserId groupUserId = new GroupUserId(groupId, userId);
+        GroupUser currentGroupUser = groupUserRepository.findById(groupUserId).orElse(null);
+        if(currentGroupUser == null) {
+            jsonResult.put("msg", "Unable to find this user in this group!");
+            jsonResult.put("data", null);
+        } else {
+            if(currentGroupUser.isLeader() == false) {
+                groupUserRepository.deleteById(groupUserId);
+                jsonResult.put("msg", "Success!");
+                jsonResult.put("data", null);
+            } else {
+                List<GroupUser> members = groupUserRepository.getGroupUserByGroupId(groupId).orElse(null);
+                if(members.size() == 1) {
+                    groupUserRepository.deleteById(groupUserId);
+                    groupRepository.deleteById(groupId);
+                    jsonResult.put("msg", "Success! The group is disband!");
+                    jsonResult.put("data", null);
+                } else {
+                    groupUserRepository.deleteById(groupUserId);
+                    List<GroupUser> remainingMembers = groupUserRepository.getGroupUserByGroupId(groupId).orElse(null);
+                    GroupUser targetUser = remainingMembers.get(0);
+                    targetUser.setLeader(true);
+                    groupUserRepository.save(targetUser);
+
+                    JSONObject data = new JSONObject();
+                    data.put("new_leader", targetUser.getGroupUserId().getUserId());
+
+                    jsonResult.put("msg", "Success! The group is disband!");
+                    jsonResult.put("data", data);
+                }
+            }
+        }
+
+        return jsonResult;
     }
 
     @Override
