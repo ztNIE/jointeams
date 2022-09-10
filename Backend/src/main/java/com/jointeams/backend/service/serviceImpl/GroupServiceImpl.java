@@ -345,4 +345,18 @@ public class GroupServiceImpl implements GroupService {
 
         return jsonResult;
     }
+
+    public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId)
+    {
+        return groupRepository.findByCourseAndSemesterAndUserId(course, semester, userId).orElse(null);
+    }
+
+    public boolean checkIsGroupFull(Group group)
+    {
+        int currentNumOfMember = groupUserRepository.countByGroupId(group.getId());
+        if(group.getCapacity() > currentNumOfMember)
+            return false;
+        else
+            return true;
+    }
 }

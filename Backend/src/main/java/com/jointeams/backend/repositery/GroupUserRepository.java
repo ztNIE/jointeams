@@ -57,6 +57,9 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
             "  and u.is_activate = true\n" +
             "  and u.is_admin = false", nativeQuery = true)
     public Optional<List<Object[]>> getUserEnrolledInACurrentSemesterCourseWithAGroup(Long courseId);
+
+    @Query("select count (g.groupUserId.userId) from GroupUser g where g.groupUserId.groupId = ?1")
+    public int countByGroupId(Long groupId);
 }
 
 

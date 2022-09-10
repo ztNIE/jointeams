@@ -133,6 +133,21 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public JSONObject checkIfUserExisted(Long id)
+    {
+        User user = findById(id);
+        JSONObject jsonResult = new JSONObject();;
+        if(user == null) {
+            jsonResult.put("user status", 0);
+            jsonResult.put("user status msg", "No user is found");
+        }
+        else {
+            jsonResult.put("user status", 1);
+//            jsonResult.put("user status msg", "The user is found");
+        }
+        return jsonResult;
+    }
+
 //    @Override
 //    public User findByLastName(String lastName) {
 //        User user = userRepository.findByLastName(lastName).orElse(null);
