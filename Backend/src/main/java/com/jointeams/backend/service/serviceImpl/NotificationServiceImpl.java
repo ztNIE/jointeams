@@ -1,6 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
 
+import com.jointeams.backend.NotificationActionResultMsg;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.GroupUserRepository;
 import com.jointeams.backend.repositery.NotificationRepository;
@@ -74,7 +75,7 @@ public class NotificationServiceImpl implements NotificationService {
                     notificationRepository.delete(notification);
                     return 3;//"The invitation has been deleted"
                 }
-                default:{//no action is defined
+                default:{//invalided action
                     return -1;
                 }
             }
@@ -92,7 +93,7 @@ public class NotificationServiceImpl implements NotificationService {
                     notificationRepository.delete(notification);
                     return 6;
                 }
-                default:{//no action is defined
+                default:{//invalided action
                     return -1;
                 }
             }
@@ -101,13 +102,13 @@ public class NotificationServiceImpl implements NotificationService {
             {
                 notificationRepository.delete(notification);
                 return 7;
-            }else if (action == 1 || action == 2) {//response cannot be accepted or declined
+            }else if (action == 1 || action == 2) {//the response cannot be accepted or declined
                 return -2;
-            }else{//no action is defined
+            }else{//invalided action
                 return -1;
             }
         }else {//error with notification type
-            return -2;
+            return -7;
         }
     }
 
@@ -145,43 +146,46 @@ public class NotificationServiceImpl implements NotificationService {
             jsonResult.put("action status", resultCode);
             switch (resultCode){
                 case 1:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.InvitationAccepted.toString());
                     break;
                 case 2:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.InvitationDeclined.toString());
                     break;
                 case 3:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.InvitationDelete.toString());
                     break;
                 case 4:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.JoinRequestAccepted.toString());
                     break;
                 case 5:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.JoinRequestDeclined.toString());
                     break;
                 case 6:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.JoinRequestDelete.toString());
                     break;
                 case 7:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.NotificationDeleted.toString());
                     break;
                 case -1:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.InvalidedAction.toString());
                     break;
                 case -2:
-                    jsonResult.put("action status msg", "Response cannot be accepted or declined!");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.ResponseLimitation.toString());
                     break;
                 case -3:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.AcceptingInvitationFailedCozAnotherGroup.toString());
                     break;
                 case -4:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.AcceptingInvitationFailedCozGroupFull.toString());
                     break;
                 case -5:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.AcceptingJoinRequestFailedCozAnotherGroup.toString());
                     break;
                 case -6:
-                    jsonResult.put("action status msg", "");
+                    jsonResult.put("action status msg", NotificationActionResultMsg.AcceptingJoinRequestFailedCozGroupFull.toString());
+                    break;
+                case -7:
+                    jsonResult.put("action status msg", NotificationActionResultMsg.InvalidedNotificationType.toString());
                     break;
             }
         }
