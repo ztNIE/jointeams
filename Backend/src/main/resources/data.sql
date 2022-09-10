@@ -1,2 +1,2 @@
-insert into university (name, post_fix) value
-    ('University of Sydney', 'uni.sydney.edu.au');
+insert into university (name, regex) value
+    ('University of Sydney', '^[a-z]{4}[1-9]{4}@uni.sydney.edu.au$');

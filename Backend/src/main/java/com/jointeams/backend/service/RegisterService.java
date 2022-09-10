@@ -22,4 +22,6 @@ public interface RegisterService {
     User deleteOldPasswordToken(String token);
 
     void savePassword(User user, PasswordModel passwordModel);
+
+    String isUserModelValid(RegisterUserModel registerUserModel);
 }

@@ -28,12 +28,18 @@ public class RegistrationController {
 
     @PostMapping({"/", ""})
     public String registerUser(@RequestBody RegisterUserModel registerUserModel, final HttpServletRequest request) {
+
+        String result = registerService.isUserModelValid(registerUserModel);
+
+        if (!result.equalsIgnoreCase("valid")) {
+            return result;
+        }
         User user = registerService.registerUser(registerUserModel);
-        // TODO
-        // Check whether email exists
+
         if (user == null) {
             return "Failed";
         }
+
         publisher.publishEvent(new SendVerifyEmailEvent(user, getApplicationUrl(request)));
         return "Success";
     }

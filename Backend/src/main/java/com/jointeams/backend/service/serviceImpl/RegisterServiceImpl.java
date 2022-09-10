@@ -11,12 +11,14 @@ import com.jointeams.backend.repositery.UniversityRepository;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
+import com.sun.istack.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -38,26 +40,57 @@ public class RegisterServiceImpl implements RegisterService {
     PasswordTokenRepository passwordTokenRepository;
 
     @Override
-    public User registerUser(RegisterUserModel registerUserModel) {
-        User user = new User();
-        user.setEmail(registerUserModel.getEmail());
-        user.setFirstName(registerUserModel.getFirstName());
-        user.setLastName(registerUserModel.getLastName());
-        user.setDegree(registerUserModel.getDegree());
-
+    public String isUserModelValid(RegisterUserModel registerUserModel) {
         University university = universityRepository
                 .findById(registerUserModel.getUniversityId())
                 .orElse(null);
         if (university == null) {
             log.error("No Such University Found, university_id: {}", registerUserModel.getUniversityId());
+            return "No University";
+        }
+        String email = registerUserModel.getEmail();
+        if (!isEmailMatchUniversity(email, university)) {
+            log.info("Email {} not match {}'s email regex: {}",
+                    registerUserModel.getEmail(),
+                    university.getName(),
+                    university.getRegex());
+            return "Bad Email";
+        }
+        if (isEmailExist(email)) {
+            log.info("Email Exists");
+            return "Email Exists";
+        }
+        return "Valid";
+    }
+
+    @Override
+    public User registerUser(RegisterUserModel registerUserModel) {
+        User user = new User();
+
+        user.setFirstName(registerUserModel.getFirstName());
+        user.setLastName(registerUserModel.getLastName());
+        user.setDegree(registerUserModel.getDegree());
+        University university = universityRepository.findById(registerUserModel.getUniversityId()).orElse(null);
+        if (university == null) {
+            log.error("Cannot find university");
             return null;
         }
+
+        user.setEmail(registerUserModel.getEmail());
         user.setUniversity(university);
-
         user.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
-
         userRepository.save(user);
         return user;
+    }
+
+    private boolean isEmailMatchUniversity(String email, University university) {
+        Pattern pattern = Pattern.compile(university.getRegex());
+        log.debug("Email: {}, pattern: {}, isMatch: {}", email, pattern, pattern.matcher(email).matches());
+        return pattern.matcher(email).matches();
+    }
+
+    private boolean isEmailExist(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 
     @Override
