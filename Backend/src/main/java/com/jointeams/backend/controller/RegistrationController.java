@@ -7,14 +7,20 @@ import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
+import com.jointeams.backend.util.JSONObjectParser;
+import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/register")
+@Slf4j
 public class RegistrationController {
 
     @Autowired
@@ -23,38 +29,50 @@ public class RegistrationController {
     @Autowired
     private ApplicationEventPublisher publisher;
 
-    @Autowired
-    private VerificationTokenRepository verificationTokenRepository;
 
     @PostMapping({"/", ""})
-    public String registerUser(@RequestBody RegisterUserModel registerUserModel, final HttpServletRequest request) {
+    public ResponseEntity<JSONObject> registerUser(@RequestBody RegisterUserModel registerUserModel,
+                                                   final HttpServletRequest request) {
 
         String result = registerService.isUserModelValid(registerUserModel);
-
-        if (!result.equalsIgnoreCase("valid")) {
-            return result;
+        if (result.equalsIgnoreCase("bad email")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg", result);
+            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_ACCEPTABLE);
+        } else if (result.equalsIgnoreCase("bad university")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg", result);
+            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_ACCEPTABLE);
+        } else if (result.equalsIgnoreCase("valid")) {
+            JSONObject jsonObject = registerService.registerUser(registerUserModel);
+            publisher.publishEvent(new SendVerifyEmailEvent((String) jsonObject.get("email"),
+                    getApplicationUrl(request)));
+            return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+        } else {
+            log.error("UserModel validation not catch");
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        User user = registerService.registerUser(registerUserModel);
-
-        if (user == null) {
-            return "Failed";
-        }
-
-        publisher.publishEvent(new SendVerifyEmailEvent(user, getApplicationUrl(request)));
-        return "Success";
     }
 
+    // TODO: return response entity
     @GetMapping("/verify")
-    public String verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
+    public ResponseEntity<JSONObject> verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
         String result = registerService.validateVerificationToken(token);
+        JSONObject jsonObject = new JSONObject();
         if (result.equalsIgnoreCase("valid")) {
-            return "User verified successfully";
+            jsonObject.put("msg", "User verified successfully");
+            return new ResponseEntity<>(jsonObject, HttpStatus.OK);
         } else if (result.equalsIgnoreCase("timeout")) {
             User user = registerService.deleteOldVerifyToken(token);
-            publisher.publishEvent(new SendVerifyEmailEvent(user, getApplicationUrl(request)));
-            return "Token expired. Resend token";
+            publisher.publishEvent(new SendVerifyEmailEvent(user.getEmail(), getApplicationUrl(request)));
+            jsonObject.put("msg", "Token expired. Resend Token.");
+            return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
+        } else if (result.equalsIgnoreCase("notfound")){
+            jsonObject.put("msg", "Token not found");
+            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_FOUND);
         } else {
-            return "Token not found";
+            log.error("Failed to catch validateVerificationToken");
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -64,7 +82,7 @@ public class RegistrationController {
         if (user == null) {
             return "User not exist";
         }
-        publisher.publishEvent(new SendSavePasswordEmailEvent(user, getApplicationUrl(request)));
+        publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
         return "Reset link sent";
     }
 
@@ -80,18 +98,12 @@ public class RegistrationController {
         User user = registerService.deleteOldPasswordToken(token);
 
         if (result.equalsIgnoreCase("timeout")) {
-            publisher.publishEvent(new SendSavePasswordEmailEvent(user, getApplicationUrl(request)));
+            publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
             return "Token expired. Resend token";
         }
         registerService.savePassword(user, passwordModel);
         return "Reset Password Successfully";
     }
-
-//    TODO
-//    @GetMapping("verifyResetPassword")
-//    public String verifyResetPassword(@RequestParam("token") String token, final HttpServletRequest request) {
-//    }
-
 
     private String getApplicationUrl(HttpServletRequest request) {
         return "http://" +

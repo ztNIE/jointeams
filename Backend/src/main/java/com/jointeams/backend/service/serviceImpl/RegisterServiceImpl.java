@@ -1,5 +1,6 @@
 package com.jointeams.backend.service.serviceImpl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jointeams.backend.model.PasswordModel;
 import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.University;
@@ -11,8 +12,9 @@ import com.jointeams.backend.repositery.UniversityRepository;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
-import com.sun.istack.NotNull;
+import com.jointeams.backend.util.JSONObjectParser;
 import lombok.extern.slf4j.Slf4j;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,9 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     PasswordTokenRepository passwordTokenRepository;
 
+    @Autowired
+    JSONObjectParser parser;
+
     @Override
     public String isUserModelValid(RegisterUserModel registerUserModel) {
         University university = universityRepository
@@ -46,25 +51,20 @@ public class RegisterServiceImpl implements RegisterService {
                 .orElse(null);
         if (university == null) {
             log.error("No Such University Found, university_id: {}", registerUserModel.getUniversityId());
-            return "No University";
+            return "Bad University";
         }
         String email = registerUserModel.getEmail();
-        if (!isEmailMatchUniversity(email, university)) {
-            log.info("Email {} not match {}'s email regex: {}",
-                    registerUserModel.getEmail(),
-                    university.getName(),
-                    university.getRegex());
+        if (!isEmailMatchUniversity(email, university) || isEmailExist(email)) {
+            log.info("Bad Email: {}",
+                    registerUserModel.getEmail());
             return "Bad Email";
         }
-        if (isEmailExist(email)) {
-            log.info("Email Exists");
-            return "Email Exists";
-        }
+
         return "Valid";
     }
 
     @Override
-    public User registerUser(RegisterUserModel registerUserModel) {
+    public JSONObject registerUser(RegisterUserModel registerUserModel){
         User user = new User();
 
         user.setFirstName(registerUserModel.getFirstName());
@@ -73,14 +73,17 @@ public class RegisterServiceImpl implements RegisterService {
         University university = universityRepository.findById(registerUserModel.getUniversityId()).orElse(null);
         if (university == null) {
             log.error("Cannot find university");
-            return null;
+            JSONObject jsonResult = new JSONObject();
+            jsonResult.put("msg", "Cannot Find University");
+            return jsonResult;
         }
 
         user.setEmail(registerUserModel.getEmail());
         user.setUniversity(university);
         user.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
         userRepository.save(user);
-        return user;
+        JSONObject jsonObject = parser.parseObject(user);
+        return jsonObject;
     }
 
     private boolean isEmailMatchUniversity(String email, University university) {
@@ -128,8 +131,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public User findUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        return user;
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -144,7 +146,6 @@ public class RegisterServiceImpl implements RegisterService {
         if (passwordToken == null) {
             return "NOTFOUND";
         }
-        User user = passwordToken.getUser();
         Calendar calendar = Calendar.getInstance();
         if ((passwordToken.getExpirationTime().getTime() - calendar.getTime().getTime()) <= 0) {
             return "TIMEOUT";

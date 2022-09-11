@@ -1,11 +1,13 @@
 package com.jointeams.backend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.jointeams.backend.model.PasswordModel;
 import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.User;
+import org.json.simple.JSONObject;
 
 public interface RegisterService {
-    User registerUser (RegisterUserModel registerUserModel);
+    JSONObject registerUser (RegisterUserModel registerUserModel);
 
     void saveVerificationTokenForUser(String token, User user);
 

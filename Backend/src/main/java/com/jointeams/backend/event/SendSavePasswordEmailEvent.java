@@ -1,15 +1,13 @@
 package com.jointeams.backend.event;
 
-import com.jointeams.backend.pojo.User;
-
 public class SendSavePasswordEmailEvent extends SendEmailEvent {
 
     private final String path = "/register/savePassword";
 
-    private User user;
+    private String email;
     private String url;
-    public SendSavePasswordEmailEvent(User user, String url) {
-        super(user, url);
+    public SendSavePasswordEmailEvent(String email, String url) {
+        super(email, url);
     }
 
     public String getFullUrl() {
