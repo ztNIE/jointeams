@@ -1,18 +1,21 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.pojo.Comment;
-import com.jointeams.backend.pojo.Group;
-import com.jointeams.backend.pojo.GroupUser;
-import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.GroupUserId;
-import com.jointeams.backend.repositery.GroupRepository;
-import com.jointeams.backend.repositery.GroupUserRepository;
+import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.GroupService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +26,15 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupUserRepository groupUserRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public JSONObject getGroupById(Long id) {
@@ -147,27 +159,204 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Boolean isCommented(Long groupId, Long senderId, Long receiverId) {
-        return null;
+    public JSONObject isCommentFunctionAvailable() {
+        JSONObject jsonResult = new JSONObject();
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader reader = new FileReader("Backend/src/main/resources/config/globalConfig.json");
+            Object obj = parser.parse(reader);
+            JSONObject jsonObj = (JSONObject) obj;
+            boolean isCommentAvailable = (boolean) jsonObj.get("isCommentFunctionAvailable");
+
+            jsonResult.put("msg", "Success");
+            jsonResult.put("data", isCommentAvailable);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Fail");
+            jsonResult.put("data", null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Fail");
+            jsonResult.put("data", null);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Fail");
+            jsonResult.put("data", null);
+        }
+
+        return jsonResult;
     }
 
     @Override
-    public Comment getCommentbyId(Long groupId, Long userId, Long receiverId) {
-        return null;
+    public JSONObject getCommentById(Long groupId, Long senderId, Long receiverId) {
+        List<Comment> comments = commentRepository.getCommentByIds(groupId, senderId, receiverId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if(comments.size() == 0) {
+            jsonResult.put("msg", "No comment exists.");
+            jsonResult.put("data", null);
+        } else {
+            Comment comment = comments.get(0);
+            JSONObject data = new JSONObject();
+            data.put("id", comment.getId());
+            data.put("content", comment.getContent());
+            data.put("tag", comment.getTag());
+            data.put("receiver_name", comment.getReceiver().getFirstName() + " " + comment.getReceiver().getLastName());
+            data.put("timestamp", comment.getTimestamp());
+            data.put("is_hide", comment.getIsHide());
+            data.put("group_id", comment.getGroup().getId());
+            data.put("sender_id", comment.getSender().getId());
+            data.put("receiver_id", comment.getReceiver().getId());
+
+            jsonResult.put("msg", "Comment exists.");
+            jsonResult.put("data", data);
+        }
+
+        return jsonResult;
     }
 
     @Override
-    public List<User> getStudentsNotInAGroup(Long courseId) {
-        return null;
+    public JSONObject getStudentsNotInAGroup(Long courseId) {
+        JSONObject jsonResult = new JSONObject();
+        List<Object[]> users = groupUserRepository.getUserEnrolledInACurrentSemesterCourseWithoutAGroup(courseId).orElse(null);
+
+        if(users.size() == 0) {
+            jsonResult.put("msg", "No such a student!");
+            jsonResult.put("data", null);
+        } else {
+            JSONArray jsonArray = new JSONArray();
+            for(Object[] user : users) {
+                JSONObject obj = new JSONObject();
+                obj.put("id", user[0]);
+                obj.put("name", user[1] + " " + user[2]);
+                obj.put("filename", user[3]);
+
+                jsonArray.add(obj);
+            }
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", jsonArray);
+
+        }
+
+        return jsonResult;
     }
 
     @Override
-    public Integer addInvitationNotification(Long senderId, Long groupId) {
-        return null;
+    public JSONObject addInvitationNotification(Long groupId, Long userId) {
+        JSONObject jsonResult = new JSONObject();
+
+        // Check whether there is already a notification with the given groupId (sender) and userId (receiver).
+        Integer num = notificationRepository.countNotificationsByIds(groupId, userId).orElse(null);
+        if(num != 0) {
+            jsonResult.put("msg", "You have already sent an invitation to this user!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // Check whether the user is already in this group.
+        GroupUserId groupUserId = new GroupUserId(groupId, userId);
+        GroupUser groupUser = groupUserRepository.findById(groupUserId).orElse(null);
+        if(groupUser != null) {
+            jsonResult.put("msg", "This student is already in your group!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // Check whether the group is full.
+        Group group = groupRepository.findById(groupId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        Integer capacity = group.getCapacity();
+        List<GroupUser> groupUsers = groupUserRepository.getGroupUserByGroupId(groupId).orElse(new ArrayList<GroupUser>());
+        if(groupUsers.size() == capacity) {
+            jsonResult.put("msg", "Your group is already full!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // Otherwise, add a notification sending from group to this user.
+        Notification notification = new Notification();
+        Integer type = 0;
+        String message = "A Group Invitation sent from " + group.getCourse().getCode() + "_Group" + group.getNameId() + ".";
+        String content = "Dear " + user.getFirstName() + ",\n" + "The Group " + group.getNameId() + " from Unit of Study " + group.getCourse().getCode() + " invites you to join there group. For more information, please go to their group page.";
+
+        notification.setContent(content);
+        notification.setMessage(message);
+        notification.setType(type);
+        notification.setGroup(group);
+        notification.setUser(user);
+
+        notificationRepository.save(notification);
+
+        jsonResult.put("msg", "An invitation sent!");
+        jsonResult.put("data", null);
+
+        return jsonResult;
     }
 
     @Override
-    public Integer addJoinRequestNotification(Long senderId, Long groupId) {
-        return null;
+    public JSONObject addJoinRequestNotification(Long groupId, Long userId) {
+        JSONObject jsonResult = new JSONObject();
+
+        // Check whether there is already a notification with the given groupId (receiver) and userId (sender).
+        Integer num = notificationRepository.countNotificationsByIds(groupId, userId).orElse(null);
+        if(num != 0) {
+            jsonResult.put("msg", "You have already sent a joining request to this group!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // Check whether the user is already in this group.
+        GroupUserId groupUserId = new GroupUserId(groupId, userId);
+        GroupUser groupUser = groupUserRepository.findById(groupUserId).orElse(null);
+        if(groupUser != null) {
+            jsonResult.put("msg", "You are already in this group!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // Check whether the group is full.
+        Group group = groupRepository.findById(groupId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+        Integer capacity = group.getCapacity();
+        List<GroupUser> groupUsers = groupUserRepository.getGroupUserByGroupId(groupId).orElse(new ArrayList<GroupUser>());
+        if(groupUsers.size() == capacity) {
+            jsonResult.put("msg", "This group is already full!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // Otherwise, add a notification sending from this user to this group.
+        Notification notification = new Notification();
+        Integer type = 1;
+        String message = "A Joining Request sent from " + user.getFirstName() + " " + user.getLastName() + ".";
+        String content = "Dear " + group.getCourse().getCode() + "_Group" + group.getNameId() + ",\n" + user.getFirstName() + " " + user.getLastName() + " applies to join your group. For more information, please go to profile.";
+
+        notification.setContent(content);
+        notification.setMessage(message);
+        notification.setType(type);
+        notification.setGroup(group);
+        notification.setUser(user);
+
+        notificationRepository.save(notification);
+
+        jsonResult.put("msg", "An invitation sent!");
+        jsonResult.put("data", null);
+
+        return jsonResult;
+    }
+
+    public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId)
+    {
+        return groupRepository.findByCourseAndSemesterAndUserId(course, semester, userId).orElse(null);
+    }
+
+    public boolean checkIsGroupFull(Group group)
+    {
+        int currentNumOfMember = groupUserRepository.countByGroupId(group.getId());
+        if(group.getCapacity() > currentNumOfMember)
+            return false;
+        else
+            return true;
     }
 }

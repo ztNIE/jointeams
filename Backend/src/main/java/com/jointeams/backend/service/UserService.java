@@ -7,6 +7,7 @@ public interface UserService {
     public JSONObject getIsAdminById(Long id);
     public JSONObject getUserInfoById(Long id);
     public User findById(Long id);
+    public JSONObject checkIfUserExisted(Long id);
 //    public User addNewUser(User user);
 //    public User findByLastName(String lastName);
 //    public User findByFullName(String firstName, String lastName);
