@@ -46,6 +46,21 @@ public class UserController {
         }
     }
 
+    @PutMapping(path = "updateUserInfoById")
+    public ResponseEntity<JSONObject> editUserInfoById(@RequestParam("id") Long id, @RequestBody JSONObject newInfo) {
+        if(id == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = userService.updateUserInfoById(id, newInfo);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
 //    @GetMapping(path="/greetingById")
 //    public String greeting(@RequestParam Long id) {
 //        User user = userService.findById(id);

@@ -73,4 +73,8 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="API getIsAdmin &amp; getUserInfoById done." />
+    <option name="LAST_COMMIT_MESSAGE" value="API getIsAdmin &amp; getUserInfoById done." />
+  </component>
 </project>

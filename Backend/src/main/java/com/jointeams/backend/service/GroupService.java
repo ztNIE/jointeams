@@ -1,8 +1,6 @@
 package com.jointeams.backend.service;
 
-import com.jointeams.backend.pojo.Comment;
-import com.jointeams.backend.pojo.Group;
-import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.*;
 
 import java.util.List;
 
@@ -20,5 +18,8 @@ public interface GroupService {
 
     public JSONObject addInvitationNotification(Long groupId, Long userId);
     public JSONObject addJoinRequestNotification(Long groupId, Long userId);
+
+    public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId);
+    public boolean checkIsGroupFull(Group group);
 
 }
