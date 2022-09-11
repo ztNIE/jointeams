@@ -25,7 +25,8 @@ public class WebSecurityConfig {
     };
 
     private static final String[] ADMIN_URLS = {
-            "/admin/**"
+            "/admin/**",
+            "/university/**"
     };
 
     private static final String[] USER_URLS = {
