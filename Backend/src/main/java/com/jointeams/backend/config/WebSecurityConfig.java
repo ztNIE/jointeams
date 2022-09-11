@@ -29,7 +29,10 @@ public class WebSecurityConfig {
     };
 
     private static final String[] USER_URLS = {
-            "/group/**"
+            "/group/**",
+            "/user/**",
+            "/university/**",
+            "notification/**"
     };
 
     @Bean
