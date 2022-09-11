@@ -293,6 +293,83 @@ public class CourseServiceImpl implements CourseService {
 
         return jsonResult;
     }
+
+    @Override
+    public JSONObject markCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if (user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else if (course == null) {
+            jsonResult.put("msg", "Unable to find the course!");
+            jsonResult.put("data", null);
+        }  else {
+            user.getInterestedCourses().add(course);
+
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", new JSONObject());
+        }
+
+        return jsonResult;
+    }
+
+    @Override
+    public JSONObject unmarkCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if (user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else if (course == null) {
+            jsonResult.put("msg", "Unable to find the course!");
+            jsonResult.put("data", null);
+        }  else {
+            user.getInterestedCourses().remove(course);
+
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", new JSONObject());
+        }
+
+        return jsonResult;
+    }
+
+    @Override
+    public JSONObject checkMarkedCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if (user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else if (course == null) {
+            jsonResult.put("msg", "Unable to find the course!");
+            jsonResult.put("data", null);
+        }  else {
+            JSONObject result = new JSONObject();
+            Boolean found = false;
+            for (Course markedCourse : user.getInterestedCourses()) {
+                if (markedCourse.getId().toString().equals(course.getId().toString())) {
+                    result.put("marked", true);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                result.put("marked", false);
+            }
+
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", result);
+        }
+
+        return jsonResult;
+    }
 //
 //    @Override
 //    public JSONObject getCurrentCourseById(Long userId);

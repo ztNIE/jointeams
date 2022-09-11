@@ -117,4 +117,49 @@ public class CourseController {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
     }
+
+    @PostMapping(path = "markCourse")
+    public ResponseEntity<JSONObject> markCourse(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.markCourse(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping(path = "unmarkCourse")
+    public ResponseEntity<JSONObject> unmarkCourse(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.unmarkCourse(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(path = "checkMarkedCourse")
+    public ResponseEntity<JSONObject> checkMarkedCourse(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.checkMarkedCourse(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
 }
