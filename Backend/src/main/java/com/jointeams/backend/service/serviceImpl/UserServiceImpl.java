@@ -1,18 +1,17 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.SHAUtils;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.CommentRepository;
 import com.jointeams.backend.repositery.EnrollmentRepository;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.service.UserService;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
@@ -107,6 +106,7 @@ public class UserServiceImpl implements UserService {
             List<Comment> comments = commentRepository.findAllCommentsByUserId(user.getId());
             for (Comment comment : comments) {
                 JSONObject newComment = new JSONObject();
+                newComment.put("id", comment.getId());
                 newComment.put("senderName", comment.getSender().getFirstName() + ' ' + comment.getSender().getLastName());
                 newComment.put("groupName", comment.getGroup().getCourse().getCode() + "_Group" + comment.getGroup().getNameId());
                 newComment.put("content", comment.getContent());
@@ -119,6 +119,45 @@ public class UserServiceImpl implements UserService {
 
             jsonResult.put("msg", "success");
             jsonResult.put("data", data);
+        }
+
+        return jsonResult;
+    }
+
+    @Override
+    public JSONObject updateUserInfoById(Long id, JSONObject newInfo) {
+        User user = userRepository.findById(id).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if(user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else {
+            user.setFilename((String) newInfo.get("avatar"));
+            user.setSelfTag((Integer) newInfo.get("selfTag"));
+            user.setFirstName((String) newInfo.get("firstName"));
+            user.setLastName((String) newInfo.get("lastName"));
+            user.setFaculty((String) newInfo.get("faculty"));
+            user.setDegree((String) newInfo.get("degree"));
+            user.setDescription((String) newInfo.get("description"));
+
+            List<Comment> comments = commentRepository.findAllCommentsByUserId(user.getId());
+            List<LinkedHashMap> updatedComments = (ArrayList<LinkedHashMap>) newInfo.get("comment");
+            for (int i = 0; i < updatedComments.size(); i ++) {
+                LinkedHashMap updatedComment = updatedComments.get(i);
+                for (Comment comment : comments) {
+                    if (comment.getId().toString().equals(updatedComment.get("id").toString())) {
+                        comment.setIsHide((Boolean) updatedComment.get("isHide"));
+                        commentRepository.save(comment);
+                        break;
+                    }
+                }
+            }
+
+            userRepository.save(user);
+
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", newInfo);
         }
 
         return jsonResult;
