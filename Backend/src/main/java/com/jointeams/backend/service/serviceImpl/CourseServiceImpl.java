@@ -1,6 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.pojo.Course;
+import com.jointeams.backend.pojo.Enrollment;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.*;
@@ -30,6 +31,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private GroupUserRepository groupUserRepository;
+
+    @Autowired
+    private SemesterRepository semesterRepository;
 
     @Override
     public JSONObject getAllCourse(Long userId) {
@@ -174,6 +178,115 @@ public class CourseServiceImpl implements CourseService {
             }
 
             data.put("teammate", teammates);
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", data);
+        }
+
+        return jsonResult;
+    }
+
+    @Override
+    public JSONObject enrollCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if (user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else if (course == null) {
+            jsonResult.put("msg", "Unable to find the course!");
+            jsonResult.put("data", null);
+        }  else {
+            if (course.getIsLocked()) {
+                jsonResult.put("msg", "The course has been locked!");
+                jsonResult.put("data", null);
+            } else {
+                Enrollment newEnrollment = new Enrollment();
+                newEnrollment.setUser(user);
+                newEnrollment.setCourse(course);
+                newEnrollment.setSemester(semesterRepository.findCurrentSemester());
+
+                enrollmentRepository.save(newEnrollment);
+
+                jsonResult.put("msg", "success");
+                jsonResult.put("data", new JSONObject());
+            }
+        }
+
+        return jsonResult;
+    }
+
+    public List<Enrollment> getEnrollment(Long userId, Long courseId) {
+        List<Enrollment> enrollments = enrollmentRepository.findEnrollmentByUserIdAndCourseId(userId, courseId);
+        return enrollments;
+    }
+
+    @Override
+    public JSONObject dropCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if (user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else if (course == null) {
+            jsonResult.put("msg", "Unable to find the course!");
+            jsonResult.put("data", null);
+        }  else {
+            if (getEnrollment(userId, courseId).size() == 0) {
+                jsonResult.put("msg", "The student has not enrolled in this course!");
+                jsonResult.put("data", null);
+            } else {
+                List<Enrollment> enrollments = getEnrollment(userId, courseId);
+                for (Enrollment enrollment : enrollments) {
+                    if (enrollment.getSemester().isCurrent()) {
+                        enrollmentRepository.delete(enrollment);
+                        break;
+                    }
+                }
+
+                jsonResult.put("msg", "success");
+                jsonResult.put("data", new JSONObject());
+            }
+        }
+
+        return jsonResult;
+    }
+
+    @Override
+    public JSONObject checkEnrollment(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+        JSONObject jsonResult = new JSONObject();
+
+        if (user == null) {
+            jsonResult.put("msg", "Unable to find the user!");
+            jsonResult.put("data", null);
+        } else if (course == null) {
+            jsonResult.put("msg", "Unable to find the course!");
+            jsonResult.put("data", null);
+        }  else {
+            JSONObject data = new JSONObject();
+            List<Enrollment> enrollments = getEnrollment(userId, courseId);
+            if (enrollments.size() == 0) {
+                data.put("enrolled", false);
+            } else {
+                Boolean found = false;
+                for (Enrollment enrollment : enrollments) {
+                    if (enrollment.getSemester().isCurrent()) {
+                        found = true;
+                    }
+                }
+
+                if (found) {
+                    data.put("enrolled", true);
+                } else {
+                    data.put("enrolled", false);
+                }
+            }
+
             jsonResult.put("msg", "success");
             jsonResult.put("data", data);
         }

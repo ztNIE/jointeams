@@ -5,10 +5,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/course")
@@ -73,6 +70,51 @@ public class CourseController {
             return new ResponseEntity<>(previousTeammates, HttpStatus.NOT_FOUND);
         } else {
             return new ResponseEntity<JSONObject>(previousTeammates, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(path = "enrollCourse")
+    public ResponseEntity<JSONObject> enrollCourse(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.enrollCourse(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @DeleteMapping(path = "dropCourse")
+    public ResponseEntity<JSONObject> dropCourse(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.dropCourse(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(path = "checkEnrollment")
+    public ResponseEntity<JSONObject> checkEnrollment(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.checkEnrollment(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
     }
 }

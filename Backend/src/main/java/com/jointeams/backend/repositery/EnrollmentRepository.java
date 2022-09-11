@@ -25,6 +25,10 @@ public interface EnrollmentRepository extends CrudRepository<Enrollment, Long> {
     //    get current students of a course
     @Query(value = "select e.user from Enrollment e where e.course.id = :courseId and e.semester.isCurrent=true")
     List<User> findAllCurrentStudentsByCourseId(Long courseId);
+
+    //    check if a student enrolled in a course
+    @Query(value = "select e from Enrollment e where e.user.id = :userId and e.course.id=:courseId")
+    List<Enrollment> findEnrollmentByUserIdAndCourseId(Long userId, Long courseId);
 }
 
 
