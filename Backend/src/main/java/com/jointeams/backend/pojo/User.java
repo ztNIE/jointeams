@@ -15,7 +15,6 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -31,6 +30,7 @@ public class User {
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private University university;
 
     @Column(length = 50)
@@ -56,11 +56,13 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
+    @ToString.Exclude
     private List<Comment> receivedComments;
 
     @ManyToMany
     @JoinTable(name = "interested_course", joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ToString.Exclude
 //    @MapsId("id")
     private List<Course> interestedCourses;
 
