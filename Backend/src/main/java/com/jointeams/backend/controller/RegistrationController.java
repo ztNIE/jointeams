@@ -5,9 +5,7 @@ import com.jointeams.backend.event.SendVerifyEmailEvent;
 import com.jointeams.backend.model.PasswordModel;
 import com.jointeams.backend.model.RegisterUserModel;
 import com.jointeams.backend.pojo.User;
-import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
-import com.jointeams.backend.util.JSONObjectParser;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +52,6 @@ public class RegistrationController {
         }
     }
 
-    // TODO: return response entity
     @GetMapping("/verify")
     public ResponseEntity<JSONObject> verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
         String result = registerService.validateVerificationToken(token);
@@ -77,32 +74,43 @@ public class RegistrationController {
     }
 
     @PostMapping("/resetPassword")
-    public String resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest request) {
+    public ResponseEntity<JSONObject> resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest request) {
         User user = registerService.findUserByEmail(passwordModel.getEmail());
         if (user == null) {
-            return "User not exist";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg", "User Not Found");
+            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_FOUND);
         }
         publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
-        return "Reset link sent";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("msg", "Reset Link Sent");
+        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     }
 
     @PostMapping("/savePassword")
-    public String savePassword(@RequestParam("token") String token,
+    public ResponseEntity<JSONObject> savePassword(@RequestParam("token") String token,
                                @RequestBody PasswordModel passwordModel,
                                HttpServletRequest request) {
         String result = registerService.validatePasswordToken(token);
         if (result.equalsIgnoreCase("notfound")) {
-            return "bad token";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg", "Token Not Found");
+            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_FOUND);
         }
 
         User user = registerService.deleteOldPasswordToken(token);
 
         if (result.equalsIgnoreCase("timeout")) {
             publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
-            return "Token expired. Resend token";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("msg", "Token expired. Resend token.");
+            return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
         }
+
         registerService.savePassword(user, passwordModel);
-        return "Reset Password Successfully";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("msg", "Reset Password Successfully");
+        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     }
 
     private String getApplicationUrl(HttpServletRequest request) {
