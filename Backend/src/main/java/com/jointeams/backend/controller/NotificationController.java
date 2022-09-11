@@ -4,6 +4,7 @@ import com.jointeams.backend.pojo.Notification;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.service.NotificationService;
 import com.jointeams.backend.service.UserService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,14 +29,30 @@ public class NotificationController {
 //            return null;
 //    }
 
-    @PostMapping(path="/findAllByUserId")
-    public List<Notification> findAllByUserId(@RequestParam Long userId)
+    @GetMapping(path="/findAllByUserId")
+    public ResponseEntity<JSONObject> findAllByUserId(@RequestParam("userId") Long userId)
     {
-        User user = userService.findById(userId);
-        if(user != null)
-            return notificationService.findAllByUser(userId);
+        if(userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        JSONObject jsonResult = notificationService.getAllByUserId(userId);
+        if(jsonResult.get("user status").equals(0))
+            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
         else
-            return null;
+            return new ResponseEntity<>(jsonResult, HttpStatus.OK);
+    }
+
+    @GetMapping(path="/actionOnNotification")
+    public ResponseEntity<JSONObject> findAllByUserId(@RequestParam("notificationId") Long notificationId, @RequestParam("action") int action)
+    {
+        if(notificationId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        JSONObject jsonResult = notificationService.actionResult(notificationId, action);
+        if(jsonResult.get("notification status").equals(0))
+            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(jsonResult, HttpStatus.OK);
     }
 
 }

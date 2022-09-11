@@ -1,8 +1,6 @@
 package com.jointeams.backend.service;
 
-import com.jointeams.backend.pojo.Comment;
-import com.jointeams.backend.pojo.Group;
-import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.*;
 
 import java.util.List;
 
@@ -15,10 +13,13 @@ public interface GroupService {
     public JSONObject updateDescription(Long id, String newDescription);
     public JSONObject deleteAMember(Long groupId, Long userId);
     public JSONObject isCommentFunctionAvailable();
-    public Comment getCommentbyId(Long groupId, Long userId, Long receiverId);
-    public List<User> getStudentsNotInAGroup(Long courseId);
+    public JSONObject getCommentById(Long groupId, Long senderId, Long receiverId);
+    public JSONObject getStudentsNotInAGroup(Long courseId);
 
-    public Integer addInvitationNotification(Long senderId, Long groupId);
-    public Integer addJoinRequestNotification(Long senderId, Long groupId);
+    public JSONObject addInvitationNotification(Long groupId, Long userId);
+    public JSONObject addJoinRequestNotification(Long groupId, Long userId);
+
+    public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId);
+    public boolean checkIsGroupFull(Group group);
 
 }
