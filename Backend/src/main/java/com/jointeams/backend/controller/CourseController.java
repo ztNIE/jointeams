@@ -162,4 +162,34 @@ public class CourseController {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
     }
+
+    @GetMapping(path = "getTutorial")
+    public ResponseEntity<JSONObject> getTutorial(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.getTutorial(userId, courseId);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
+
+    @PutMapping(path = "setTutorial")
+    public ResponseEntity<JSONObject> setTutorial(@RequestParam("userId") Long userId, @RequestParam("courseId") Long courseId, @RequestParam("tutorial") String tutorial) {
+        if (userId == null || courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = courseService.setTutorial(userId, courseId, tutorial);
+
+        if(result.get("data") == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
+    }
 }
