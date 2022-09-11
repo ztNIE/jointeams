@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
             List<Course> currentCourses = enrollmentRepository.findAllCurrentCourseByUserId(user.getId());
             for (Course course : currentCourses) {
                 JSONObject newCourse = new JSONObject();
+                newCourse.put("id", course.getId());
                 newCourse.put("code", course.getCode());
                 newCourse.put("name", course.getName());
                 currentCourse.add(newCourse);
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
             List<Course> previousCourses = enrollmentRepository.findAllPreviousCourseByUserId(user.getId());
             for (Course course : previousCourses) {
                 JSONObject newCourse = new JSONObject();
+                newCourse.put("id", course.getId());
                 newCourse.put("code", course.getCode());
                 newCourse.put("name", course.getName());
                 previousCourse.add(newCourse);
@@ -92,9 +94,9 @@ public class UserServiceImpl implements UserService {
 
 //            get interested course
             JSONArray interestedCourse = new JSONArray();
-            System.out.println(user.getInterestedCourses());
             for (Course course : user.getInterestedCourses()) {
                 JSONObject newCourse = new JSONObject();
+                newCourse.put("id", course.getId());
                 newCourse.put("code", course.getCode());
                 newCourse.put("name", course.getName());
                 interestedCourse.add(newCourse);
