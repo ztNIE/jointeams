@@ -1,9 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.pojo.*;
-import com.jointeams.backend.repositery.CommentRepository;
-import com.jointeams.backend.repositery.EnrollmentRepository;
-import com.jointeams.backend.repositery.UserRepository;
+import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.UserService;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,10 +20,16 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
     private EnrollmentRepository enrollmentRepository;
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private InterestedCourseRepository interestedCourseRepository;
 
     @Override
     public JSONObject getIsAdminById(Long id) {
@@ -94,11 +99,12 @@ public class UserServiceImpl implements UserService {
 
 //            get interested course
             JSONArray interestedCourse = new JSONArray();
-            for (Course course : user.getInterestedCourses()) {
+            for (InterestedCourse ic : interestedCourseRepository.findByUserId(user.getId())) {
                 JSONObject newCourse = new JSONObject();
-                newCourse.put("id", course.getId());
-                newCourse.put("code", course.getCode());
-                newCourse.put("name", course.getName());
+                Optional<Course> course = courseRepository.findById(ic.getId().getCourseId());
+                newCourse.put("id", course.get().getId());
+                newCourse.put("code", course.get().getCode());
+                newCourse.put("name", course.get().getName());
                 interestedCourse.add(newCourse);
             }
             data.put("interestedCourse", interestedCourse);

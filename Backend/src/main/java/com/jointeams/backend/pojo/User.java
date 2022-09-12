@@ -7,8 +7,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -58,13 +60,6 @@ public class User {
     @JoinColumn(name = "receiver_id")
     @ToString.Exclude
     private List<Comment> receivedComments;
-
-    @ManyToMany
-    @JoinTable(name = "interested_course", joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @ToString.Exclude
-//    @MapsId("id")
-    private List<Course> interestedCourses;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private List<PastCourse> pastCourses;

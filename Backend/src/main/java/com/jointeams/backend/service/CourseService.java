@@ -10,6 +10,11 @@ public interface CourseService {
     public JSONObject enrollCourse(Long userId, Long courseId);
     public JSONObject dropCourse(Long userId, Long courseId);
     public JSONObject checkEnrollment(Long userId, Long courseId);
+    public JSONObject markCourse(Long userId, Long courseId);
+    public JSONObject unmarkCourse(Long userId, Long courseId);
+    public JSONObject checkMarkedCourse(Long userId, Long courseId);
+    public JSONObject getTutorial(Long userId, Long courseId);
+    public JSONObject setTutorial(Long userId, Long courseId, String tutorial);
 //    public JSONObject getCurrentCourseById(Long userId);
 //    public JSONObject getPreviousCourseById(Long userId);
 }
