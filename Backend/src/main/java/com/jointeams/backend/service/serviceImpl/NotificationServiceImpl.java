@@ -38,19 +38,19 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public JSONObject getAllByUserId(Long userId) {
+    public JSONObject findAllByUserIdFeedback(Long userId) {
         JSONObject jsonResult = userService.checkIfUserExisted(userId);
         if (jsonResult.get("user status").equals(1))
         {
             List<Notification> notifications = findAllByUserId(userId);
             if (notifications.size() == 0)
             {
-                jsonResult.put("notification status", 0);
-                jsonResult.put("notification status msg", "No notification is found!");
+                jsonResult.put("finding the notifications status", 0);
+                jsonResult.put("finding the notifications status msg", "No notification is found!");
             }
             else
             {
-                jsonResult.put("notification status", 1);
+                jsonResult.put("finding the notifications status", 1);
                 jsonResult.put("notifications",notifications);
             }
         }
@@ -131,18 +131,18 @@ public class NotificationServiceImpl implements NotificationService {
             return returnValue[2];
         }
     }
-    public JSONObject actionResult(Long notificationId, int action)
+    public JSONObject actionOnNotificationFeedback(Long notificationId, int action)
     {
         JSONObject jsonResult = new JSONObject();
         Notification notification = notificationRepository.findById(notificationId).orElse(null);
         if (notification == null)
         {
-            jsonResult.put("notification status", 0);
-            jsonResult.put("notification status msg", "No notification is found!");
+            jsonResult.put("finding the notification status", 0);
+            jsonResult.put("finding the notification status msg", "The notification isn't found!");
         }
         else{
             int resultCode = actionOnNotification(notification, action);
-            jsonResult.put("notification status", 1);
+            jsonResult.put("finding the notification status", 1);
             jsonResult.put("action status", resultCode);
             switch (resultCode){
                 case 1:

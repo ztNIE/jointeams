@@ -1,16 +1,22 @@
 package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.pojo.Course;
+<<<<<<< Updated upstream
 import com.jointeams.backend.pojo.Enrollment;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.CourseService;
 import org.json.simple.JSONArray;
+=======
+import com.jointeams.backend.repositery.CourseRepository;
+import com.jointeams.backend.service.CourseService;
+>>>>>>> Stashed changes
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+<<<<<<< Updated upstream
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +28,17 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UniversityRepository universityRepository;
+=======
+import java.util.List;
+
+@Service
+public class CourseServiceImpl implements CourseService {
+>>>>>>> Stashed changes
 
     @Autowired
     private CourseRepository courseRepository;
 
+<<<<<<< Updated upstream
     @Autowired
     private EnrollmentRepository enrollmentRepository;
 
@@ -299,4 +312,94 @@ public class CourseServiceImpl implements CourseService {
 //
 //    @Override
 //    public JSONObject getPreviousCourseById(Long userId);
+=======
+    @Override
+    public List<Course> findAll() {
+        return (List<Course>) courseRepository.findAll();
+    }
+
+    @Override
+    public JSONObject findAllFeedback() {
+        List<Course> courses = (List<Course>) courseRepository.findAll();
+        JSONObject jsonResult = new JSONObject();
+        if(courses.size() == 0)
+        {
+            jsonResult.put("finding all courses status", 0);
+            jsonResult.put("finding all courses status msg", "No comment is found!");
+        }
+        else {
+            jsonResult.put("finding all courses status", 1);
+            jsonResult.put("comments", courses);
+        }
+        return jsonResult;
+    }
+
+    @Override
+    public int AddACourse() {
+        return 0;
+    }
+
+    @Override
+    public JSONObject AddACourseFeedback() {
+        return null;
+    }
+
+    @Override
+    public int deleteACourse(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null)
+            return 0;
+        else
+        {
+            courseRepository.deleteById(courseId);
+            return 1;
+        }
+    }
+
+    @Override
+    public JSONObject deleteACourseFeedback(Long courseId) {
+        return null;
+    }
+
+    @Override
+    public int changeCourseLockStatus(Long courseId, boolean isLocked) {
+        Course course = courseRepository.findById(courseId).orElse(null);
+        if (course == null)
+            return 0;
+        else
+        {
+            if(course.getIsLocked() != isLocked)
+            {
+                course.setIsLocked(isLocked);
+                courseRepository.save(course);
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+    }
+
+    @Override
+    public JSONObject changeCourseLockStatusFeedback(Long courseId, boolean isLocked) {
+        int resultCode = changeCourseLockStatus(courseId, isLocked);
+        JSONObject jsonResult = new JSONObject();
+        jsonResult.put("changing the course lock status", resultCode);
+        switch (resultCode)
+        {
+            case 1:
+                jsonResult.put("changing the course lock status msg", "The course lock status is changed successfully.");
+                break;
+            case 0:
+                jsonResult.put("changing the course lock status msg", "The course is not found!");
+                break;
+            case -1:
+                jsonResult.put("changing the course lock status msg", "Fail to change the course lock status because "
+                + "the new lock status is the same to the old one");
+                break;
+        }
+        return jsonResult;
+    }
+>>>>>>> Stashed changes
 }
