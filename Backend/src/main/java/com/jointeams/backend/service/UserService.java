@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 public interface UserService {
     public JSONObject getIsAdminById(Long id);
     public JSONObject getUserInfoById(Long id);
+    public JSONObject updateUserInfoById(Long id, JSONObject newInfo);
     public User findById(Long id);
     public JSONObject checkIfUserExisted(Long id);
 //    public User addNewUser(User user);

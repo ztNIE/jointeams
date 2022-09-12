@@ -1,5 +1,6 @@
-insert into university (name, regex) value
-    ('University of Sydney', '^[a-z]{4}[1-9]{4}@uni.sydney.edu.au$');
+insert into university (name, regex) values
+    ('University of Sydney', '^[a-z]{4}[1-9]{4}@uni.sydney.edu.au$'),
+    ('Test University', '^[a-z]+@gmail.com$');
 
 insert into user (degree, description, email,
                   faculty, filename, first_name,

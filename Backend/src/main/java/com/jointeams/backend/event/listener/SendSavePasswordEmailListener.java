@@ -34,8 +34,6 @@ public class SendSavePasswordEmailListener implements ApplicationListener<SendSa
         registerService.savePasswordToken(user, token);
         String url = event.getFullUrl() + "?token=" + token;
 
-        // TODO
-        // Send Email to the User using gmail
         log.info("Click the link to verify your account: {}", url);
         emailSenderService.sendSimpleNoReplyEmail(event.getEmail(),
                 "Click the link to verify your account: {}" + url,

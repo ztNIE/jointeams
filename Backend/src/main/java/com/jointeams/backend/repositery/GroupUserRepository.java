@@ -60,6 +60,12 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
 
     @Query("select count (g.groupUserId.userId) from GroupUser g where g.groupUserId.groupId = ?1")
     public int countByGroupId(Long groupId);
+
+    @Query("select g.groupUserId.groupId from GroupUser g where g.groupUserId.userId = :userId")
+    public List<Long> getAllGroups(Long userId);
+
+    @Query("select g.groupUserId.userId from GroupUser g where g.groupUserId.groupId = :groupId and not g.groupUserId.userId = :userId")
+    public List<Long> getAllTeammates(Long userId, Long groupId);
 }
 
 
