@@ -1,8 +1,8 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.pojo.Group;
-import com.jointeams.backend.pojo.User;
-import com.jointeams.backend.repositery.GroupRepository;
+import com.jointeams.backend.pojo.*;
+import com.jointeams.backend.pojo.id.GroupUserId;
+import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.CourseGroupService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -16,6 +16,18 @@ import java.util.*;
 public class CourseGroupServiceImpl implements CourseGroupService {
     @Autowired
     private GroupRepository groupRepository;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private SemesterRepository semesterRepository;
+
+    @Autowired
+    private GroupUserRepository groupUserRepository;
 
     @Override
     public JSONObject getAllGroupsByCourseId(Long courseId, Long userId) {
@@ -95,7 +107,48 @@ public class CourseGroupServiceImpl implements CourseGroupService {
     }
 
     @Override
-    public JSONObject addAGroup(Integer capacity, Long course_id, Long user_id) {
-        return null;
+    public JSONObject addAGroup(Long courseId, Long userId, Integer capacity) {
+        JSONObject jsonResult = new JSONObject();
+
+        // Find corresponding tutorial and semester.
+        List<Object[]> information = enrollmentRepository.getCurrentEnrollmentTutorialByCourseIdAndUserId(courseId, userId).orElse(null);
+        String currentStudentTutrial = (String) null;
+        Long currentSemester = (Long) null;
+        if(information != null) {
+            currentStudentTutrial = (String) information.get(0)[0];
+            currentSemester = ((BigInteger) information.get(0)[1]).longValue();
+        } else {
+            jsonResult.put("msg", "Unable to find a student in this semester enrolled in this course!");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+        System.out.println(currentStudentTutrial);
+        System.out.println(currentSemester);
+
+        // Add a group.
+        Group newGroup = new Group();
+        Course course = courseRepository.findById(courseId).orElse(null);
+        Semester semester = semesterRepository.findById(currentSemester).orElse(null);
+        newGroup.setCapacity(capacity);
+        newGroup.setNameId(course.getNextGroupNameId());
+        newGroup.setTutorial(currentStudentTutrial);
+        newGroup.setCourse(course);
+        newGroup.setSemester(semester);
+        Group result = groupRepository.save(newGroup);
+
+        // Add a groupUser (is_leader: true).
+        GroupUser groupUser = new GroupUser();
+        GroupUserId groupUserId = new GroupUserId(result.getId(), userId);
+        groupUser.setGroupUserId(groupUserId);
+        groupUser.setLeader(true);
+        groupUserRepository.save(groupUser);
+
+        // Update next group name id in course.
+        course.setNextGroupNameId(course.getNextGroupNameId() + 1);
+        courseRepository.save(course);
+
+        jsonResult.put("msg", "Success!");
+        jsonResult.put("data", result);
+        return jsonResult;
     }
 }

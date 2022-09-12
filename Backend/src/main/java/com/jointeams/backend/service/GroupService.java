@@ -22,4 +22,5 @@ public interface GroupService {
     public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId);
     public boolean checkIsGroupFull(Group group);
 
+    public JSONObject getAllCurrentGroupsOfAUser(Long userId);
 }

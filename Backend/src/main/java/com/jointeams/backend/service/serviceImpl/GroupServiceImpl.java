@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -346,17 +348,63 @@ public class GroupServiceImpl implements GroupService {
         return jsonResult;
     }
 
+    @Override
     public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId)
     {
         return groupRepository.findByCourseAndSemesterAndUserId(course, semester, userId).orElse(null);
     }
 
+    @Override
     public boolean checkIsGroupFull(Group group)
     {
         int currentNumOfMember = groupUserRepository.countByGroupId(group.getId());
-        if(group.getCapacity() > currentNumOfMember)
+        if(group.getCapacity() > currentNumOfMember) {
             return false;
-        else
+        }
+        else {
             return true;
+        }
+    }
+
+    @Override
+    public JSONObject getAllCurrentGroupsOfAUser(Long userId) {
+        JSONObject jsonResult = new JSONObject();
+
+        List<Long> groupIds = groupUserRepository.getCurrentGroupIdsOfAUser(userId).orElse(null);
+        if(groupIds.size() == 0) {
+            jsonResult.put("msg", "Success");
+            jsonResult.put("data", new JSONArray());
+        }
+
+//        List<Object[]> groupDetails = groupUserRepository.getAllGroupDetailByIds(groupIds).orElse(null);
+//        JSONArray data = new JSONArray();
+//        // select g.id, g.capacity, g.name_id, c.code, u.first_name, u.last_name, u.filename
+//        List<Long> addedGroupIds = new ArrayList<>();
+//        for(Object[] element: groupDetails) {
+//            Long groupId = ((BigInteger) element[0]).longValue();
+//            if(!addedGroupIds.contains(groupId)) {
+//                JSONObject obj = new JSONObject();
+//                obj.put("group_id", groupId);
+//                obj.put("capacity", (Integer) element[1]);
+//                obj.put("group_name", element[3] + "_Group" + element[2]);
+//                JSONArray members = new JSONArray();
+//                JSONObject student = new JSONObject();
+//                student.put("name", element[4] + " " + element[5]);
+//                student.put("avatar", element[6]);
+//                members.add(student);
+//                obj.put("memebers", members);
+//
+//                data.add(obj);
+//            } else {
+//                int index = addedGroupIds.indexOf(groupId);
+////                data.get(index)
+//            }
+//        }
+
+//        jsonResult.put("msg", "Success");
+//        jsonResult.put("data", data);
+
+        return jsonResult;
+
     }
 }

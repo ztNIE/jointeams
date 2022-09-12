@@ -6,10 +6,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/courseGroup")
@@ -25,6 +22,21 @@ public class CourseGroupController {
         }
 
         JSONObject groupObj = courseGroupService.getAllGroupsByCourseId(courseId, userId);
+
+        if(groupObj.get("data") == null) {
+            return new ResponseEntity<>(groupObj, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(groupObj, HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(path = "addAGroup")
+    public ResponseEntity<JSONObject> addAGroup(@RequestParam("courseId") Long courseId, @RequestParam("userId") Long userId, @RequestParam("capacity") Integer capacity) {
+        if(courseId == null || userId == null || capacity == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject groupObj = courseGroupService.addAGroup(courseId, userId, capacity);
 
         if(groupObj.get("data") == null) {
             return new ResponseEntity<>(groupObj, HttpStatus.NOT_FOUND);
