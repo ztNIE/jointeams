@@ -1,9 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.pojo.Course;
-import com.jointeams.backend.pojo.Enrollment;
-import com.jointeams.backend.pojo.University;
-import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.*;
+import com.jointeams.backend.pojo.id.InterestedCourseKey;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.CourseService;
 import org.json.simple.JSONArray;
@@ -34,6 +32,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private InterestedCourseRepository interestedCourseRepository;
 
     @Override
     public JSONObject getAllCourse(Long userId) {
@@ -311,7 +312,10 @@ public class CourseServiceImpl implements CourseService {
             jsonResult.put("msg", "Unable to find the course!");
             jsonResult.put("data", null);
         }  else {
-            user.getInterestedCourses().add(course);
+            InterestedCourseKey interestedCourseKey = new InterestedCourseKey(userId, courseId);
+            InterestedCourse newInterestedCourse = new InterestedCourse();
+            newInterestedCourse.setId(interestedCourseKey);
+            interestedCourseRepository.save(newInterestedCourse);
 
             jsonResult.put("msg", "success");
             jsonResult.put("data", new JSONObject());
@@ -333,7 +337,8 @@ public class CourseServiceImpl implements CourseService {
             jsonResult.put("msg", "Unable to find the course!");
             jsonResult.put("data", null);
         }  else {
-            user.getInterestedCourses().remove(course);
+            InterestedCourse interestedCourse = interestedCourseRepository.findByUserIdAndCourseId(user.getId(), course.getId());
+            interestedCourseRepository.delete(interestedCourse);
 
             jsonResult.put("msg", "success");
             jsonResult.put("data", new JSONObject());
@@ -356,17 +361,8 @@ public class CourseServiceImpl implements CourseService {
             jsonResult.put("data", null);
         }  else {
             JSONObject result = new JSONObject();
-            Boolean found = false;
-            for (Course markedCourse : user.getInterestedCourses()) {
-                if (markedCourse.getId().toString().equals(course.getId().toString())) {
-                    result.put("marked", true);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                result.put("marked", false);
-            }
+            InterestedCourse interestedCourse = interestedCourseRepository.findByUserIdAndCourseId(user.getId(), course.getId());
+            result.put("marked", interestedCourse != null);
 
             jsonResult.put("msg", "success");
             jsonResult.put("data", result);

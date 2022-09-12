@@ -6,8 +6,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -56,11 +58,21 @@ public class User {
     @JoinColumn(name = "receiver_id")
     private List<Comment> receivedComments;
 
-    @ManyToMany
-    @JoinTable(name = "interested_course", joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-//    @MapsId("id")
-    private List<Course> interestedCourses;
+//    @OneToMany(mappedBy = "user")
+//    private Set<InterestedCourse> interestedCourses;
+//    @ManyToMany (cascade = {
+//            CascadeType.PERSIST,
+//            CascadeType.MERGE
+//    })
+//    @JoinTable(name = "interested_course",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "course_id"))
+////    @MapsId("id")
+//    Set<Course> interestedCourses = new HashSet<>();
+//    private List<Course> interestedCourses;
+
+//    @OneToMany(mappedBy = "student")
+//    Set<CourseRating> ratings;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private List<PastCourse> pastCourses;
