@@ -15,9 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -376,33 +374,43 @@ public class GroupServiceImpl implements GroupService {
             jsonResult.put("data", new JSONArray());
         }
 
-//        List<Object[]> groupDetails = groupUserRepository.getAllGroupDetailByIds(groupIds).orElse(null);
-//        JSONArray data = new JSONArray();
-//        // select g.id, g.capacity, g.name_id, c.code, u.first_name, u.last_name, u.filename
-//        List<Long> addedGroupIds = new ArrayList<>();
-//        for(Object[] element: groupDetails) {
-//            Long groupId = ((BigInteger) element[0]).longValue();
-//            if(!addedGroupIds.contains(groupId)) {
-//                JSONObject obj = new JSONObject();
-//                obj.put("group_id", groupId);
-//                obj.put("capacity", (Integer) element[1]);
-//                obj.put("group_name", element[3] + "_Group" + element[2]);
-//                JSONArray members = new JSONArray();
-//                JSONObject student = new JSONObject();
-//                student.put("name", element[4] + " " + element[5]);
-//                student.put("avatar", element[6]);
-//                members.add(student);
-//                obj.put("memebers", members);
-//
-//                data.add(obj);
-//            } else {
-//                int index = addedGroupIds.indexOf(groupId);
-////                data.get(index)
-//            }
-//        }
+        List<Object[]> groupDetails = groupUserRepository.getAllGroupDetailByIds(groupIds).orElse(null);
+        JSONArray data = new JSONArray();
+        // select g.id, g.capacity, g.name_id, c.code, u.first_name, u.last_name, u.filename
+        List<Long> addedGroupIds = new ArrayList<>();
+        for(Object[] element: groupDetails) {
+            Long groupId = ((BigInteger) element[0]).longValue();
+            if(!addedGroupIds.contains(groupId)) {
+                JSONObject obj = new JSONObject();
+                obj.put("group_id", groupId);
+                obj.put("capacity", (Integer) element[1]);
+                obj.put("group_name", element[3] + "_Group" + element[2]);
+                JSONArray members = new JSONArray();
+                JSONObject student = new JSONObject();
+                student.put("name", element[4] + " " + element[5]);
+                student.put("avatar", element[6]);
+                members.add(student);
+                obj.put("members", members);
 
-//        jsonResult.put("msg", "Success");
-//        jsonResult.put("data", data);
+                data.add(obj);
+            } else {
+                JSONObject student = new JSONObject();
+                student.put("name", element[4] + " " + element[5]);
+                student.put("avatar", element[6]);
+
+                int index = addedGroupIds.indexOf(groupId);
+                JSONObject temp = (JSONObject) data.get(index);
+                JSONArray temp_members = (JSONArray) temp.get("members");
+                temp_members.add(student);
+                temp.put("members", temp_members);
+
+                data.remove(index);
+                data.add(index, temp);
+            }
+        }
+
+        jsonResult.put("msg", "Success");
+        jsonResult.put("data", data);
 
         return jsonResult;
 
