@@ -1,22 +1,16 @@
 package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.pojo.Course;
-<<<<<<< Updated upstream
 import com.jointeams.backend.pojo.Enrollment;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.CourseService;
 import org.json.simple.JSONArray;
-=======
 import com.jointeams.backend.repositery.CourseRepository;
-import com.jointeams.backend.service.CourseService;
->>>>>>> Stashed changes
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-<<<<<<< Updated upstream
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,17 +22,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UniversityRepository universityRepository;
-=======
-import java.util.List;
-
-@Service
-public class CourseServiceImpl implements CourseService {
->>>>>>> Stashed changes
 
     @Autowired
     private CourseRepository courseRepository;
-
-<<<<<<< Updated upstream
     @Autowired
     private EnrollmentRepository enrollmentRepository;
 
@@ -312,7 +298,7 @@ public class CourseServiceImpl implements CourseService {
 //
 //    @Override
 //    public JSONObject getPreviousCourseById(Long userId);
-=======
+
     @Override
     public List<Course> findAll() {
         return (List<Course>) courseRepository.findAll();
@@ -386,8 +372,7 @@ public class CourseServiceImpl implements CourseService {
         int resultCode = changeCourseLockStatus(courseId, isLocked);
         JSONObject jsonResult = new JSONObject();
         jsonResult.put("changing the course lock status", resultCode);
-        switch (resultCode)
-        {
+        switch (resultCode) {
             case 1:
                 jsonResult.put("changing the course lock status msg", "The course lock status is changed successfully.");
                 break;
@@ -396,10 +381,9 @@ public class CourseServiceImpl implements CourseService {
                 break;
             case -1:
                 jsonResult.put("changing the course lock status msg", "Fail to change the course lock status because "
-                + "the new lock status is the same to the old one");
+                        + "the new lock status is the same to the old one");
                 break;
         }
         return jsonResult;
     }
->>>>>>> Stashed changes
 }
