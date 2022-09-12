@@ -20,8 +20,8 @@ public class University {
 
     @Column(length = 50, nullable = false)
     private String name;
-    @Column(length = 20, nullable = false)
-    private String postFix;
+    @Column(length = 50, nullable = false)
+    private String regex;
 
     @Override
     public boolean equals(Object o) {

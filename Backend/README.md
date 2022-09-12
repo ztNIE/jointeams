@@ -1,28 +1,32 @@
 ## Run Backend Application
 
-### IMPORTANT: If the schema has changed, plesae run the emptyDatabase.sql in mysql
+### IMPORTANT: If the schema has changed, please run the emptyDatabase.sql in mysql
 
-1. Initialize database
-   - Open mysql CLI in /Backend directory, run 
+1. application.properties has been changed to
 ```
-source emptyDatabase.sql
-```
-2. Check the application.properties, make sure that the following property is NOT commended
-```
+spring.jpa.hibernate.ddl-auto=create-drop
 spring.sql.init.mode=always
 ```
-3. Run the application. 
-4. If you refresh the database in Intellij now, you would see 13 tables created and data is loaded into user, tag and university
-5. Test get method on UserService
+Add default users are added to data.sql
+```sql
+insert into university (name, regex) value
+    ('University of Sydney', '^[a-z]{4}[1-9]{4}@uni.sydney.edu.au$');
+
+insert into user (degree, description, email,
+                  faculty, filename, first_name,
+                  is_activate, is_admin, last_name,
+                  password, self_tag, university_id)
+values
+    ('IT', 'from IT', 'deve0001@uni.sydney.edu.au',
+     'engineering', 'avator.jpg', 'dev',
+     true, false, 'dev',
+     '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+     null, 1),
+    (null, null, 'admin@gmail.com',
+     null, null, 'admin',
+     true, true, 'admin',
+     '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+     null, 1);
 ```
-localhost:your_port/user/greetingById?id=1 
-# 2, 3 should also work
-```
-6. If you want to run the program again, commend the following property (or change it to embedded) in application.properties .
-```
-spring.sql.init.mode=always
-```
-7. TODO:
-    - Set cascade level for ManyToOne, OneToMany, ManyToMany annotations
-	- Delete Tag Class(Redundant)
-    - ......
+where the password for user 'deve0001@uni.sydeny.edu.au' and 'admin' was set as 12345678. The authentications has been
+added to apifox's group "UserAuth" and "AdminAuth".

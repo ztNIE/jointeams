@@ -1,6 +1,5 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.service.UserService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
