@@ -14,7 +14,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public JSONObject findCurrentSemesterFeedback() {
-        Semester currentSemester = semesterRepository.findSemestersByCurrent().orElse(null);
+        Semester currentSemester = semesterRepository.findSemestersByIsCurrent(true).orElse(null);
         JSONObject jsonResult = new JSONObject();
         if(currentSemester == null)
         {
@@ -31,7 +31,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public int changeCurrentSemester(int year, int semesterNumber) {
-        Semester currentSemesterOld = semesterRepository.findSemestersByCurrent().orElse(null);
+        Semester currentSemesterOld = semesterRepository.findSemestersByIsCurrent(true).orElse(null);
         if(currentSemesterOld == null)
         {
             Semester currentSemesterNew = new Semester();

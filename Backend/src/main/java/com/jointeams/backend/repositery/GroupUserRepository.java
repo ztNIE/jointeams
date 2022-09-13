@@ -6,6 +6,7 @@ import com.jointeams.backend.pojo.id.GroupUserId;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,30 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
             "  and u.is_activate = true\n" +
             "  and u.is_admin = false", nativeQuery = true)
     public Optional<List<Object[]>> getUserEnrolledInACurrentSemesterCourseWithAGroup(Long courseId);
+
+    @Query(value = "select g.id\n" +
+            "from `group` as g\n" +
+            "    inner join `semester` as s\n" +
+            "        on g.semester_id = s.id\n" +
+            "    inner join group_user gu\n" +
+            "        on g.id = gu.group_id\n" +
+            "where s.is_current = true\n" +
+            "and user_id = ?1", nativeQuery = true)
+    public Optional<List<Long>> getCurrentGroupIdsOfAUser(Long userId);
+
+    @Query(value = "select g.id, g.capacity, g.name_id, c.code, u.first_name, u.last_name, u.filename\n" +
+            "from `group` as g\n" +
+            "    inner join `semester` as s\n" +
+            "        on g.semester_id = s.id\n" +
+            "    inner join `course` c\n" +
+            "        on g.course_id = c.id\n" +
+            "    inner join group_user gu\n" +
+            "        on g.id = gu.group_id\n" +
+            "    inner join user u\n" +
+            "        on gu.user_id = u.id\n" +
+            "where g.id in ?1\n" +
+            "  and s.is_current = true", nativeQuery = true)
+    public Optional<List<Object[]>> getAllGroupDetailByIds(List<Long> ids);
 
     @Query("select count (g.groupUserId.userId) from GroupUser g where g.groupUserId.groupId = ?1")
     public int countByGroupId(Long groupId);

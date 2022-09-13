@@ -1,4 +1,5 @@
-
+// TODO
+// Fix starting exceptions
 package com.jointeams.backend.pojo;
 
 
@@ -6,8 +7,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -29,6 +32,7 @@ public class User {
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private University university;
 
     @Column(length = 50)
@@ -37,7 +41,7 @@ public class User {
     @Column(length = 50)
     private String faculty;
 
-    @Column(length = 32)
+    @Column(length = 64)
     private String password;
 
     private boolean isAdmin;
@@ -54,13 +58,8 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
+    @ToString.Exclude
     private List<Comment> receivedComments;
-
-    @ManyToMany
-    @JoinTable(name = "interested_course", joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-//    @MapsId("id")
-    private List<Course> interestedCourses;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    private List<PastCourse> pastCourses;

@@ -1,4 +1,4 @@
-package com.jointeams.backend;
+package com.jointeams.backend.util;
 
 public enum NotificationActionResultMsg {
     InvitationAccepted {

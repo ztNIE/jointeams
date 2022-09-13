@@ -1,20 +1,19 @@
-insert into university (id, name, post_fix) value
-    (1, 'University of Sydney', 'uni.sydney.edu.au');
+insert into university (name, regex) values
+    ('University of Sydney', '^[a-z]{4}[1-9]{4}@uni.sydney.edu.au$'),
+    ('Test University', '^[a-z]+@gmail.com$');
 
-insert into user (id, degree, description, email,
+insert into user (degree, description, email,
                   faculty, filename, first_name,
                   is_activate, is_admin, last_name,
                   password, self_tag, university_id)
 values
-    (1, 'MSC', 'hahahaha', '12314@edu.au',
-     'faculty1', 'avator1.jpg', 'firstname1',
-     true, false, 'lastname1',
-     'password', 1, 1),
-    (2, 'BSc', 'lallalala', '544321@edu.au',
-     'faculty2', 'avator2.jpg', 'firstname2',
-     false, false, 'lastname2',
-     'password', null, 1),
-    (3, 'Admin', 'is admin', 'admin@edu.au',
+    ('IT', 'from IT', 'deve0001@uni.sydney.edu.au',
+     'engineering', 'avator.jpg', 'dev',
+     true, false, 'dev',
+     '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+     null, 1),
+    (null, null, 'admin@gmail.com',
      null, null, 'admin',
      true, true, 'admin',
-     '1234', null, null);
+     '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+     null, 1);

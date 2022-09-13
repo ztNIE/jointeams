@@ -1,7 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
 
-import com.jointeams.backend.NotificationActionResultMsg;
+import com.jointeams.backend.util.NotificationActionResultMsg;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.GroupUserRepository;
 import com.jointeams.backend.repositery.NotificationRepository;

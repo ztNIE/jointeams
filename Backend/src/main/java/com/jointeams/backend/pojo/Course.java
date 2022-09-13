@@ -7,8 +7,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -38,6 +40,12 @@ public class Course {
     private Integer nextGroupNameId;
 
     private Boolean isLocked;
+
+//    @ManyToMany (mappedBy = "interestedCourses")
+////    List<User> likes;
+//    Set<User> interestedUsers = new HashSet<>();
+//    @OneToMany(mappedBy = "course")
+//    private Set<InterestedCourse> interestedUsers;
 
     @Override
     public boolean equals(Object o) {

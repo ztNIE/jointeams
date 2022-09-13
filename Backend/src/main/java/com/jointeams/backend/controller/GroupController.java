@@ -5,10 +5,12 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/group")
+@PreAuthorize("hasRole('USER')")
 public class GroupController {
     @Autowired
     private GroupService groupService;
@@ -138,6 +140,16 @@ public class GroupController {
         }
 
         JSONObject result = groupService.getStudentsNotInAGroup(courseId);
+        return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "myGroups")
+    public ResponseEntity<JSONObject> getAllCurrentGroupsOfAUser(@RequestParam("userId") Long userId) {
+        if(userId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        JSONObject result = groupService.getAllCurrentGroupsOfAUser(userId);
         return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
     }
 }
