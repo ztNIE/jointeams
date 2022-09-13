@@ -1,6 +1,7 @@
 package com.jointeams.backend.controller;
 
 import com.jointeams.backend.model.LoginRequest;
+import com.jointeams.backend.model.MessageResponse;
 import com.jointeams.backend.model.UserInfoResponse;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.security.jwt.JwtUtils;
@@ -56,5 +57,12 @@ public class AuthController {
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new UserInfoResponse(userDetails.getUsername(), roles));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser() {
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new MessageResponse("You've been signed out!"));
     }
 }

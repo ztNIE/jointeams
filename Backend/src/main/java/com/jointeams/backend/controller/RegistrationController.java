@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -73,6 +74,7 @@ public class RegistrationController {
         }
     }
 
+    @PreAuthorize("hasRole(USER)")
     @PostMapping("/resetPassword")
     public ResponseEntity<JSONObject> resetPassword(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
         User user = registerService.findUserByEmail(passwordRequest.getEmail());
