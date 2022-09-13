@@ -11,6 +11,8 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -35,11 +37,21 @@ public class JwtUtils {
   }
 
   public ResponseCookie generateJwtCookie(UserDetails userPrincipal) {
-    String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+    // String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+    String jwt = generateTokenFromUserDetails(userPrincipal);
     // TODO path
     ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/").maxAge(24 * 60 * 60).httpOnly(true).build();
     log.info("TOKEN: {}", cookie);
     return cookie;
+  }
+
+  private String generateTokenFromUserDetails(UserDetails userPrincipal) {
+    return Jwts.builder()
+            .setSubject(userPrincipal.getUsername())
+            .setIssuedAt(new Date())
+            .claim("Role", userPrincipal.getAuthorities())
+            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .compact();
   }
 
   public ResponseCookie getCleanJwtCookie() {
@@ -70,7 +82,7 @@ public class JwtUtils {
     return false;
   }
   
-  public String generateTokenFromUsername(String username) {   
+  public String generateTokenFromUsername(String username) {
     return Jwts.builder()
         .setSubject(username)
         .setIssuedAt(new Date())
