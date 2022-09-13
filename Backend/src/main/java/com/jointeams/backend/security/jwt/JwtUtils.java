@@ -38,6 +38,7 @@ public class JwtUtils {
     String jwt = generateTokenFromUsername(userPrincipal.getUsername());
     // TODO path
     ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/").maxAge(24 * 60 * 60).httpOnly(true).build();
+    log.info("TOKEN: {}", cookie);
     return cookie;
   }
 
