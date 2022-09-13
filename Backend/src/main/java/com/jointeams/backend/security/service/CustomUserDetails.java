@@ -1,4 +1,4 @@
-package com.jointeams.backend.service.serviceImpl;
+package com.jointeams.backend.security.service;
 
 import com.jointeams.backend.pojo.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,9 +21,9 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role;
         if (user.isAdmin()) {
-            role = "ADMIN";
+            role = "ROLE_ADMIN";
         } else {
-            role = "USER";
+            role = "ROLE_USER";
         }
         return Collections.singleton(new SimpleGrantedAuthority(role));
     }
@@ -36,6 +36,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return user.getEmail();
+    }
+
+    public Long getId() {
+        return user.getId();
     }
 
     @Override

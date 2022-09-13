@@ -1,4 +1,4 @@
-package com.jointeams.backend.service.serviceImpl;
+package com.jointeams.backend.security.service;
 
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.UserRepository;

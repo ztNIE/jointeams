@@ -1,8 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jointeams.backend.model.PasswordModel;
-import com.jointeams.backend.model.RegisterUserModel;
+import com.jointeams.backend.model.PasswordRequest;
+import com.jointeams.backend.model.RegisterUserRequest;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.pojo.token.PasswordToken;
@@ -45,18 +44,18 @@ public class RegisterServiceImpl implements RegisterService {
     JSONObjectParser parser;
 
     @Override
-    public String isUserModelValid(RegisterUserModel registerUserModel) {
+    public String isUserModelValid(RegisterUserRequest registerUserRequest) {
         University university = universityRepository
-                .findById(registerUserModel.getUniversityId())
+                .findById(registerUserRequest.getUniversityId())
                 .orElse(null);
         if (university == null) {
-            log.error("No Such University Found, university_id: {}", registerUserModel.getUniversityId());
+            log.error("No Such University Found, university_id: {}", registerUserRequest.getUniversityId());
             return "Bad University";
         }
-        String email = registerUserModel.getEmail();
+        String email = registerUserRequest.getEmail();
         if (!isEmailMatchUniversity(email, university) || isEmailExist(email)) {
             log.info("Bad Email: {}",
-                    registerUserModel.getEmail());
+                    registerUserRequest.getEmail());
             return "Bad Email";
         }
 
@@ -64,13 +63,13 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public JSONObject registerUser(RegisterUserModel registerUserModel){
+    public JSONObject registerUser(RegisterUserRequest registerUserRequest){
         User user = new User();
 
-        user.setFirstName(registerUserModel.getFirstName());
-        user.setLastName(registerUserModel.getLastName());
-        user.setDegree(registerUserModel.getDegree());
-        University university = universityRepository.findById(registerUserModel.getUniversityId()).orElse(null);
+        user.setFirstName(registerUserRequest.getFirstName());
+        user.setLastName(registerUserRequest.getLastName());
+        user.setDegree(registerUserRequest.getDegree());
+        University university = universityRepository.findById(registerUserRequest.getUniversityId()).orElse(null);
         if (university == null) {
             log.error("Cannot find university");
             JSONObject jsonResult = new JSONObject();
@@ -78,9 +77,9 @@ public class RegisterServiceImpl implements RegisterService {
             return jsonResult;
         }
 
-        user.setEmail(registerUserModel.getEmail());
+        user.setEmail(registerUserRequest.getEmail());
         user.setUniversity(university);
-        user.setPassword(passwordEncoder.encode(registerUserModel.getPassword()));
+        user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
         userRepository.save(user);
         JSONObject jsonObject = parser.parseObject(user);
         return jsonObject;
@@ -165,8 +164,8 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void savePassword(User user, PasswordModel passwordModel) {
-        user.setPassword(passwordEncoder.encode(passwordModel.getNewPassword()));
+    public void savePassword(User user, PasswordRequest passwordRequest) {
+        user.setPassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
         userRepository.save(user);
     }
 }

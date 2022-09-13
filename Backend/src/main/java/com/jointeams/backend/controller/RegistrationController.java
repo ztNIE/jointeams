@@ -2,8 +2,8 @@ package com.jointeams.backend.controller;
 
 import com.jointeams.backend.event.SendSavePasswordEmailEvent;
 import com.jointeams.backend.event.SendVerifyEmailEvent;
-import com.jointeams.backend.model.PasswordModel;
-import com.jointeams.backend.model.RegisterUserModel;
+import com.jointeams.backend.model.PasswordRequest;
+import com.jointeams.backend.model.RegisterUserRequest;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +29,10 @@ public class RegistrationController {
 
 
     @PostMapping({"/", ""})
-    public ResponseEntity<JSONObject> registerUser(@RequestBody RegisterUserModel registerUserModel,
+    public ResponseEntity<JSONObject> registerUser(@RequestBody RegisterUserRequest registerUserRequest,
                                                    final HttpServletRequest request) {
 
-        String result = registerService.isUserModelValid(registerUserModel);
+        String result = registerService.isUserModelValid(registerUserRequest);
         if (result.equalsIgnoreCase("bad email")) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("msg", result);
@@ -42,7 +42,7 @@ public class RegistrationController {
             jsonObject.put("msg", result);
             return new ResponseEntity<>(jsonObject, HttpStatus.NOT_ACCEPTABLE);
         } else if (result.equalsIgnoreCase("valid")) {
-            JSONObject jsonObject = registerService.registerUser(registerUserModel);
+            JSONObject jsonObject = registerService.registerUser(registerUserRequest);
             publisher.publishEvent(new SendVerifyEmailEvent((String) jsonObject.get("email"),
                     getApplicationUrl(request)));
             return new ResponseEntity<>(jsonObject, HttpStatus.OK);
@@ -74,8 +74,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/resetPassword")
-    public ResponseEntity<JSONObject> resetPassword(@RequestBody PasswordModel passwordModel, HttpServletRequest request) {
-        User user = registerService.findUserByEmail(passwordModel.getEmail());
+    public ResponseEntity<JSONObject> resetPassword(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
+        User user = registerService.findUserByEmail(passwordRequest.getEmail());
         if (user == null) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("msg", "User Not Found");
@@ -89,7 +89,7 @@ public class RegistrationController {
 
     @PostMapping("/savePassword")
     public ResponseEntity<JSONObject> savePassword(@RequestParam("token") String token,
-                               @RequestBody PasswordModel passwordModel,
+                               @RequestBody PasswordRequest passwordRequest,
                                HttpServletRequest request) {
         String result = registerService.validatePasswordToken(token);
         if (result.equalsIgnoreCase("notfound")) {
@@ -107,7 +107,7 @@ public class RegistrationController {
             return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
         }
 
-        registerService.savePassword(user, passwordModel);
+        registerService.savePassword(user, passwordRequest);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("msg", "Reset Password Successfully");
         return new ResponseEntity<>(jsonObject, HttpStatus.OK);
