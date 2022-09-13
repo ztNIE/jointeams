@@ -6,8 +6,8 @@ import org.json.simple.JSONObject;
 import java.util.List;
 
 public interface NotificationService {
-    public <T> List<T> findAllByUserId(Long userId);
-    public JSONObject getAllByUserId(Long userId);
+    public List<Notification> findAllByUserId(Long userId);
+    public JSONObject findAllByUserIdFeedback(Long userId);
     public int actionOnNotification(Notification notification, int action);
-    public JSONObject actionResult(Long notificationId, int action);
+    public JSONObject actionOnNotificationFeedback(Long notificationId, int action);
 }

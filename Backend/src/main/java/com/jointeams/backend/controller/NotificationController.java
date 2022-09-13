@@ -36,7 +36,7 @@ public class NotificationController {
         if(userId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        JSONObject jsonResult = notificationService.getAllByUserId(userId);
+        JSONObject jsonResult = notificationService.findAllByUserIdFeedback(userId);
         if(jsonResult.get("user status").equals(0))
             return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
         else
@@ -49,7 +49,7 @@ public class NotificationController {
         if(notificationId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        JSONObject jsonResult = notificationService.actionResult(notificationId, action);
+        JSONObject jsonResult = notificationService.actionOnNotificationFeedback(notificationId, action);
         if(jsonResult.get("notification status").equals(0))
             return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
         else
