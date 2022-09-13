@@ -99,7 +99,7 @@ public class WebSecurityConfig {
             "/register/**",
             "/",
             "/hello",
-            "/hello/**"
+            "/auth/**"
     };
 
     private static final String[] API_URLS = {

@@ -38,6 +38,10 @@ public class CustomUserDetails implements UserDetails {
         return user.getEmail();
     }
 
+    public String getLastName() {
+        return user.getLastName();
+    }
+
     public Long getId() {
         return user.getId();
     }
