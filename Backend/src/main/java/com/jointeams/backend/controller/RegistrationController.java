@@ -28,7 +28,15 @@ public class RegistrationController {
     @Autowired
     private ApplicationEventPublisher publisher;
 
-
+    /**
+     *
+     * @param registerUserRequest use RegisterUserRequest Model
+     * @param request HttpServletRequest
+     * @return if success, body: (User) JSONObject, status code: 200
+     *         if email validation fail, body: bad email, status code: 406
+     *         if university validation fail, body: bad university, status code: 406
+     *         if unexpected result: body null, status code: 500
+     */
     @PostMapping({"/", ""})
     public ResponseEntity<JSONObject> registerUser(@RequestBody RegisterUserRequest registerUserRequest,
                                                    final HttpServletRequest request) {
@@ -53,6 +61,15 @@ public class RegistrationController {
         }
     }
 
+    /**
+     *
+     * @param token verification_token
+     * @param request HttpRequest
+     * @return if success, body: User verified successfully, status code: 200
+     *         if token expired, body: Token expired, resend token , status code: 400
+     *         if token not found, body: Token not found, status code: 404
+     *         if unexpected result, body: null, status code: 500
+     */
     @GetMapping("/verify")
     public ResponseEntity<JSONObject> verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
         String result = registerService.validateVerificationToken(token);
@@ -74,6 +91,12 @@ public class RegistrationController {
         }
     }
 
+    /**
+     *
+     * @param passwordRequest
+     * @param request
+     * @return
+     */
     @PreAuthorize("hasRole(USER)")
     @PostMapping("/resetPassword")
     public ResponseEntity<JSONObject> resetPassword(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
@@ -89,6 +112,13 @@ public class RegistrationController {
         return new ResponseEntity<>(jsonObject, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param token
+     * @param passwordRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/savePassword")
     public ResponseEntity<JSONObject> savePassword(@RequestParam("token") String token,
                                @RequestBody PasswordRequest passwordRequest,
