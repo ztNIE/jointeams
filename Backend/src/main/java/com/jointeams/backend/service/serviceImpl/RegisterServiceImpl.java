@@ -11,9 +11,7 @@ import com.jointeams.backend.repositery.UniversityRepository;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
-import com.jointeams.backend.util.JSONObjectParser;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,30 +38,31 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     PasswordTokenRepository passwordTokenRepository;
 
-    @Autowired
-    JSONObjectParser parser;
-
     @Override
     public String isUserModelValid(RegisterUserRequest registerUserRequest) {
+
         University university = universityRepository
                 .findById(registerUserRequest.getUniversityId())
                 .orElse(null);
+
         if (university == null) {
             log.error("No Such University Found, university_id: {}", registerUserRequest.getUniversityId());
-            return "Bad University";
+            return "University Not Found";
         }
         String email = registerUserRequest.getEmail();
-        if (!isEmailMatchUniversity(email, university) || isEmailExist(email)) {
-            log.info("Bad Email: {}",
-                    registerUserRequest.getEmail());
+        if (!isEmailMatchUniversity(email, university)) {
+            log.info("Bad Email: {}", email);
             return "Bad Email";
         }
-
+        if (isEmailExist(email)) {
+            log.info("Duplicate register: {}", email);
+            return "Email Exists";
+        }
         return "Valid";
     }
 
     @Override
-    public JSONObject registerUser(RegisterUserRequest registerUserRequest){
+    public User registerUser(RegisterUserRequest registerUserRequest){
         User user = new User();
 
         user.setFirstName(registerUserRequest.getFirstName());
@@ -72,17 +71,14 @@ public class RegisterServiceImpl implements RegisterService {
         University university = universityRepository.findById(registerUserRequest.getUniversityId()).orElse(null);
         if (university == null) {
             log.error("Cannot find university");
-            JSONObject jsonResult = new JSONObject();
-            jsonResult.put("msg", "Cannot Find University");
-            return jsonResult;
+            return null;
         }
 
         user.setEmail(registerUserRequest.getEmail());
         user.setUniversity(university);
         user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
         userRepository.save(user);
-        JSONObject jsonObject = parser.parseObject(user);
-        return jsonObject;
+        return user;
     }
 
     private boolean isEmailMatchUniversity(String email, University university) {
@@ -114,6 +110,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
         user.setActivate(true);
         userRepository.save(user);
+        verificationTokenRepository.delete(verificationToken);
         return "VALID";
     }
 
