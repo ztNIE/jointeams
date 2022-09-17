@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+    /**
+     * AuthController API: /auth/login & /auth/logout
+     */
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -39,6 +42,12 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    /**
+     *
+     * @param loginRequest  email & password
+     * @return if success, body: userInfoResponse, status code: 200
+     *         if failed, body: message: Bad credentials, status code: 401
+     */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
 
