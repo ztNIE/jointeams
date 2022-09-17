@@ -35,7 +35,8 @@ public class SendSavePasswordEmailListener implements ApplicationListener<SendSa
         String url = event.getFullUrl() + "?token=" + token;
 
         log.info("Click the link to verify your account: {}", url);
-        emailSenderService.sendSimpleNoReplyEmail(event.getEmail(),
+        emailSenderService.sendSimpleNoReplyEmail(
+                event.getEmail(),
                 "Click the link to verify your account: {}" + url,
                 "Jointeams | Reset your password");
     }

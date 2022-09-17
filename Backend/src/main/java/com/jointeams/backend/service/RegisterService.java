@@ -3,10 +3,9 @@ package com.jointeams.backend.service;
 import com.jointeams.backend.model.PasswordRequest;
 import com.jointeams.backend.model.RegisterUserRequest;
 import com.jointeams.backend.pojo.User;
-import org.json.simple.JSONObject;
 
 public interface RegisterService {
-    JSONObject registerUser (RegisterUserRequest registerUserRequest);
+    User registerUser (RegisterUserRequest registerUserRequest);
 
     void saveVerificationTokenForUser(String token, User user);
 
