@@ -1,4 +1,4 @@
-package com.jointeams.backend.model;
+package com.jointeams.backend.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,10 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PasswordRequest {
+public class LoginRequest {
+
     @NotEmpty(message = "Email is required")
     private String email;
-
-    private String newPassword;
+    @NotEmpty(message = "Password is required")
+    private String password;
 }

@@ -1,4 +1,4 @@
-package com.jointeams.backend.model;
+package com.jointeams.backend.model.request;
 
 import lombok.Getter;
 import lombok.Setter;

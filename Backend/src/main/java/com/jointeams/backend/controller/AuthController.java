@@ -1,8 +1,8 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.model.LoginRequest;
-import com.jointeams.backend.model.StandardResponse;
-import com.jointeams.backend.model.UserInfoResponse;
+import com.jointeams.backend.model.request.LoginRequest;
+import com.jointeams.backend.model.response.StandardResponse;
+import com.jointeams.backend.model.response.UserInfoResponse;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;

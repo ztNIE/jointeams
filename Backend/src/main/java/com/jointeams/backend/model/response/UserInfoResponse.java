@@ -1,14 +1,15 @@
-package com.jointeams.backend.model;
+package com.jointeams.backend.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
-public class RegisterResponse {
+public class UserInfoResponse {
     private String email;
-    private String firstName;
-    private String lastName;
+    private List<String> roles;
 }

@@ -1,4 +1,4 @@
-package com.jointeams.backend.model;
+package com.jointeams.backend.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

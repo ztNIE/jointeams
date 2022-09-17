@@ -1,7 +1,7 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.model.PasswordRequest;
-import com.jointeams.backend.model.RegisterUserRequest;
+import com.jointeams.backend.model.request.PasswordRequest;
+import com.jointeams.backend.model.request.RegisterUserRequest;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.pojo.token.PasswordToken;

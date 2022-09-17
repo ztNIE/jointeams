@@ -2,14 +2,17 @@ package com.jointeams.backend.controller;
 
 import com.jointeams.backend.event.SendSavePasswordEmailEvent;
 import com.jointeams.backend.event.SendVerifyEmailEvent;
-import com.jointeams.backend.model.*;
+import com.jointeams.backend.model.request.PasswordRequest;
+import com.jointeams.backend.model.request.RegisterUserRequest;
+import com.jointeams.backend.model.response.RegisterResponse;
+import com.jointeams.backend.model.response.StandardResponse;
 import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.repositery.PasswordTokenRepository;
 import com.jointeams.backend.service.RegisterService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +21,14 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/register")
 @Slf4j
+@AllArgsConstructor
 public class RegistrationController {
 
-    @Autowired
     private RegisterService registerService;
 
-    @Autowired
     private ApplicationEventPublisher publisher;
+
+    private PasswordTokenRepository passwordTokenRepository;
 
     /**
      *
@@ -34,7 +38,6 @@ public class RegistrationController {
      *         if failed, body: error message, status code: 400
      */
 
-    // TODO: refactor register response
     @PostMapping({"/", ""})
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest,
                                                    final HttpServletRequest request) {
@@ -91,6 +94,12 @@ public class RegistrationController {
         if (user == null) {
             return ResponseEntity.badRequest().body(new StandardResponse<>("User Not Found", null));
         }
+
+        // If already sent a reset password email, delete the old token
+        if (passwordTokenRepository.existsById(user.getId())){
+            passwordTokenRepository.deleteById(user.getId());
+        }
+
         publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
         return ResponseEntity.ok().body(new StandardResponse<>("success", null));
     }
