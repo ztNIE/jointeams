@@ -54,6 +54,7 @@ public class RegistrationController {
             JSONObject jsonObject = registerService.registerUser(registerUserRequest);
             publisher.publishEvent(new SendVerifyEmailEvent((String) jsonObject.get("email"),
                     getApplicationUrl(request)));
+            // TODO: refactor response object
             return new ResponseEntity<>(jsonObject, HttpStatus.OK);
         } else {
             log.error("UserModel validation not catch");
