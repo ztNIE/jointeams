@@ -2,6 +2,7 @@ package com.jointeams.backend.controller;
 
 import com.jointeams.backend.service.NotificationService;
 import com.jointeams.backend.service.UserService;
+import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/notification")
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 public class NotificationController {
 
     @Autowired
@@ -35,23 +36,26 @@ public class NotificationController {
         if(userId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        JSONObject jsonResult = notificationService.findAllByUserIdFeedback(userId);
-        if(jsonResult.get("user status").equals(0))
-            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
+        JsonResult jsonResult = notificationService.findAllByUserIdFeedback(userId);
+        if(jsonResult.getStatus() == 0)
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity<>(jsonResult, HttpStatus.OK);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
     }
 
     @GetMapping(path="/actionOnNotification")
-    public ResponseEntity<JSONObject> findAllByUserId(@RequestParam("notificationId") Long notificationId, @RequestParam("action") int action)
+    public ResponseEntity<JSONObject> actionOnNotification(@RequestParam("notificationId") Long notificationId, @RequestParam("action") Integer action)
     {
-        if(notificationId == null) {
+        if(notificationId == null || action == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        JSONObject jsonResult = notificationService.actionOnNotificationFeedback(notificationId, action);
-        if(jsonResult.get("notification status").equals(0))
-            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
+        JsonResult jsonResult = notificationService.actionOnNotificationFeedback(notificationId, action);
+        int status = jsonResult.getStatus();
+        if(status >= 1 && status <= 7)
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
+        else if (status == 0)
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity<>(jsonResult, HttpStatus.OK);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_ACCEPTABLE);
     }
 }
