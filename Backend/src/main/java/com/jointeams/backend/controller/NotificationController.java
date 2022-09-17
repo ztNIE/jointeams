@@ -16,7 +16,6 @@ public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
-
     @Autowired
     private UserService userService;
 
