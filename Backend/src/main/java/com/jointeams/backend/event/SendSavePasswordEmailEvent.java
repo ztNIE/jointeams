@@ -4,13 +4,10 @@ public class SendSavePasswordEmailEvent extends SendEmailEvent {
 
     private final String path = "/register/savePassword";
 
-    private String email;
-    private String url;
     public SendSavePasswordEmailEvent(String email, String url) {
         super(email, url);
-    }
-
-    public String getFullUrl() {
-        return getUrl() + path;
+        setUrl(url + path);
+        setBody("Click the link to reset your password: " + url);
+        setSubject("Jointeams | Reset your password");
     }
 }

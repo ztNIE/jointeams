@@ -10,6 +10,9 @@ public abstract class SendEmailEvent extends ApplicationEvent {
     private String email;
     private String url;
 
+    private String body;
+    private String subject;
+
     public SendEmailEvent(String email, String url) {
         super(email);
         this.email = email;
