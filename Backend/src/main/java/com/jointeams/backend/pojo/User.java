@@ -2,7 +2,6 @@
 // Fix starting exceptions
 package com.jointeams.backend.pojo;
 
-
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -67,9 +66,6 @@ public class User {
     @JoinColumn(name = "receiver_id")
     @ToString.Exclude
     private List<Comment> receivedComments;
-
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private List<PastCourse> pastCourses;
 
     @Override
     public boolean equals(Object o) {

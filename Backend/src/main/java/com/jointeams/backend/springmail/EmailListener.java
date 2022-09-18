@@ -29,7 +29,7 @@ public class EmailListener {
     @Async
     @EventListener
     public void handleEmailEvent(SendEmailEvent event) {
-        User user = userRepository.findByEmail(event.getEmail());
+        User user = (User) userRepository.findByEmail(event.getEmail()).orElse(null);
         String token = UUID.randomUUID().toString();
         registerService.saveVerificationTokenForUser(token, user);
         log.info("listener get event");
