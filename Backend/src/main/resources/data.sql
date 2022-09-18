@@ -7,7 +7,7 @@ insert into user (degree, description, email,
                   is_activate, is_admin, last_name,
                   password, self_tag, university_id)
 values
-    ('IT', 'from IT', 'deve0001@uni.sydney.edu.au',
+    ('IT', 'from IT', 'devu0001@uni.sydney.edu.au',
      'faculty1', 'avator1.jpg', 'devFName1',
      true, false, 'devLName1',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
