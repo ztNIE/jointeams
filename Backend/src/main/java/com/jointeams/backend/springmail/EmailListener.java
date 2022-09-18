@@ -1,9 +1,10 @@
-package com.jointeams.backend.event;
+package com.jointeams.backend.springmail;
 
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.service.RegisterService;
 import com.jointeams.backend.service.serviceImpl.EmailSenderService;
+import com.jointeams.backend.springmail.event.SendEmailEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

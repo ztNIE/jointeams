@@ -1,7 +1,7 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.event.SendSavePasswordEmailEvent;
-import com.jointeams.backend.event.SendVerifyEmailEvent;
+import com.jointeams.backend.springmail.event.SendSavePasswordEmailEvent;
+import com.jointeams.backend.springmail.event.SendVerifyEmailEvent;
 import com.jointeams.backend.model.request.PasswordRequest;
 import com.jointeams.backend.model.request.RegisterUserRequest;
 import com.jointeams.backend.model.response.RegisterResponse;

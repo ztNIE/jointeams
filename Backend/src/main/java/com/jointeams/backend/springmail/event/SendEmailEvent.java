@@ -1,4 +1,4 @@
-package com.jointeams.backend.event;
+package com.jointeams.backend.springmail.event;
 
 import lombok.Getter;
 import lombok.Setter;
