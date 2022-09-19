@@ -1,15 +1,39 @@
 <template>
-  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-  <el-button type="primary">Primary</el-button>
+  <!-- landing page -->
+  <Landing v-if="route.name === '/landing'" />
+
+  <!-- log in -->
+  <Login v-else-if="route.name === 'login'" />
+  
+  <!-- register -->
+  <SignUp v-else-if="route.name === 'register'" />
+
+  <!-- other pages -->
+  <div v-else>
+    <router-view />
+  </div>
+
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import { useRoute } from 'vue-router'
+import Landing from './views/landing.vue'
+import SignUp from './views/signUp.vue'
+import Login from './views/login.vue'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld
+    Landing,
+    Login,
+    SignUp,
+  },
+  setup() {
+    const route = useRoute();
+    // expose to template and other options API hooks
+    return {
+      route
+    }
   }
 }
 </script>
