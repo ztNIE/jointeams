@@ -46,10 +46,8 @@ public class RegistrationController {
         if (result.equalsIgnoreCase("valid")) {
             User user = registerService.registerUser(registerUserRequest);
             RegisterResponse registerResponse = new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
-            log.info("publish event");
             publisher.publishEvent(new SendVerifyEmailEvent(registerResponse.getEmail(),
                     getApplicationUrl(request)));
-            log.info("exit publish event");
             return ResponseEntity.ok().body(new StandardResponse<>("success", registerResponse));
         } else {
             return ResponseEntity.badRequest().body(new StandardResponse<>(result, null));
@@ -98,8 +96,8 @@ public class RegistrationController {
         }
 
         // If already sent a reset password email, delete the old token
-        if (passwordTokenRepository.existsById(user.getId())){
-            passwordTokenRepository.deleteById(user.getId());
+        if (passwordTokenRepository.existsByUserId(user.getId())){
+            passwordTokenRepository.deleteByUserId(user.getId());
         }
 
         publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));

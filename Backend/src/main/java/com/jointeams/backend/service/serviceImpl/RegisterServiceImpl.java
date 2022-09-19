@@ -111,7 +111,6 @@ public class RegisterServiceImpl implements RegisterService {
             return "TIMEOUT";
         }
         user.setActivate(true);
-//        user.setVerificationToken(null);
         userRepository.save(user);
         verificationTokenRepository.delete(verificationToken);
         return "VALID";
@@ -135,8 +134,10 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public void savePasswordToken(User user, String token) {
-        PasswordToken passwordToken = new PasswordToken(token, user);
-        userRepository.save(user);
+        PasswordToken passwordToken = new PasswordToken(token);
+        passwordTokenRepository.save(passwordToken);
+        passwordToken.setUser(user);
+        passwordTokenRepository.save(passwordToken);
     }
 
     @Override

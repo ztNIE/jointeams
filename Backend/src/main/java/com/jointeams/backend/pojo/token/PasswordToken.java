@@ -27,10 +27,9 @@ public class PasswordToken{
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private User user;
 
-    public PasswordToken(String token, User user) {
+    public PasswordToken(String token) {
         super();
         this.token = token;
-        this.user = user;
         this.expirationTime = calculateExpirationTime(EXPIRATION_TIME);
     }
 
