@@ -1,8 +1,8 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.model.LoginRequest;
-import com.jointeams.backend.model.MessageResponse;
-import com.jointeams.backend.model.UserInfoResponse;
+import com.jointeams.backend.model.request.LoginRequest;
+import com.jointeams.backend.model.response.StandardResponse;
+import com.jointeams.backend.model.response.UserInfoResponse;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,7 @@ public class AuthController {
      *         if failed, body: message: Bad credentials, status code: 401
      */
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
@@ -65,13 +66,15 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getUsername(), roles));
+                .body(new StandardResponse<>("success",
+                        new UserInfoResponse(userDetails.getUsername(), roles)));
     }
 
+    // TODO: fix logout utility
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new MessageResponse("You've been signed out!"));
+                .body(new StandardResponse<>("You are successfully logged out!", null));
     }
 }

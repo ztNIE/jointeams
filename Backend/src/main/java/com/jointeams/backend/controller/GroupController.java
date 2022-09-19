@@ -1,5 +1,6 @@
 package com.jointeams.backend.controller;
 
+import com.jointeams.backend.model.request.CommentRequest;
 import com.jointeams.backend.service.GroupService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,18 @@ public class GroupController {
         JSONObject result = groupService.getCommentById(groupId, senderId, receiverId);
 
         return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(path = "leaveComment")
+    public ResponseEntity<JSONObject> leaveComment(@RequestBody CommentRequest comment) {
+
+        JSONObject result = groupService.leaveComment(comment.getGroupId(), comment.getSenderId(), comment.getReceiverId(), comment.getTag(), comment.getContent());
+
+        if(result == null) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
+        }
     }
 
     @PostMapping(path = "sendInvitation")

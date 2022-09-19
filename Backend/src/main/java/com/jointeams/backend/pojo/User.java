@@ -17,6 +17,10 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(
+        name = "email_unique",
+        columnNames = "email"
+))
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -28,7 +32,10 @@ public class User {
     @Column(length = 50)
     private String lastName;
 
-    @Column(length = 65, nullable = false)
+    @Column(
+            length = 65,
+            nullable = false
+    )
     private String email;
 
     @ManyToOne(fetch = FetchType.LAZY)

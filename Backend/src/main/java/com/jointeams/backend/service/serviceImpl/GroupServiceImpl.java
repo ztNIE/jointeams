@@ -217,6 +217,46 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public JSONObject leaveComment(Long groupId, Long senderId, Long receiverId, Integer tag, String content) {
+        JSONObject jsonResult = new JSONObject();
+        Group group = groupRepository.findById(groupId).orElse(null);
+        if(group == null) {
+            jsonResult.put("msg", "Unable to find such a group.");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+        User sender = userRepository.findById(senderId).orElse(null);
+        User receiver = userRepository.findById(receiverId).orElse(null);
+        if(sender == null || receiver == null) {
+            jsonResult.put("msg", "Unable to find such a user.");
+            jsonResult.put("data", null);
+            return jsonResult;
+        }
+
+        // If a comment with give group, sender and receiver is existing, delete it; else, nothing delete.
+        commentRepository.deleteCommentByIds(groupId, senderId, receiverId);
+
+        Comment comment = new Comment();
+        comment.setGroup(group);
+        comment.setReceiver(receiver);
+        comment.setSender(sender);
+        comment.setContent(content);
+        comment.setTag(tag);
+        comment.setIsHide(false);
+
+        Comment result = commentRepository.save(comment);
+
+        JSONObject data = new JSONObject();
+        data.put("content", result.getContent());
+        data.put("tag", result.getTag());
+        data.put("timeStamp", result.getTimestamp());
+
+        jsonResult.put("msg", "Success!");
+        jsonResult.put("data", data);
+        return jsonResult;
+    }
+
+    @Override
     public JSONObject getStudentsNotInAGroup(Long courseId) {
         JSONObject jsonResult = new JSONObject();
         List<Object[]> users = groupUserRepository.getUserEnrolledInACurrentSemesterCourseWithoutAGroup(courseId).orElse(null);
@@ -346,23 +386,7 @@ public class GroupServiceImpl implements GroupService {
         return jsonResult;
     }
 
-    @Override
-    public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId)
-    {
-        return groupRepository.findByCourseAndSemesterAndUserId(course, semester, userId).orElse(null);
-    }
 
-    @Override
-    public boolean checkIsGroupFull(Group group)
-    {
-        int currentNumOfMember = groupUserRepository.countByGroupId(group.getId());
-        if(group.getCapacity() > currentNumOfMember) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
 
     @Override
     public JSONObject getAllCurrentGroupsOfAUser(Long userId) {

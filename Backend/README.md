@@ -17,16 +17,16 @@ insert into user (degree, description, email,
                   is_activate, is_admin, last_name,
                   password, self_tag, university_id)
 values
-    ('IT', 'from IT', 'deve0001@uni.sydney.edu.au',
+    ('IT', 'from IT', 'devu0001@uni.sydney.edu.au',
      'engineering', 'avator.jpg', 'dev',
      true, false, 'dev',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
      null, 1),
-    (null, null, 'admin@gmail.com',
+    (null, null, 'jointeamsspring@gmail.com',
      null, null, 'admin',
      true, true, 'admin',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
      null, 1);
 ```
-where the password for user 'deve0001@uni.sydeny.edu.au' and 'admin' was set as 12345678. The authentications has been
+where the password for user 'devu0001@uni.sydeny.edu.au' and 'admin' was set as 12345678. The authentications has been
 added to apifox's group "UserAuth" and "AdminAuth".

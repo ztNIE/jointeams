@@ -4,14 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class PasswordRequest {
-    @NotEmpty(message = "Email is required")
+public class RegisterResponse {
     private String email;
-
-    private String newPassword;
+    private String firstName;
+    private String lastName;
 }

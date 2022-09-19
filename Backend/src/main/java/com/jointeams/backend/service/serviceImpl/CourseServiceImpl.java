@@ -4,6 +4,7 @@ import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.CourseService;
+import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONArray;
 import com.jointeams.backend.repositery.CourseRepository;
 import org.json.simple.JSONObject;
@@ -442,22 +443,17 @@ public class CourseServiceImpl implements CourseService {
 //    public JSONObject getPreviousCourseById(Long userId);
 
     @Override
-    public List<Course> findAll() {
-        return (List<Course>) courseRepository.findAll();
-    }
-
-    @Override
-    public JSONObject findAllFeedback() {
+    public JsonResult findAllFeedback() {
         List<Course> courses = (List<Course>) courseRepository.findAll();
-        JSONObject jsonResult = new JSONObject();
+        JsonResult jsonResult = new JsonResult();
         if(courses.size() == 0)
         {
-            jsonResult.put("finding all courses status", 0);
-            jsonResult.put("finding all courses status msg", "No comment is found!");
+            jsonResult.setStatus(0);
+            jsonResult.setMsgAndData("No Course is found!", Optional.empty());
         }
         else {
-            jsonResult.put("finding all courses status", 1);
-            jsonResult.put("comments", courses);
+            jsonResult.setStatus(1);
+            jsonResult.setMsgAndData("Finding all course successful", courses);
         }
         return jsonResult;
     }
@@ -468,7 +464,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public JSONObject AddACourseFeedback() {
+    public JsonResult AddACourseFeedback() {
         return null;
     }
 
@@ -485,8 +481,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public JSONObject deleteACourseFeedback(Long courseId) {
-        return null;
+    public JsonResult deleteACourseFeedback(Long courseId) {
+        int resultCode = deleteACourse(courseId);
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setStatus(resultCode);
+        switch (resultCode) {
+            case 0:
+                jsonResult.setMsgAndData("msg", Optional.empty());
+                break;
+            case 1:
+                jsonResult.setMsgAndData( "The course is deleted successfully.", Optional.empty());
+                break;
+        }
+        return jsonResult;
     }
 
     @Override
@@ -510,20 +517,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public JSONObject changeCourseLockStatusFeedback(Long courseId, boolean isLocked) {
+    public JsonResult changeCourseLockStatusFeedback(Long courseId, boolean isLocked) {
         int resultCode = changeCourseLockStatus(courseId, isLocked);
-        JSONObject jsonResult = new JSONObject();
-        jsonResult.put("changing the course lock status", resultCode);
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setStatus(resultCode);
         switch (resultCode) {
             case 1:
-                jsonResult.put("changing the course lock status msg", "The course lock status is changed successfully.");
+                jsonResult.setMsgAndData("The course lock status is changed successfully.", Optional.empty());
                 break;
             case 0:
-                jsonResult.put("changing the course lock status msg", "The course is not found!");
+                jsonResult.setMsgAndData( "The course is not found!", Optional.empty());
                 break;
             case -1:
-                jsonResult.put("changing the course lock status msg", "Fail to change the course lock status because "
-                        + "the new lock status is the same to the old one");
+                jsonResult.setMsgAndData( "Fail to change the course lock status because the new lock status is " +
+                        "the same to the old one", Optional.empty());
                 break;
         }
         return jsonResult;
