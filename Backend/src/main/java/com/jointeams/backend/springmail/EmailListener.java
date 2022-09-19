@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @Slf4j
 @EnableAsync
@@ -27,11 +29,12 @@ public class EmailListener {
     @EventListener
     public void handleEmailEvent(SendEmailEvent event) throws ClassNotFoundException {
         User user = (User) userRepository.findByEmail(event.getEmail()).orElse(null);
+        String token = UUID.randomUUID().toString();
         registerService.saveVerificationTokenForUser(token, user);
         log.info("listener get event");
         emailSenderService.sendSimpleNoReplyEmail(
                 event.getEmail(),
-                event.getBody(),
+                event.getBody() + token,
                 event.getSubject());
     }
 }

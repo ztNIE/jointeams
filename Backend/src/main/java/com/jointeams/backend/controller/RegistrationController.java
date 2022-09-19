@@ -1,8 +1,7 @@
 package com.jointeams.backend.controller;
 
+import com.jointeams.backend.springmail.EmailType;
 import com.jointeams.backend.springmail.SendEmailEvent;
-import com.jointeams.backend.springmail.event.SendSavePasswordEmailEvent;
-import com.jointeams.backend.springmail.event.SendVerifyEmailEvent;
 import com.jointeams.backend.model.request.PasswordRequest;
 import com.jointeams.backend.model.request.RegisterUserRequest;
 import com.jointeams.backend.model.response.RegisterResponse;
@@ -47,16 +46,19 @@ public class RegistrationController {
         if (result.equalsIgnoreCase("valid")) {
             User user = registerService.registerUser(registerUserRequest);
             RegisterResponse registerResponse = new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+//            publisher.publishEvent(
+//                    SendEmailEvent.builder()
+//                            .applicationUrl(getApplicationUrl(request))
+//                            .emailType(EmailType.VERIFY)
+//                            .email(user.getEmail())
+//                            .build()
+//            );
             publisher.publishEvent(
-                    SendEmailEvent.builder()
-                            .applicationUrl(getApplicationUrl(request))
-                            .path("/register/verify")
-                            .emailType("VerificationToken")
-                            .email(user.getEmail())
-                            .build()
+                    new SendEmailEvent(
+                            user.getEmail(),
+                            getApplicationUrl(request),
+                            EmailType.VERIFY)
             );
-//            publisher.publishEvent(new SendVerifyEmailEvent(registerResponse.getEmail(),
-//                    getApplicationUrl(request)));
             return ResponseEntity.ok().body(new StandardResponse<>("success", registerResponse));
         } else {
             return ResponseEntity.badRequest().body(new StandardResponse<>(result, null));
@@ -78,7 +80,18 @@ public class RegistrationController {
             return ResponseEntity.ok().body(new StandardResponse<>("success", null));
         } else if (result.equalsIgnoreCase("timeout")) {
             User user = registerService.deleteOldVerifyToken(token);
-            publisher.publishEvent(new SendVerifyEmailEvent(user.getEmail(), getApplicationUrl(request)));
+//            publisher.publishEvent(new SendVerifyEmailEvent(user.getEmail(), getApplicationUrl(request)));
+            publisher.publishEvent(
+//                    SendEmailEvent.builder()
+//                            .applicationUrl(getApplicationUrl(request))
+//                            .emailType(EmailType.VERIFY)
+//                            .email(user.getEmail())
+//                            .build()
+                    new SendEmailEvent(
+                            user.getEmail(),
+                            getApplicationUrl(request),
+                            EmailType.VERIFY)
+            );
             return ResponseEntity.badRequest().body(
                     new StandardResponse<>("Token expired, resend token.", null));
         } else if (result.equalsIgnoreCase("notfound")){
@@ -109,7 +122,13 @@ public class RegistrationController {
             passwordTokenRepository.deleteByUserId(user.getId());
         }
 
-        publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
+//        publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
+        publisher.publishEvent(
+                new SendEmailEvent(
+                        user.getEmail(),
+                        getApplicationUrl(request),
+                        EmailType.RESET_PASSWORD)
+        );
         return ResponseEntity.ok().body(new StandardResponse<>("success", null));
     }
 
@@ -133,7 +152,13 @@ public class RegistrationController {
         User user = registerService.deleteOldPasswordToken(token);
 
         if (result.equalsIgnoreCase("timeout")) {
-            publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
+//            publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
+            publisher.publishEvent(
+                    new SendEmailEvent(
+                            user.getEmail(),
+                            getApplicationUrl(request),
+                            EmailType.RESET_PASSWORD)
+            );
             return ResponseEntity.badRequest().body(new StandardResponse<>("Token expired, resend", null));
         }
 
