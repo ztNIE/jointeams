@@ -9,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
 public class RegisterUserRequest {
 
     @NotEmpty(message = "First name is required")

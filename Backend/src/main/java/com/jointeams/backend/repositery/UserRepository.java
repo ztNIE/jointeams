@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 public interface UserRepository extends CrudRepository<User, Long> {
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
 //    public Optional<User> findByLastName(String lastName);
 //    public Optional<User> findByFirstNameAndLastName(String firstName, String lastName);
 //    @Query("select u from User u where u.firstName = ?1 and u.lastName = ?2")；
