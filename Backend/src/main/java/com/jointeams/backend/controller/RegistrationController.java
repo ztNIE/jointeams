@@ -1,5 +1,6 @@
 package com.jointeams.backend.controller;
 
+import com.jointeams.backend.springmail.SendEmailEvent;
 import com.jointeams.backend.springmail.event.SendSavePasswordEmailEvent;
 import com.jointeams.backend.springmail.event.SendVerifyEmailEvent;
 import com.jointeams.backend.model.request.PasswordRequest;
@@ -46,8 +47,16 @@ public class RegistrationController {
         if (result.equalsIgnoreCase("valid")) {
             User user = registerService.registerUser(registerUserRequest);
             RegisterResponse registerResponse = new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
-            publisher.publishEvent(new SendVerifyEmailEvent(registerResponse.getEmail(),
-                    getApplicationUrl(request)));
+            publisher.publishEvent(
+                    SendEmailEvent.builder()
+                            .applicationUrl(getApplicationUrl(request))
+                            .path("/register/verify")
+                            .emailType("VerificationToken")
+                            .email(user.getEmail())
+                            .build()
+            );
+//            publisher.publishEvent(new SendVerifyEmailEvent(registerResponse.getEmail(),
+//                    getApplicationUrl(request)));
             return ResponseEntity.ok().body(new StandardResponse<>("success", registerResponse));
         } else {
             return ResponseEntity.badRequest().body(new StandardResponse<>(result, null));
