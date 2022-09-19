@@ -12,12 +12,12 @@ values
      true, false, 'devLName1',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
      null, 1),
-    ('IT', 'from IT', 'deve0002@uni.sydney.edu.au',
+    ('IT', 'from IT', 'devu0002@uni.sydney.edu.au',
      'faculty2', 'avator2.jpg', 'devFName2',
      true, false, 'devLName2',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
      null, 1),
-    ('IT', 'from IT', 'deve0003@uni.sydney.edu.au',
+    ('IT', 'from IT', 'devu0003@uni.sydney.edu.au',
      'faculty2', 'avator3.jpg', 'devFName3',
      true, false, 'devLName3',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
@@ -26,7 +26,7 @@ values
      null, null, 'admin',
      true, true, 'admin',
      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
-     null, 1);
+     null, 2);
 
 insert into semester (year, semester_number, is_current)
 values

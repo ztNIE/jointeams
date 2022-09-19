@@ -88,12 +88,14 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     private boolean isEmailExist(String email) {
-        return userRepository.findByEmail(email) != null;
+        return userRepository.findByEmail(email).orElse(null) != null;
     }
 
     @Override
     public void saveVerificationTokenForUser(String token, User user) {
-        VerificationToken verificationToken = new VerificationToken(token, user);
+        VerificationToken verificationToken = new VerificationToken(token);
+        verificationToken = verificationTokenRepository.save(verificationToken);
+        verificationToken.setUser(user);
         verificationTokenRepository.save(verificationToken);
     }
 
@@ -127,12 +129,14 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return (User) userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
     public void savePasswordToken(User user, String token) {
-        PasswordToken passwordToken = new PasswordToken(token, user);
+        PasswordToken passwordToken = new PasswordToken(token);
+        passwordTokenRepository.save(passwordToken);
+        passwordToken.setUser(user);
         passwordTokenRepository.save(passwordToken);
     }
 
