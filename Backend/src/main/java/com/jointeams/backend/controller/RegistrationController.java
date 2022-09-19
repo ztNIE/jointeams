@@ -46,13 +46,6 @@ public class RegistrationController {
         if (result.equalsIgnoreCase("valid")) {
             User user = registerService.registerUser(registerUserRequest);
             RegisterResponse registerResponse = new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
-//            publisher.publishEvent(
-//                    SendEmailEvent.builder()
-//                            .applicationUrl(getApplicationUrl(request))
-//                            .emailType(EmailType.VERIFY)
-//                            .email(user.getEmail())
-//                            .build()
-//            );
             publisher.publishEvent(
                     new SendEmailEvent(
                             user.getEmail(),
@@ -80,13 +73,7 @@ public class RegistrationController {
             return ResponseEntity.ok().body(new StandardResponse<>("success", null));
         } else if (result.equalsIgnoreCase("timeout")) {
             User user = registerService.deleteOldVerifyToken(token);
-//            publisher.publishEvent(new SendVerifyEmailEvent(user.getEmail(), getApplicationUrl(request)));
             publisher.publishEvent(
-//                    SendEmailEvent.builder()
-//                            .applicationUrl(getApplicationUrl(request))
-//                            .emailType(EmailType.VERIFY)
-//                            .email(user.getEmail())
-//                            .build()
                     new SendEmailEvent(
                             user.getEmail(),
                             getApplicationUrl(request),
@@ -122,7 +109,6 @@ public class RegistrationController {
             passwordTokenRepository.deleteByUserId(user.getId());
         }
 
-//        publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
         publisher.publishEvent(
                 new SendEmailEvent(
                         user.getEmail(),
@@ -152,7 +138,6 @@ public class RegistrationController {
         User user = registerService.deleteOldPasswordToken(token);
 
         if (result.equalsIgnoreCase("timeout")) {
-//            publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
             publisher.publishEvent(
                     new SendEmailEvent(
                             user.getEmail(),
