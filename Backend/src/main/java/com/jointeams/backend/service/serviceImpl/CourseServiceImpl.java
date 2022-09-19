@@ -458,17 +458,29 @@ public class CourseServiceImpl implements CourseService {
         return jsonResult;
     }
 
-    @Override
-    public int AddACourse() {
-        return 0;
+    public int AddACourse(String code, String name, Long universityId)
+    {
+        Course course = (Course) courseRepository.findCourseByCode(code).orElse(null);
+        Course course1 = (Course) courseRepository.findCourseByName(name).orElse(null);
+        if(course == null && course1 == null)
+        {
+            course = new Course();
+            course.setCode(code);
+            course.setName(name);
+            course.setNextGroupNameId(0);
+            course.setIsLocked(false);
+            courseRepository.save(course);
+            return 1;
+        }
+        else
+            return 0;
     }
 
     @Override
-    public JsonResult AddACourseFeedback() {
+    public JsonResult AddACourseFeedback(String code, String name, Long universityId) {
         return null;
     }
 
-    @Override
     public int deleteACourse(Long courseId) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null)
@@ -496,7 +508,6 @@ public class CourseServiceImpl implements CourseService {
         return jsonResult;
     }
 
-    @Override
     public int changeCourseLockStatus(Long courseId, boolean isLocked) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null)

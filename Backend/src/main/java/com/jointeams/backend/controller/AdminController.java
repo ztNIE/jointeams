@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -49,40 +46,40 @@ public class AdminController {
         }
     }
 
-//    @GetMapping(path = "findAllCourse")
-//    public ResponseEntity<JSONObject> findAllCourse() {
-//
-//        JSONObject jsonResult = courseService.findAllFeedback();
-//
-//        if(jsonResult.get("finding all courses status").equals(0)) {
-//            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity<JSONObject>(jsonResult, HttpStatus.OK);
-//        }
-//    }
-//
-//    @GetMapping(path = "addACourse")
-//    public ResponseEntity<JSONObject> addACourse() {
-//
-//        JSONObject jsonResult = courseService.AddACourseFeedback();
-//
-//        if(jsonResult.get("finding all courses status").equals(0)) {
-//            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity<JSONObject>(jsonResult, HttpStatus.OK);
-//        }
-//    }
-//    @GetMapping(path = "deleteACourse")
-//    public ResponseEntity<JSONObject> deleteACourse() {
-//
-//        JSONObject jsonResult = courseService.findAllFeedback();
-//
-//        if(jsonResult.get("finding all courses status").equals(0)) {
-//            return new ResponseEntity<>(jsonResult, HttpStatus.NOT_FOUND);
-//        } else {
-//            return new ResponseEntity<JSONObject>(jsonResult, HttpStatus.OK);
-//        }
-//    }
+    @GetMapping(path = "findAllCourse")
+    public ResponseEntity<JSONObject> findAllCourse() {
+
+        JsonResult jsonResult = courseService.findAllFeedback();
+
+        if(jsonResult.getStatus() == 0) {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(path = "addACourse")
+    public ResponseEntity<JSONObject> addACourse(String code, String name, Long universityId) {
+
+        JsonResult jsonResult = courseService.AddACourseFeedback(code, name, universityId);
+
+        if(jsonResult.getStatus() == 0) {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
+        }
+    }
+    @PostMapping(path = "deleteACourse")
+    public ResponseEntity<JSONObject> deleteACourse(Long courseId) {
+
+        JsonResult jsonResult = courseService.deleteACourseFeedback(courseId);
+
+        if(jsonResult.getStatus() == 0) {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
+        }
+    }
 //
 //    @GetMapping(path = "changeCourseLockStatus")
 //    public ResponseEntity<JSONObject> changeACourseLockStatus(@RequestParam("courseId") Long courseId, @RequestParam("isLocked") boolean isLocked) {
