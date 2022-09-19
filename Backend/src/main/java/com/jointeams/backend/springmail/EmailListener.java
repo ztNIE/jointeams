@@ -31,7 +31,7 @@ public class EmailListener {
         User user = (User) userRepository.findByEmail(event.getEmail()).orElse(null);
         String token = UUID.randomUUID().toString();
         registerService.saveVerificationTokenForUser(token, user);
-        log.info("listener get event");
+        log.debug("listener get event");
         emailSenderService.sendSimpleNoReplyEmail(
                 event.getEmail(),
                 event.getBody() + token,
