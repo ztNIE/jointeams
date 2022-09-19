@@ -10,4 +10,6 @@ public interface CommentService {
     public JsonResult findAllFeedback();
     public JsonResult deleteACommentFeedback(Long commentId);
 
+    public JsonResult changeGivingCommentsAllowanceStatus(boolean flag);
+
 }

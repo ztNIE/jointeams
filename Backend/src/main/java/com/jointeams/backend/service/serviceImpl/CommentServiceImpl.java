@@ -49,4 +49,9 @@ public class CommentServiceImpl implements CommentService {
         }
         return jsonResult;
     }
+
+    @Override
+    public JsonResult changeGivingCommentsAllowanceStatus(boolean flag) {
+        return null;
+    }
 }

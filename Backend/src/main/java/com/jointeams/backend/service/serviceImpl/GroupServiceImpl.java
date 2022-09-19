@@ -4,6 +4,7 @@ import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.GroupUserId;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.GroupService;
+import com.jointeams.backend.util.IsCommentAvailable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -161,30 +162,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public JSONObject isCommentFunctionAvailable() {
         JSONObject jsonResult = new JSONObject();
-        JSONParser parser = new JSONParser();
-        try {
-            FileReader reader = new FileReader("Backend/src/main/resources/config/globalConfig.json");
-            Object obj = parser.parse(reader);
-            JSONObject jsonObj = (JSONObject) obj;
-            boolean isCommentAvailable = (boolean) jsonObj.get("isCommentFunctionAvailable");
-
-            jsonResult.put("msg", "Success");
-            jsonResult.put("data", isCommentAvailable);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            jsonResult.put("msg", "Fail");
-            jsonResult.put("data", null);
-        } catch (IOException e) {
-            e.printStackTrace();
-            jsonResult.put("msg", "Fail");
-            jsonResult.put("data", null);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            jsonResult.put("msg", "Fail");
-            jsonResult.put("data", null);
-        }
-
+        jsonResult.put("msg", "Success");
+        JSONObject data = new JSONObject();
+        data.put(IsCommentAvailable.Flag.getKey(),IsCommentAvailable.Flag.getValue());
+        jsonResult.put("data", data);
         return jsonResult;
     }
 
