@@ -1,7 +1,6 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.model.CommentRequest;
-import com.jointeams.backend.pojo.Comment;
+import com.jointeams.backend.model.request.CommentRequest;
 import com.jointeams.backend.service.GroupService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -8,7 +8,6 @@ public interface UserService {
     public JSONObject getUserInfoById(Long id);
     public JSONObject updateUserInfoById(Long id, JSONObject newInfo);
     public User findById(Long id);
-    public JSONObject checkIfUserExisted(Long id);
 //    public User addNewUser(User user);
 //    public User findByLastName(String lastName);
 //    public User findByFullName(String firstName, String lastName);

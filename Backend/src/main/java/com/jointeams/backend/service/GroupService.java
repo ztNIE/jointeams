@@ -20,8 +20,6 @@ public interface GroupService {
     public JSONObject addInvitationNotification(Long groupId, Long userId);
     public JSONObject addJoinRequestNotification(Long groupId, Long userId);
 
-    public Group findByCourseAndSemesterAndUserId(Course course, Semester semester, Long userId);
-    public boolean checkIsGroupFull(Group group);
 
     public JSONObject getAllCurrentGroupsOfAUser(Long userId);
 }

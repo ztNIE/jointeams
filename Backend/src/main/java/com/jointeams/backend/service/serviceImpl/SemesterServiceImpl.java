@@ -3,9 +3,12 @@ package com.jointeams.backend.service.serviceImpl;
 import com.jointeams.backend.pojo.Semester;
 import com.jointeams.backend.repositery.SemesterRepository;
 import com.jointeams.backend.service.SemesterService;
+import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SemesterServiceImpl implements SemesterService {
@@ -13,23 +16,23 @@ public class SemesterServiceImpl implements SemesterService {
     private SemesterRepository semesterRepository;
 
     @Override
-    public JSONObject findCurrentSemesterFeedback() {
+    public JsonResult findCurrentSemesterFeedback() {
         Semester currentSemester = semesterRepository.findSemestersByIsCurrent(true).orElse(null);
-        JSONObject jsonResult = new JSONObject();
+        JsonResult jsonResult = new JsonResult();
         if(currentSemester == null)
         {
-            jsonResult.put("finding the current semester status", 0);
-            jsonResult.put("finding current semester status msg", "The current semester isn't set!");
+            jsonResult.setStatus(0);
+            jsonResult.setMsgAndData("The current semester isn't set!", Optional.empty());
         }
         else
         {
-            jsonResult.put("finding the current semester status", 1);
-            jsonResult.put("current semester", currentSemester);
+            jsonResult.setStatus(1);
+            jsonResult.setMsgAndData( "The current semester is found successfully!",
+                    currentSemester);
         }
         return jsonResult;
     }
 
-    @Override
     public int changeCurrentSemester(int year, int semesterNumber) {
         Semester currentSemesterOld = semesterRepository.findSemestersByIsCurrent(true).orElse(null);
         if(currentSemesterOld == null)
@@ -62,20 +65,19 @@ public class SemesterServiceImpl implements SemesterService {
     }
 
     @Override
-    public JSONObject changeCurrentSemesterFeedback(int year, int semesterNumber) {
-        JSONObject jsonResult = new JSONObject();
+    public JsonResult changeCurrentSemesterFeedback(int year, int semesterNumber) {
+        JsonResult jsonResult = new JsonResult();
         int resultCode = changeCurrentSemester(year, semesterNumber);
+        jsonResult.setStatus(resultCode);
         if(resultCode == 0)
         {
-            jsonResult.put("changing the current semester status", 0);
-            jsonResult.put("changing the current semester status msg", "The current semester isn't changed, because it's the " +
-                    "same to the one stored in the database!");
+            jsonResult.setMsgAndData("The current semester isn't changed, because it's the same to the one stored " +
+                    "in the database!", Optional.empty());
         }
         else if (resultCode == 1)
         {
-            jsonResult.put("changing the current semester status", 1);
-            jsonResult.put("changing the current semester status msg", "The current semester has been changed to Year: " +year +
-                    " ,Semester: " + semesterNumber + ".");
+            jsonResult.setMsgAndData("The current semester has been changed to Year: " +year + " ,Semester: " +
+                    semesterNumber + " successfully.", Optional.empty());
         }
         return  jsonResult;
     }

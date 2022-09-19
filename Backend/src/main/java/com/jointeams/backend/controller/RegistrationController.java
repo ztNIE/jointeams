@@ -2,62 +2,55 @@ package com.jointeams.backend.controller;
 
 import com.jointeams.backend.event.SendSavePasswordEmailEvent;
 import com.jointeams.backend.event.SendVerifyEmailEvent;
-import com.jointeams.backend.model.PasswordRequest;
-import com.jointeams.backend.model.RegisterUserRequest;
+import com.jointeams.backend.model.request.PasswordRequest;
+import com.jointeams.backend.model.request.RegisterUserRequest;
+import com.jointeams.backend.model.response.RegisterResponse;
+import com.jointeams.backend.model.response.StandardResponse;
 import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.repositery.PasswordTokenRepository;
 import com.jointeams.backend.service.RegisterService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/register")
 @Slf4j
+@AllArgsConstructor
 public class RegistrationController {
 
-    @Autowired
     private RegisterService registerService;
 
-    @Autowired
     private ApplicationEventPublisher publisher;
+
+    private PasswordTokenRepository passwordTokenRepository;
 
     /**
      *
      * @param registerUserRequest use RegisterUserRequest Model
      * @param request HttpServletRequest
-     * @return if success, body: (User) JSONObject, status code: 200
-     *         if email validation fail, body: bad email, status code: 406
-     *         if university validation fail, body: bad university, status code: 406
-     *         if unexpected result: body null, status code: 500
+     * @return if success, body: registerResponse, status code: 200
+     *         if failed, body: error message, status code: 400
      */
+
     @PostMapping({"/", ""})
-    public ResponseEntity<JSONObject> registerUser(@RequestBody RegisterUserRequest registerUserRequest,
+    public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterUserRequest registerUserRequest,
                                                    final HttpServletRequest request) {
 
         String result = registerService.isUserModelValid(registerUserRequest);
-        if (result.equalsIgnoreCase("bad email")) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("msg", result);
-            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_ACCEPTABLE);
-        } else if (result.equalsIgnoreCase("bad university")) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("msg", result);
-            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_ACCEPTABLE);
-        } else if (result.equalsIgnoreCase("valid")) {
-            JSONObject jsonObject = registerService.registerUser(registerUserRequest);
-            publisher.publishEvent(new SendVerifyEmailEvent((String) jsonObject.get("email"),
+        if (result.equalsIgnoreCase("valid")) {
+            User user = registerService.registerUser(registerUserRequest);
+            RegisterResponse registerResponse = new RegisterResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+            publisher.publishEvent(new SendVerifyEmailEvent(registerResponse.getEmail(),
                     getApplicationUrl(request)));
-            return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+            return ResponseEntity.ok().body(new StandardResponse<>("success", registerResponse));
         } else {
-            log.error("UserModel validation not catch");
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.badRequest().body(new StandardResponse<>(result, null));
         }
     }
 
@@ -65,84 +58,78 @@ public class RegistrationController {
      *
      * @param token verification_token
      * @param request HttpRequest
-     * @return if success, body: User verified successfully, status code: 200
-     *         if token expired, body: Token expired, resend token , status code: 400
-     *         if token not found, body: Token not found, status code: 404
-     *         if unexpected result, body: null, status code: 500
+     * @return if success, msg: success, data: null, status code: 200
+     *         if failed, msg: error message, data: null, status code: 400
      */
     @GetMapping("/verify")
-    public ResponseEntity<JSONObject> verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
+    public ResponseEntity<?> verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
         String result = registerService.validateVerificationToken(token);
-        JSONObject jsonObject = new JSONObject();
+
         if (result.equalsIgnoreCase("valid")) {
-            jsonObject.put("msg", "User verified successfully");
-            return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+            return ResponseEntity.ok().body(new StandardResponse<>("success", null));
         } else if (result.equalsIgnoreCase("timeout")) {
             User user = registerService.deleteOldVerifyToken(token);
             publisher.publishEvent(new SendVerifyEmailEvent(user.getEmail(), getApplicationUrl(request)));
-            jsonObject.put("msg", "Token expired. Resend Token.");
-            return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(
+                    new StandardResponse<>("Token expired, resend token.", null));
         } else if (result.equalsIgnoreCase("notfound")){
-            jsonObject.put("msg", "Token not found");
-            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_FOUND);
+            return ResponseEntity.badRequest().body(new StandardResponse<>("Token not found", null));
         } else {
             log.error("Failed to catch validateVerificationToken");
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().body(new StandardResponse<>("Unknown exception", null));
         }
     }
 
     /**
      *
-     * @param passwordRequest
-     * @param request
-     * @return
+     * @param passwordRequest Give the email of the user
+     * @param request HttpRequest
+     * @return if success, msg: success, status code: 200, send reset password token email
+     *         if failed, msg: User Not Found, status code: 400
      */
-    @PreAuthorize("hasRole(USER)")
+
     @PostMapping("/resetPassword")
-    public ResponseEntity<JSONObject> resetPassword(@RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
         User user = registerService.findUserByEmail(passwordRequest.getEmail());
         if (user == null) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("msg", "User Not Found");
-            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_FOUND);
+            return ResponseEntity.badRequest().body(new StandardResponse<>("User Not Found", null));
         }
+
+        // If already sent a reset password email, delete the old token
+        if (passwordTokenRepository.existsById(user.getId())){
+            passwordTokenRepository.deleteById(user.getId());
+        }
+
         publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msg", "Reset Link Sent");
-        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+        return ResponseEntity.ok().body(new StandardResponse<>("success", null));
     }
 
     /**
      *
-     * @param token
-     * @param passwordRequest
-     * @param request
-     * @return
+     * @param token String in header generated by resetPassword
+     * @param passwordRequest  email & newPassword
+     * @param request HttpRequest
+     * @return if success, msg: success
+     *         if failed, msg: error message
      */
     @PostMapping("/savePassword")
-    public ResponseEntity<JSONObject> savePassword(@RequestParam("token") String token,
+    public ResponseEntity<?> savePassword(@RequestParam("token") String token,
                                @RequestBody PasswordRequest passwordRequest,
                                HttpServletRequest request) {
         String result = registerService.validatePasswordToken(token);
         if (result.equalsIgnoreCase("notfound")) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("msg", "Token Not Found");
-            return new ResponseEntity<>(jsonObject, HttpStatus.NOT_FOUND);
+            return ResponseEntity.ok().body(new StandardResponse<>("Token Not Found", null));
         }
 
         User user = registerService.deleteOldPasswordToken(token);
 
         if (result.equalsIgnoreCase("timeout")) {
             publisher.publishEvent(new SendSavePasswordEmailEvent(user.getEmail(), getApplicationUrl(request)));
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("msg", "Token expired. Resend token.");
-            return new ResponseEntity<>(jsonObject, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(new StandardResponse<>("Token expired, resend", null));
         }
 
         registerService.savePassword(user, passwordRequest);
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("msg", "Reset Password Successfully");
-        return new ResponseEntity<>(jsonObject, HttpStatus.OK);
+        return ResponseEntity.ok().body(new StandardResponse<>("success", null));
     }
 
     private String getApplicationUrl(HttpServletRequest request) {

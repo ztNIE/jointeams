@@ -3,11 +3,13 @@ package com.jointeams.backend.service.serviceImpl;
 import com.jointeams.backend.pojo.Comment;
 import com.jointeams.backend.repositery.CommentRepository;
 import com.jointeams.backend.service.CommentService;
+import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -16,22 +18,34 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
 
     @Override
-    public List<Comment> findAll() {
-        return (List<Comment>) commentRepository.findAll();
+    public JsonResult findAllFeedback() {
+        JsonResult jsonResult = new JsonResult();
+        List<Comment> comments = (List<Comment>) commentRepository.findAll();
+        if(comments.size() == 0)
+        {
+            jsonResult.setStatus(0);
+            jsonResult.setMsgAndData("No comment is found!", Optional.empty());
+        }
+        else {
+            jsonResult.setStatus(1);
+            jsonResult.setMsgAndData("Finding all course successful", comments);
+        }
+        return jsonResult;
     }
 
     @Override
-    public JSONObject findAllFeedback() {
-        JSONObject jsonResult = new JSONObject();
-        List<Comment> comments = findAll();
-        if(comments.size() == 0)
+    public JsonResult deleteACommentFeedback(Long commentId) {
+        JsonResult jsonResult = new JsonResult();
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if(comment == null)
         {
-            jsonResult.put("finding all comments status", 0);
-            jsonResult.put("finding all comments status msg", "No comment is found!");
+            jsonResult.setStatus(0);
+            jsonResult.setMsgAndData("Deleting the comment fails, because the comment is not found!", Optional.empty());
         }
         else {
-            jsonResult.put("finding all comment status", 1);
-            jsonResult.put("comments", comments);
+            commentRepository.delete(comment);
+            jsonResult.setStatus(1);
+            jsonResult.setMsgAndData("Deleting the comment successful!", Optional.empty());
         }
         return jsonResult;
     }
