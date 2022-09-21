@@ -3,11 +3,11 @@
   <el-menu-item index="0" disabled=true class="logo">
   </el-menu-item>
   <el-menu-item index="1">
-    <i class="el-icon-menu"></i>
+    <el-icon><location /></el-icon>
     <span>导航二</span>
   </el-menu-item>
   <el-menu-item index="4">
-    <i class="el-icon-setting"></i>
+    <el-icon><setting /></el-icon>
     <span>导航四</span>
   </el-menu-item>
 </el-menu>
