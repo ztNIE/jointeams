@@ -2,6 +2,7 @@ package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.pojo.Semester;
 import com.jointeams.backend.repositery.SemesterRepository;
+import com.jointeams.backend.service.CourseToolService;
 import com.jointeams.backend.service.SemesterService;
 import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
@@ -14,6 +15,9 @@ import java.util.Optional;
 public class SemesterServiceImpl implements SemesterService {
     @Autowired
     private SemesterRepository semesterRepository;
+
+    @Autowired
+    private CourseToolService courseToolService;
 
     @Override
     public JsonResult findCurrentSemesterFeedback() {
@@ -42,6 +46,7 @@ public class SemesterServiceImpl implements SemesterService {
             currentSemesterNew.setSemesterNumber(semesterNumber);
             currentSemesterNew.setCurrent(true);
             semesterRepository.save(currentSemesterNew);
+            courseToolService.reSetNextGroupNameId();
             return 1;
         }
         else
@@ -55,6 +60,7 @@ public class SemesterServiceImpl implements SemesterService {
                 currentSemesterNew.setSemesterNumber(semesterNumber);
                 currentSemesterNew.setCurrent(true);
                 semesterRepository.save(currentSemesterNew);
+                courseToolService.reSetNextGroupNameId();
                 return 1;
             }
             else

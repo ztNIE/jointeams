@@ -5,6 +5,7 @@ import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.UniversityRepository;
 import com.jointeams.backend.repositery.UserRepository;
+import com.jointeams.backend.util.IsCommentAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -68,6 +69,13 @@ public class BackendApplication {
             if (userRepository.findByEmail(adminUser.getEmail()).isEmpty()) {
                 userRepository.save(adminUser);
             }
+
+            boolean flag = IsCommentAvailable.Flag.getValue();
+
+            System.out.println(flag);
+            IsCommentAvailable.Flag.setValue(true);
+            IsCommentAvailable.Flag.saveValue();
+
         };
     }
 

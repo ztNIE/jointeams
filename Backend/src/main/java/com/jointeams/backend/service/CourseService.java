@@ -24,15 +24,9 @@ public interface CourseService {
 
     public JsonResult findAllFeedback();
 
-    public int AddACourse();
-
-    public JsonResult AddACourseFeedback();
-
-    public int deleteACourse(Long courseId);
+    public JsonResult AddACourseFeedback(String code, String name, Long universityId);
 
     public JsonResult deleteACourseFeedback(Long courseId);
-
-    public int changeCourseLockStatus(Long courseId, boolean isLocked);
 
     public JsonResult changeCourseLockStatusFeedback(Long courseId, boolean isLocked);
 }
