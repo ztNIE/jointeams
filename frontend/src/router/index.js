@@ -12,22 +12,22 @@ const router = createRouter({
             {
                 path: '/landing',
                 name: 'landing',
-                component: () => import('@/views/landing'),
+                component: () => import('@/views/Landing'),
             },
             {
                 path: '/sign-in',
                 name: 'login',
-                component: () => import('@/views/login'),
+                component: () => import('@/views/Login'),
             },
             {
                 path: '/sign-up',
-                name: 'signUp',
-                component: () => import('@/views/signUp'),
+                name: 'register',
+                component: () => import('@/views/Register'),
             },
             {
                 path: '/dashboard',
                 name: 'dashboard',
-                component: () => import('@/views/dashboard'),
+                component: () => import('@/views/Dashboard'),
             }
         ]
       }

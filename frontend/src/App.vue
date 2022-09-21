@@ -1,32 +1,57 @@
 <template>
   <!-- landing page -->
-  <Landing v-if="route.name === '/landing'" />
+  <Landing v-if="route.name === 'landing'" />
 
   <!-- log in -->
   <Login v-else-if="route.name === 'login'" />
   
   <!-- register -->
-  <SignUp v-else-if="route.name === 'register'" />
+  <Register v-else-if="route.name === 'register'" />
 
   <!-- other pages -->
-  <div v-else>
-    <router-view />
+  <div class="box" v-else>
+    <!-- container -->
+    <el-container>
+      <!-- sidebar -->
+      <el-aside :width="asideWidth">
+        <Sidebar />
+      </el-aside>
+
+      <el-container>
+        <!-- header -->
+        <el-header>
+          <Header/>
+        </el-header>
+        <el-main>
+          <router-view />
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 
 </template>
 
 <script>
 import { useRoute } from 'vue-router'
-import Landing from './views/landing.vue'
-import SignUp from './views/signUp.vue'
-import Login from './views/login.vue'
+import Landing from './views/Landing'
+import Register from './views/Register'
+import Login from './views/Login'
+import Sidebar from './components/Sidebar'
+import Header from './components/Header'
 
 export default {
   name: 'App',
   components: {
     Landing,
     Login,
-    SignUp,
+    Register,
+    Sidebar,
+    Header
+  },
+  data() {
+    return {
+      asideWidth: "200"
+    }
   },
   setup() {
     const route = useRoute();
@@ -38,13 +63,34 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+* {
+  padding: 0;
+  margin: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
-  margin-top: 60px;
+  /* margin-top: 60px; */
+}
+html, body, #app, .box{
+  height: 100%;
+}
+.el-container {
+  height: 100%;
+}
+.el-container:last-child {
+  min-width: 700px;
+}
+.el-aside {
+  padding: 5px;
+}
+.el-header {
+  padding: 0;
+  font-size: 35px;
+  box-shadow: 3px 8px 10px #E8E8E8;
 }
 </style>
