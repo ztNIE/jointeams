@@ -18,7 +18,7 @@
                     <BellFilled class="icon-bell"></BellFilled>
                 </el-badge>
             </el-tooltip>
-            <el-avatar shape="circle" :size="60" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
+            <el-avatar shape="circle" :size="40" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
             <p>{{this.currentUserName}}</p>
             <el-button type="primary" size="small">Log Out</el-button>
         </div>
