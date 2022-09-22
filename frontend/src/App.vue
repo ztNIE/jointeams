@@ -8,6 +8,9 @@
   <!-- register -->
   <Register v-else-if="route.name === 'register'" />
 
+  <!-- 404 -->
+  <PageNotFound v-else-if="route.name === '404'" />
+
   <!-- other pages -->
   <div class="box" v-else>
     <!-- container -->
@@ -41,6 +44,7 @@ import Login from './views/Login'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Logo from './components/Logo'
+import PageNotFound from './views/404/404'
 
 export default {
   name: 'App',
@@ -50,7 +54,8 @@ export default {
     Register,
     Sidebar,
     Header,
-    Logo
+    Logo,
+    PageNotFound
   },
   data() {
     return {

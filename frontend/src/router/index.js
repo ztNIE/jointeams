@@ -51,8 +51,17 @@ const router = createRouter({
                 icon: 'User',
                 capitalName: 'My Group',
                 component: () => import('@/views/MyGroups'),
-            }
+            },
         ]
+      },
+      {
+        path: '/404',
+        name: '404',
+        component: () => import('@/views/404/404'),
+      },
+      { 
+        path: '/:catchAll(.*)', 
+        redirect: '/404',
       }
     ]
   })
