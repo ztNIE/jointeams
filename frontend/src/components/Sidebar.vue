@@ -1,5 +1,5 @@
 <template>
-<el-menu :default-active="active" :router="true" class="el-menu-vertical-demo" :collapse="isCollapse">
+<el-menu :default-active="this.$router.currentRoute.value.name" :router="true" class="el-menu-vertical-demo" :collapse="isCollapse">
   <el-menu-item v-for="route in routes" :key="route.name" :index="route.name">
     <el-icon>
         <component :is="route.icon"></component>
@@ -16,8 +16,6 @@
 </template>
 
 <script>
-// import { useRoute } from 'vue-router'
-
 export default {
     name: 'Sidebar',
     data() {
@@ -33,7 +31,6 @@ export default {
             _this.isCollapse = !_this.isCollapse
         })
         this.routes = this.$router.options.routes[0].children.slice(3)
-        console.log(this.$router.currentRoute.value.name)
     },
     methods: {
         handleBack() {
