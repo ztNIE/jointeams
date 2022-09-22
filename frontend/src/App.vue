@@ -14,6 +14,7 @@
     <el-container>
       <!-- sidebar -->
       <el-aside :width="asideWidth">
+        <Logo />
         <Sidebar />
       </el-aside>
 
@@ -22,6 +23,7 @@
         <el-header>
           <Header/>
         </el-header>
+        <!-- main content -->
         <el-main>
           <router-view />
         </el-main>
@@ -38,6 +40,7 @@ import Register from './views/Register'
 import Login from './views/Login'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
+import Logo from './components/Logo'
 
 export default {
   name: 'App',
@@ -46,11 +49,12 @@ export default {
     Login,
     Register,
     Sidebar,
-    Header
+    Header,
+    Logo
   },
   data() {
     return {
-      asideWidth: "200"
+      asideWidth: "200",
     }
   },
   setup() {
@@ -59,7 +63,7 @@ export default {
     return {
       route
     }
-  }
+  }, 
 }
 </script>
 
@@ -85,12 +89,12 @@ html, body, #app, .box{
 .el-container:last-child {
   min-width: 700px;
 }
-.el-aside {
-  padding: 5px;
-}
 .el-header {
   padding: 0;
   font-size: 35px;
+  box-shadow: 3px 8px 10px #E8E8E8;
+}
+.el-aside {
   box-shadow: 3px 8px 10px #E8E8E8;
 }
 </style>

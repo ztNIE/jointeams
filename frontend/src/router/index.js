@@ -27,7 +27,30 @@ const router = createRouter({
             {
                 path: '/dashboard',
                 name: 'dashboard',
+                icon: 'Odometer',
+                capitalName: 'Dashboard',
                 component: () => import('@/views/Dashboard'),
+            },
+            {
+                path: '/profile',
+                name: 'profile',
+                icon: 'Memo',
+                capitalName: 'Profile',
+                component: () => import('@/views/Profile'),
+            },
+            {
+                path: '/notification',
+                name: 'notification',
+                icon: 'Notification',
+                capitalName: 'Notifications',
+                component: () => import('@/views/Notification'),
+            },
+            {
+                path: '/myGroups',
+                name: 'myGroups',
+                icon: 'User',
+                capitalName: 'My Group',
+                component: () => import('@/views/MyGroups'),
             }
         ]
       }

@@ -15,6 +15,7 @@ Object.keys(Icons).forEach((key) => {
     app.component(key, Icons[key]);
 });
 app.config.globalProperties.$emitter = emitter;
+app.config.globalProperties.$router = router;
 app.use(ElementPlus)
 app.use(router)
 app.mount('#app')
