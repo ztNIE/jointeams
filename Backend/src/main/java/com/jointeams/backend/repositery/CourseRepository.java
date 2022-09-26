@@ -1,6 +1,8 @@
 package com.jointeams.backend.repositery;
 
 import com.jointeams.backend.pojo.Course;
+import com.jointeams.backend.pojo.University;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,8 +15,8 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
     @Query(value = "select c from Course c where c.university.id = :uniId")
     List<Course> findAllCourse(Long uniId);
 
-    public <T> Optional<T> findCourseByCode(String code);
-    public <T> Optional<T> findCourseByName(String code);
+    <T> Optional<T> findCourseByCodeAndUniversity(String code, University universityId);
+    <T> Optional<T> findCourseByNameAndUniversity(String code, University universityId);
 }
 
 

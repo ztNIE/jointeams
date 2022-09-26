@@ -16,6 +16,7 @@ public class JsonResult {
     public JsonResult() {
         this.status = 0;
         this.msgAndData = new JSONObject();
+        this.msgAndData.put("data", new JSONObject());
     }
 
     public void setMsg(String msg) {
@@ -23,40 +24,32 @@ public class JsonResult {
     }
 
     public <T> void setData(T data) {
-        JSONObject jsonObject =  new JSONObject();
         if(data == null || data == Optional.empty())
-            jsonObject.put("Null", null);
+            ((JSONObject)this.msgAndData.get("data")).put("Null", null);
         else
         {
             String[] name = data.getClass().getName().split("\\.");
             String key = name[name.length-1];
-            jsonObject.put(key, data);
+            ((JSONObject)this.msgAndData.get("data")).put(key, data);
         }
-        this.msgAndData.put("data", jsonObject);
     }
 
     public <T> void setData(String key, T data) {
-        JSONObject jsonObject =  new JSONObject();
-        jsonObject.put(key, data);
-        this.msgAndData.put("data", jsonObject);
+        ((JSONObject)this.msgAndData.get("data")).put(key, data);
     }
 
-    public <E> void setData(List<E> data) {
-        JSONObject jsonObject =  new JSONObject();
+    public <E> void setDataList(List<E> data) {
         if(data.size() == 0)
-            jsonObject.put("Null", null);
+            ((JSONObject)this.msgAndData.get("data")).put("Null", null);
         else {
             String[] name = data.get(0).getClass().getName().split("\\.");
             String key = name[name.length-1];
-            jsonObject.put(key + " List", data);
+            ((JSONObject)this.msgAndData.get("data")).put(key + " List", data);
         }
-        this.msgAndData.put("data", jsonObject);
     }
 
     public <E> void setDataList(String key, List<E> data) {
-        JSONObject jsonObject =  new JSONObject();
-        jsonObject.put(key + " List", data);
-        this.msgAndData.put("data", jsonObject);
+        ((JSONObject)this.msgAndData.get("data")).put(key + " List", data);
     }
 
     public <T> void setMsgAndData(String msg, T data) {
@@ -71,11 +64,11 @@ public class JsonResult {
 
     public <E> void setMsgAndData(String msg, List<E> data) {
         setMsg(msg);
-        setData(data);
+        setDataList(data);
     }
 
     public <E> void setMsgAndData(String msg, String key, List<E> data) {
         setMsg(msg);
-        setData(key, data);
+        setDataList(key, data);
     }
 }

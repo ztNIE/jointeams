@@ -1,7 +1,6 @@
 package com.jointeams.backend.controller;
 
 import com.jointeams.backend.service.NotificationService;
-import com.jointeams.backend.service.UserService;
 import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,23 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/notification")
-//@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('USER')")
 public class NotificationController {
 
     @Autowired
     private NotificationService notificationService;
-    @Autowired
-    private UserService userService;
 
-//    @PostMapping(path="/findAllByUserId")
-//    public List<Notification> findAllByUserId(@RequestBody Cookie cookie)
-//    {
-//        User user = userService.verifyUserIdentityByEncryptedPassword(cookie.getUserId(), cookie.getEncryptedPassword());
-//        if(user != null)
-//            return notificationService.findAllByUser(cookie.getUserId());
-//        else
-//            return null;
-//    }
 
     @GetMapping(path="/findAllByUserId")
     public ResponseEntity<JSONObject> findAllByUserId(@RequestParam("userId") Long userId)

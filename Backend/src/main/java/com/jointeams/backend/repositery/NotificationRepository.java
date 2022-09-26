@@ -3,9 +3,11 @@ package com.jointeams.backend.repositery;
 import com.jointeams.backend.pojo.Group;
 import com.jointeams.backend.pojo.Notification;
 import com.jointeams.backend.pojo.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,11 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
 
     @Query(value = "select count(id) from notification where group_id = ?1 and user_id = ?2", nativeQuery = true)
     public Optional<Integer> countNotificationsByIds(Long groupId, Long userId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from Notification n where n.group.id = :groupId")
+    void deleteAllByGroupId(long groupId);
 }
 
 

@@ -3,9 +3,11 @@ package com.jointeams.backend.repositery;
 import com.jointeams.backend.pojo.GroupUser;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.pojo.id.GroupUserId;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
@@ -91,6 +93,11 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
 
     @Query("select g.groupUserId.userId from GroupUser g where g.groupUserId.groupId = :groupId and not g.groupUserId.userId = :userId")
     public List<Long> getAllTeammates(Long userId, Long groupId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from GroupUser gu where gu.groupUserId.groupId = ?1")
+    void deleteAllByGroupId(Long groupId);
 }
 
 

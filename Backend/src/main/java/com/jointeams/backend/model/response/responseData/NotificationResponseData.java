@@ -10,11 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationResponseData {
-    Long id;
-    int type;
-    Long groupId;
-    String groupName;
-    Long userId;
-    String userName;
-    String email;
+    private Long id;
+    private int type;
+    private Long groupId;
+    private String groupName;
+    private Long userId;
+    private String userName;
+    private String email;
 }
