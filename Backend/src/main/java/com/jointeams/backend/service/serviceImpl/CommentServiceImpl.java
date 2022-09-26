@@ -75,18 +75,19 @@ public class CommentServiceImpl implements CommentService {
             jsonResult.setStatus(0);
             jsonResult.setMsgAndData("Change IsCommentAvailable status failed, because the new status is the same to the current one!",
                     Optional.empty());
-        } else if (isAvailable) {
-            jsonResult.setStatus(1);
-            jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
-            IsCommentAvailable.Flag.setValue(true);
-            IsCommentAvailable.Flag.saveValue();
-            //TODO send reminder email
-        }
-        else
-        {
-            jsonResult.setStatus(2);
-            jsonResult.setMsgAndData("Comment feature has been closed successfully.", Optional.empty());
-            IsCommentAvailable.Flag.setValue(false);
+        } else {
+            if (isAvailable) {
+                jsonResult.setStatus(1);
+                jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
+                IsCommentAvailable.Flag.setValue(true);
+                //TODO send reminder email
+            }
+            else
+            {
+                jsonResult.setStatus(2);
+                jsonResult.setMsgAndData("Comment feature has been closed successfully.", Optional.empty());
+                IsCommentAvailable.Flag.setValue(false);
+            }
             IsCommentAvailable.Flag.saveValue();
         }
         return jsonResult;
