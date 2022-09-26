@@ -18,6 +18,16 @@ public interface UserRepository extends CrudRepository<User, Long> {
             "    inner join User u on gu.groupUserId.userId = u.id "+
             "    where s.isCurrent = true")
     <E>List<E> findAllUsersHavingGroupsInTheCurrentSemester();
+/**************************如果用mysql原生写法则如下*************************/
+//    @Query(value = "select distinct u.* " +
+//            "    from `group` as g"  +
+//            "    inner join `semester` as s on g.semester_id = s.id " +
+//            "    inner join `group_user` as gu on g.id = gu.group_id " +
+//            "    inner join `user` as u on gu.user_id = u.id "+
+//            "    where s.is_current = true;", nativeQuery = true)
+//    nativeQuery必须为true
+/************************************************************************/
+//    public List<User> findAllUsersHavingGroupsInTheCurrentSemester1();
 //    public Optional<User> findByLastName(String lastName);
 //    public Optional<User> findByFirstNameAndLastName(String firstName, String lastName);
 //    @Query("select u from User u where u.firstName = ?1 and u.lastName = ?2")；

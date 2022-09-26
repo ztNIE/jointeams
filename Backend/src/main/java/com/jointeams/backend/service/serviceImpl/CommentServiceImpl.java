@@ -2,7 +2,6 @@ package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.model.response.responseData.CommentResponseData;
 import com.jointeams.backend.pojo.Comment;
-import com.jointeams.backend.pojo.Group;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.CommentRepository;
 import com.jointeams.backend.repositery.UserRepository;
@@ -11,7 +10,6 @@ import com.jointeams.backend.springmail.SendAllEmailEvent;
 import com.jointeams.backend.util.IsCommentAvailable;
 import com.jointeams.backend.util.JsonResult;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -89,10 +87,10 @@ public class CommentServiceImpl implements CommentService {
             jsonResult.setMsgAndData("Change IsCommentAvailable status failed, because the new status is the same to the current one!",
                     Optional.empty());
         } else {
+            IsCommentAvailable.Flag.setValue(isAvailable);
             if (isAvailable) {
                 jsonResult.setStatus(1);
                 jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
-                IsCommentAvailable.Flag.setValue(true);
                 List<User> users = userRepository.findAllUsersHavingGroupsInTheCurrentSemester();
                 publisher.publishEvent(new SendAllEmailEvent(users));
                 log.info("Comments available notifications published");
@@ -101,7 +99,6 @@ public class CommentServiceImpl implements CommentService {
             {
                 jsonResult.setStatus(2);
                 jsonResult.setMsgAndData("Comment feature has been closed successfully.", Optional.empty());
-                IsCommentAvailable.Flag.setValue(false);
             }
             IsCommentAvailable.Flag.saveValue();
         }
