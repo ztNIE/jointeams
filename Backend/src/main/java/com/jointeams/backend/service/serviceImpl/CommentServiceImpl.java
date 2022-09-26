@@ -6,7 +6,6 @@ import com.jointeams.backend.repositery.CommentRepository;
 import com.jointeams.backend.service.CommentService;
 import com.jointeams.backend.util.IsCommentAvailable;
 import com.jointeams.backend.util.JsonResult;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

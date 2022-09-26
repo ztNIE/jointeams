@@ -1,6 +1,5 @@
 package com.jointeams.backend.service.serviceImpl;
 
-import com.jointeams.backend.model.response.responseData.CommentResponseData;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
 import com.jointeams.backend.repositery.*;
