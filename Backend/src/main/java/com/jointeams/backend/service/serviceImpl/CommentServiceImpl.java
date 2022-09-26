@@ -2,12 +2,17 @@ package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.model.response.responseData.CommentResponseData;
 import com.jointeams.backend.pojo.Comment;
+import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.CommentRepository;
+import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.service.CommentService;
+import com.jointeams.backend.springmail.SendAllEmailEvent;
 import com.jointeams.backend.util.IsCommentAvailable;
 import com.jointeams.backend.util.JsonResult;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,10 +20,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     public JsonResult findAllFeedback() {
@@ -80,7 +92,10 @@ public class CommentServiceImpl implements CommentService {
                 jsonResult.setStatus(1);
                 jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
                 IsCommentAvailable.Flag.setValue(true);
-                //TODO send reminder email
+                // TODO: Email service not tested
+                List<User> users = (List<User>) userRepository.findAllByAdminIsFalse();
+                publisher.publishEvent(new SendAllEmailEvent(users));
+                log.info("Comments available notifications published");
             }
             else
             {
