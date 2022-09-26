@@ -93,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
                 jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
                 IsCommentAvailable.Flag.setValue(true);
                 // TODO: Email service not tested
-                List<User> users = (List<User>) userRepository.findAllByAdminIsFalse();
+                List<User> users = (List<User>) userRepository.findByIsAdminFalse();
                 publisher.publishEvent(new SendAllEmailEvent(users));
                 log.info("Comments available notifications published");
             }
