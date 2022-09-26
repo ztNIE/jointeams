@@ -1,7 +1,6 @@
 package com.jointeams.backend.controller;
 
 import com.jointeams.backend.service.CourseGroupService;
-import com.jointeams.backend.service.GroupService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

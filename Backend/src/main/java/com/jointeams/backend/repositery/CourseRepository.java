@@ -2,7 +2,6 @@ package com.jointeams.backend.repositery;
 
 import com.jointeams.backend.pojo.Course;
 import com.jointeams.backend.pojo.University;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

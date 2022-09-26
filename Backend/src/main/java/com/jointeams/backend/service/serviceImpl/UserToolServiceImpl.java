@@ -6,8 +6,6 @@ import com.jointeams.backend.service.UserToolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserToolServiceImpl implements UserToolService {
 
@@ -23,11 +21,4 @@ public class UserToolServiceImpl implements UserToolService {
         else
             return false;
     }
-
-    @Override
-    public List<User> findAllUsersHavingGroupsInTheCurrentSemester() {
-        return userRepository.findAllUsersHavingGroupsInTheCurrentSemester();
-    }
-
-
 }
