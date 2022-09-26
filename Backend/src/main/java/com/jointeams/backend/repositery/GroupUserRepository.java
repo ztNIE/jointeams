@@ -1,14 +1,12 @@
 package com.jointeams.backend.repositery;
 
 import com.jointeams.backend.pojo.GroupUser;
-import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.pojo.id.GroupUserId;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import javax.transaction.Transactional;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 

@@ -2,6 +2,7 @@ package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.model.response.responseData.CommentResponseData;
 import com.jointeams.backend.pojo.Comment;
+import com.jointeams.backend.pojo.Group;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.CommentRepository;
 import com.jointeams.backend.repositery.UserRepository;
@@ -92,8 +93,7 @@ public class CommentServiceImpl implements CommentService {
                 jsonResult.setStatus(1);
                 jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
                 IsCommentAvailable.Flag.setValue(true);
-                // TODO: Email service not tested
-                List<User> users = (List<User>) userRepository.findByIsAdminFalse();
+                List<User> users = userRepository.findAllUsersHavingGroupsInTheCurrentSemester();
                 publisher.publishEvent(new SendAllEmailEvent(users));
                 log.info("Comments available notifications published");
             }
