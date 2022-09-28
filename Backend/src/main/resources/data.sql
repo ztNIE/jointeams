@@ -1,6 +1,6 @@
 insert into university (name, regex) values
-    ('University of Sydney', '^[a-z]{4}[0-9]{4}@uni.sydney.edu.au$'),
-    ('Test University', '^[a-z]+@gmail.com$');
+                                         ('University of Sydney', '^[a-z]{4}[0-9]{4}@uni.sydney.edu.au$'),
+                                         ('Test University', '^[a-z]+@gmail.com$');
 
 insert into user (degree, description, email,
                   faculty, filename, first_name,
@@ -41,7 +41,7 @@ values
     ('CCode3', 'CourseName3', 1, 6, true);
 
 insert into `group` (course_id, name_id, semester_id,
-                   tutorial, capacity, description)
+                     tutorial, capacity, description)
 values
     (1, 1, 1, 'tutorial1', 4, 'description1'),
     (2, 2, 2, 'tutorial2', 5, 'description2'),
@@ -51,14 +51,21 @@ values
 insert into group_user (group_id, user_id, is_leader)
 values
     (1, 1, true),
-    (1, 2, true),
+    (1, 2, false),
     (2, 2, true),
+    (2, 3, false),
     (3, 1, true);
 
 insert into notification (content, message,
-                            timestamp, type, group_id, user_id)
+                          timestamp, type, group_id, user_id)
 values
     (NULL, NULL, '2022-09-14 10:35:13.000000', 0, 1, 3),
-    (NULL, NULL, '2022-09-15 11:35:13.000000', 1, 2, 3),
-    (NULL, NULL, '2022-09-16 12:35:13.000000', 3, 2, 3),
-    (NULL, NULL, '2022-09-17 13:35:13.000000', 4, 2, 3);
+    (NULL, NULL, '2022-09-15 11:35:13.000000', 1, 2, 1),
+    (NULL, NULL, '2022-09-16 12:35:13.000000', 2, 2, 3),
+    (NULL, NULL, '2022-09-17 13:35:13.000000', 5, 3, 2);
+
+-- insert into `comment` (content, is_hide, 'tag',
+--                        timestamp, group_id, receiver_id, sender_id)
+-- values
+--     ('content xxxx1', true, 1, '2022-09-23 09:23:27.000000', 1, 2, 1),
+--     ('content xxxx2', false, 2, '2022-09-23 09:24:27.000000', 2, 3, 2);
