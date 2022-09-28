@@ -4,8 +4,8 @@ import com.jointeams.backend.pojo.Semester;
 import com.jointeams.backend.repositery.SemesterRepository;
 import com.jointeams.backend.service.CourseToolService;
 import com.jointeams.backend.service.SemesterService;
+import com.jointeams.backend.util.IsCommentAvailable;
 import com.jointeams.backend.util.JsonResult;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,20 +33,27 @@ public class SemesterServiceImpl implements SemesterService {
             jsonResult.setStatus(1);
             jsonResult.setMsgAndData( "The current semester is found successfully!",
                     currentSemester);
+            jsonResult.setData("IsCommentAvailable", IsCommentAvailable.Flag.getValue());
         }
         return jsonResult;
+    }
+
+    private void saveNewSemester(int year, int semesterNumber)
+    {
+        Semester currentSemesterNew = new Semester();
+        currentSemesterNew.setYear(year);
+        currentSemesterNew.setSemesterNumber(semesterNumber);
+        currentSemesterNew.setCurrent(true);
+        semesterRepository.save(currentSemesterNew);
+        courseToolService.reSetNextGroupNameId();
+        IsCommentAvailable.Flag.setValue(false);
     }
 
     public int changeCurrentSemester(int year, int semesterNumber) {
         Semester currentSemesterOld = semesterRepository.findSemestersByIsCurrent(true).orElse(null);
         if(currentSemesterOld == null)
         {
-            Semester currentSemesterNew = new Semester();
-            currentSemesterNew.setYear(year);
-            currentSemesterNew.setSemesterNumber(semesterNumber);
-            currentSemesterNew.setCurrent(true);
-            semesterRepository.save(currentSemesterNew);
-            courseToolService.reSetNextGroupNameId();
+            saveNewSemester(year, semesterNumber);
             return 1;
         }
         else
@@ -55,12 +62,15 @@ public class SemesterServiceImpl implements SemesterService {
             {
                 currentSemesterOld.setCurrent(false);
                 semesterRepository.save(currentSemesterOld);
-                Semester currentSemesterNew = new Semester();
-                currentSemesterNew.setYear(year);
-                currentSemesterNew.setSemesterNumber(semesterNumber);
-                currentSemesterNew.setCurrent(true);
-                semesterRepository.save(currentSemesterNew);
-                courseToolService.reSetNextGroupNameId();
+                Semester currentSemesterNew = semesterRepository.findSemesterByYearAndSemesterNumber(year, semesterNumber).orElse(null);
+                if(currentSemesterNew == null)
+                    saveNewSemester(year, semesterNumber);
+                else
+                {
+                    currentSemesterNew.setCurrent(true);
+                    semesterRepository.save(currentSemesterNew);
+                    IsCommentAvailable.Flag.setValue(false);
+                }
                 return 1;
             }
             else

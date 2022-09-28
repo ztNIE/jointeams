@@ -37,4 +37,16 @@ public class EmailListener {
                 event.getBody() + token,
                 event.getSubject());
     }
+
+    @Async
+    @EventListener
+    public void handleSendAllEmailEvent(SendAllEmailEvent event) {
+        for (User user: event.getUsers()) {
+            emailSenderService.sendSimpleNoReplyEmail(
+                    user.getEmail(),
+                    event.getBody(),
+                    event.getSubject()
+            );
+        }
+    }
 }

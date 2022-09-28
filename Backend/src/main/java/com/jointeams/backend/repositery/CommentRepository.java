@@ -1,7 +1,6 @@
 package com.jointeams.backend.repositery;
 
 import com.jointeams.backend.pojo.Comment;
-import com.jointeams.backend.pojo.Course;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,4 +21,9 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Modifying
     @Query(value = "delete from comment where group_id = ?1 and sender_id = ?2 and receiver_id = ?3", nativeQuery = true)
     public void deleteCommentByIds(Long groupId, Long senderId, Long receiverId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from Comment c where c.group.id = ?1")
+    void deleteAllByGroupId(Long groupId);
 }

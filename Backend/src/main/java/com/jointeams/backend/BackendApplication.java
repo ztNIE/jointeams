@@ -70,11 +70,10 @@ public class BackendApplication {
                 userRepository.save(adminUser);
             }
 
-            boolean flag = IsCommentAvailable.Flag.getValue();
-
-            System.out.println(flag);
-            IsCommentAvailable.Flag.setValue(true);
-            IsCommentAvailable.Flag.saveValue();
+//            boolean flag = IsCommentAvailable.Flag.getValue();
+//            System.out.println(flag);
+//            IsCommentAvailable.Flag.setValue(true);
+//            IsCommentAvailable.Flag.saveValue();
 
         };
     }

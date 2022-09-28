@@ -1,21 +1,35 @@
 package com.jointeams.backend.service.serviceImpl;
 
+import com.jointeams.backend.model.response.responseData.CommentResponseData;
 import com.jointeams.backend.pojo.Comment;
+import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.repositery.CommentRepository;
+import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.service.CommentService;
+import com.jointeams.backend.springmail.SendAllEmailEvent;
+import com.jointeams.backend.util.IsCommentAvailable;
 import com.jointeams.backend.util.JsonResult;
-import org.json.simple.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     @Override
     public JsonResult findAllFeedback() {
@@ -27,8 +41,20 @@ public class CommentServiceImpl implements CommentService {
             jsonResult.setMsgAndData("No comment is found!", Optional.empty());
         }
         else {
+            List<CommentResponseData> commentResponseDataList = new ArrayList<>();
+            comments.forEach(comment -> {
+                CommentResponseData commentResponseData = new CommentResponseData();
+                commentResponseData.setId(comment.getId());
+                commentResponseData.setSenderId(comment.getSender().getId());
+                commentResponseData.setReceiverId(comment.getReceiver().getId());
+                commentResponseData.setTag(comment.getTag());
+                commentResponseData.setContent(comment.getContent());
+                commentResponseData.setTimestamp(comment.getTimestamp());
+                commentResponseData.setIsHide(comment.getIsHide());
+                commentResponseDataList.add(commentResponseData);
+            });
             jsonResult.setStatus(1);
-            jsonResult.setMsgAndData("Finding all course successful", comments);
+            jsonResult.setMsgAndData("Finding all course successful", commentResponseDataList);
         }
         return jsonResult;
     }
@@ -45,13 +71,37 @@ public class CommentServiceImpl implements CommentService {
         else {
             commentRepository.delete(comment);
             jsonResult.setStatus(1);
-            jsonResult.setMsgAndData("Deleting the comment successful!", Optional.empty());
+            jsonResult.setMsgAndData("The comment has been deleted successful!", Optional.empty());
         }
         return jsonResult;
     }
 
+
+
     @Override
-    public JsonResult changeGivingCommentsAllowanceStatus(boolean flag) {
-        return null;
+    public JsonResult changeIsCommentAvailableStatus(boolean isAvailable) {
+        JsonResult jsonResult = new JsonResult();
+        if(IsCommentAvailable.Flag.getValue() == isAvailable)
+        {
+            jsonResult.setStatus(0);
+            jsonResult.setMsgAndData("Change IsCommentAvailable status failed, because the new status is the same to the current one!",
+                    Optional.empty());
+        } else {
+            IsCommentAvailable.Flag.setValue(isAvailable);
+            if (isAvailable) {
+                jsonResult.setStatus(1);
+                jsonResult.setMsgAndData("Comment feature has been opened successfully, and the reminders are sending.", Optional.empty());
+                List<User> users = userRepository.findAllUsersHavingGroupsInTheCurrentSemester();
+                publisher.publishEvent(new SendAllEmailEvent(users));
+                log.info("Comments available notifications published");
+            }
+            else
+            {
+                jsonResult.setStatus(2);
+                jsonResult.setMsgAndData("Comment feature has been closed successfully.", Optional.empty());
+            }
+            IsCommentAvailable.Flag.saveValue();
+        }
+        return jsonResult;
     }
 }

@@ -39,6 +39,7 @@ export default {
         handleOpenAndClose() {
             this.isCollapse = !this.isCollapse
             this.$emitter.emit('handleSidebar')
+            this.$emitter.emit('handleLogoName')
         }
     }
 }
@@ -77,7 +78,7 @@ export default {
 .header {
     padding: 10px 0;
     font-size: 18px;
-    height: 70px;
+    height: 40px;
     & .left {
         float: left;
     }
