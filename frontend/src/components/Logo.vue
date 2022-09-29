@@ -49,7 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 .box {
-//   background: red;
   box-sizing: border-box;
   height: 60px;
   padding: 10px 15px;
