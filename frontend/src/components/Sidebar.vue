@@ -1,6 +1,6 @@
 <template>
-<el-menu :default-active="this.$router.currentRoute.value.name" :router="true" class="el-menu-vertical-demo" :collapse="isCollapse">
-  <el-menu-item v-for="route in routes" :key="route.name" :index="route.name">
+<el-menu :default-active="this.$router.currentRoute.value.name" :router="false" class="el-menu-vertical-demo" :collapse="isCollapse">
+  <el-menu-item v-for="route in routes" :key="route.name" :index="route.name" @click="handleTransfer(route.path)">
     <el-icon>
         <component :is="route.icon"></component>
     </el-icon>
@@ -35,6 +35,9 @@ export default {
     methods: {
         handleBack() {
             this.$router.back()
+        },
+        handleTransfer(path) {
+            this.$router.push(path)
         }
     }
 }
