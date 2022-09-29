@@ -3,12 +3,13 @@
     <el-card class="box-card">
       <el-header>My Groups</el-header>
       <el-main>
+        <el-space :fill=true wrap>
         <div v-for="group in groups" :key="group.group_id" class="text item">
           <el-card class="group-card">
             <div class="card-header">
               <span id="name">{{group.group_name}}</span>
               <span id="capacity">(Capacity: {{group.capacity}})</span>
-              <el-button class="button" text>
+              <el-button @click="handleToDetail(group.group_id)" text>
                 <el-icon id="detailBtn-icon"><Right /></el-icon>
               </el-button>
             </div>
@@ -24,6 +25,7 @@
             </div>
           </el-card>
         </div>
+        </el-space>
       </el-main>
     </el-card>
   </div>
@@ -99,6 +101,9 @@ export default {
   methods: {
     errorHandler() {
       return true
+    },
+    handleToDetail(group_id) {
+      alert(group_id)
     }
   }
 }
@@ -137,12 +142,13 @@ export default {
     color: #787878;
   }
   .member_avatar {
-    height: 30px;
-    width: 30px;
+    height: 25px;
+    width: 25px;
     vertical-align: middle;
     margin-right: 10px;
   }
   .member_name {
+    font-size: small;
     vertical-align: center;
   }
 </style>
