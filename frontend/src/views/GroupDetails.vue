@@ -423,7 +423,7 @@ export default {
   }
   .student_name {
     font-size: small;
-    font-width: bold;
+    font-weight: bold;
     font-style: italic;
   }
   .divider_space {
