@@ -50,7 +50,7 @@ public class GroupServiceImpl implements GroupService {
             JSONObject data = new JSONObject();
             data.put("id", id);
             data.put("name", group.getNameId());
-            data.put("course", group.getCourse().getName());
+            data.put("course", group.getCourse().getCode());
             data.put("tutorial", group.getTutorial());
             data.put("capacity", group.getCapacity());
             data.put("description", group.getDescription());

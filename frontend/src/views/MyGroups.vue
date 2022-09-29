@@ -3,7 +3,6 @@
     <el-card class="box-card">
       <el-header>My Groups</el-header>
       <el-main>
-        <el-space :fill=true wrap>
         <div v-for="group in groups" :key="group.group_id" class="text item">
           <el-card class="group-card">
             <div class="card-header">
@@ -21,11 +20,11 @@
                   />
                 </el-avatar>
                 <span class="member_name"> {{ member.name }} </span>
-            </span>
+              </span>
             </div>
           </el-card>
+          <div class="divider_space"></div>
         </div>
-        </el-space>
       </el-main>
     </el-card>
   </div>
@@ -103,8 +102,8 @@ export default {
       return true
     },
     handleToDetail(group_id) {
-      alert(group_id)
-    }
+      this.$router.push({name: "groupDetails", params: {group_id: group_id}});
+    },
   }
 }
 </script>
@@ -150,5 +149,8 @@ export default {
   .member_name {
     font-size: small;
     vertical-align: center;
+  }
+  .divider_space {
+    height: 3px;
   }
 </style>
