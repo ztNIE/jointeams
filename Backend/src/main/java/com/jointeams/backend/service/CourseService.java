@@ -1,10 +1,7 @@
 package com.jointeams.backend.service;
 
-import com.jointeams.backend.pojo.Course;
 import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
-
-import java.util.List;
 
 public interface CourseService {
     public JSONObject getAllCourse(Long userId);

@@ -50,7 +50,7 @@ public class GroupServiceImpl implements GroupService {
             JSONObject data = new JSONObject();
             data.put("id", id);
             data.put("name", group.getNameId());
-            data.put("course", group.getCourse().getName());
+            data.put("course", group.getCourse().getCode());
             data.put("tutorial", group.getTutorial());
             data.put("capacity", group.getCapacity());
             data.put("description", group.getDescription());
@@ -386,6 +386,7 @@ public class GroupServiceImpl implements GroupService {
         for(Object[] element: groupDetails) {
             Long groupId = ((BigInteger) element[0]).longValue();
             if(!addedGroupIds.contains(groupId)) {
+//                System.out.println("in");
                 JSONObject obj = new JSONObject();
                 obj.put("group_id", groupId);
                 obj.put("capacity", (Integer) element[1]);
@@ -396,6 +397,8 @@ public class GroupServiceImpl implements GroupService {
                 student.put("avatar", element[6]);
                 members.add(student);
                 obj.put("members", members);
+
+                addedGroupIds.add(groupId);
 
                 data.add(obj);
             } else {

@@ -49,9 +49,14 @@ const router = createRouter({
                 path: '/myGroups',
                 name: 'myGroups',
                 icon: 'User',
-                capitalName: 'My Group',
+                capitalName: 'My Groups',
                 component: () => import('@/views/MyGroups'),
             },
+            {
+                path: '/groupDetails/:group_id',
+                name: 'groupDetails',
+                component: () => import('@/views/GroupDetails'),
+            }
         ]
       },
       {

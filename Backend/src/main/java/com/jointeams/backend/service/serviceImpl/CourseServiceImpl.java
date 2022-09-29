@@ -4,6 +4,7 @@ import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.CourseService;
+import com.jointeams.backend.service.UniversityToolService;
 import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONArray;
 import com.jointeams.backend.repositery.CourseRepository;
@@ -35,6 +36,18 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private InterestedCourseRepository interestedCourseRepository;
+
+    @Autowired
+    private UniversityToolService universityToolService;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Override
     public JSONObject getAllCourse(Long userId) {
@@ -445,6 +458,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public JsonResult findAllFeedback() {
         List<Course> courses = (List<Course>) courseRepository.findAll();
+        courses.forEach(course -> course.setGroups(null));
         JsonResult jsonResult = new JsonResult();
         if(courses.size() == 0)
         {
@@ -458,10 +472,15 @@ public class CourseServiceImpl implements CourseService {
         return jsonResult;
     }
 
-    public int AddACourse(String code, String name, Long universityId)
+    public int addACourse(String code, String name, Long universityId)
     {
-        Course course = (Course) courseRepository.findCourseByCode(code).orElse(null);
-        Course course1 = (Course) courseRepository.findCourseByName(name).orElse(null);
+        University university = universityToolService.findById(universityId);
+        if(university == null)
+            return -1;
+
+        Course course = (Course) courseRepository.findCourseByCodeAndUniversity(code, university).orElse(null);
+        Course course1 = (Course) courseRepository.findCourseByNameAndUniversity(name, university).orElse(null);
+
         if(course == null && course1 == null)
         {
             course = new Course();
@@ -478,7 +497,22 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public JsonResult AddACourseFeedback(String code, String name, Long universityId) {
-        return null;
+        int resultCode = addACourse(code, name, universityId);
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setStatus(resultCode);
+        switch (resultCode) {
+            case -1:
+                jsonResult.setMsgAndData("The university is not found", Optional.empty());
+                break;
+            case 0:
+                jsonResult.setMsgAndData("The course code or name is duplicated", Optional.empty());
+                break;
+            case 1:
+                jsonResult.setMsgAndData( "The course, " + code + ": " + name +" is added successfully.",
+                        Optional.empty());
+                break;
+        }
+        return jsonResult;
     }
 
     public int deleteACourse(Long courseId) {
@@ -487,7 +521,14 @@ public class CourseServiceImpl implements CourseService {
             return 0;
         else
         {
-            courseRepository.deleteById(courseId);
+            List<Group> groups = course.getGroups();
+            groups.forEach(group -> {
+                notificationRepository.deleteAllByGroupId(group.getId());
+                commentRepository.deleteAllByGroupId(group.getId());
+                groupUserRepository.deleteAllByGroupId(group.getId());
+            });
+            groupRepository.deleteAll(groups);
+            courseRepository.delete(course);
             return 1;
         }
     }
@@ -499,7 +540,7 @@ public class CourseServiceImpl implements CourseService {
         jsonResult.setStatus(resultCode);
         switch (resultCode) {
             case 0:
-                jsonResult.setMsgAndData("msg", Optional.empty());
+                jsonResult.setMsgAndData("The course is not found!", Optional.empty());
                 break;
             case 1:
                 jsonResult.setMsgAndData( "The course is deleted successfully.", Optional.empty());
@@ -533,15 +574,15 @@ public class CourseServiceImpl implements CourseService {
         JsonResult jsonResult = new JsonResult();
         jsonResult.setStatus(resultCode);
         switch (resultCode) {
-            case 1:
-                jsonResult.setMsgAndData("The course lock status is changed successfully.", Optional.empty());
+            case -1:
+                jsonResult.setMsgAndData( "Fail to change the course lock status because the new lock status is " +
+                        "the same to the old one", Optional.empty());
                 break;
             case 0:
                 jsonResult.setMsgAndData( "The course is not found!", Optional.empty());
                 break;
-            case -1:
-                jsonResult.setMsgAndData( "Fail to change the course lock status because the new lock status is " +
-                        "the same to the old one", Optional.empty());
+            case 1:
+                jsonResult.setMsgAndData("The course lock status is changed successfully.", Optional.empty());
                 break;
         }
         return jsonResult;

@@ -1,10 +1,4 @@
 package com.jointeams.backend.service;
-
-import com.jointeams.backend.pojo.*;
-
-import java.util.List;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public interface GroupService {
