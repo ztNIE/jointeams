@@ -27,34 +27,54 @@ const router = createRouter({
             {
                 path: '/dashboard',
                 name: 'dashboard',
-                icon: 'Odometer',
-                capitalName: 'Dashboard',
+                meta: {
+                  icon: 'Odometer',
+                  capitalName: 'Dashboard',
+                  highlight: 'dashboard',
+                  hidden: false,
+                },
                 component: () => import('@/views/Dashboard'),
             },
             {
                 path: '/profile',
                 name: 'profile',
-                icon: 'Memo',
-                capitalName: 'Profile',
+                meta: {
+                  icon: 'Memo',
+                  capitalName: 'Profile',
+                  highlight: 'profile',
+                  hidden: false,
+                },
                 component: () => import('@/views/Profile'),
             },
             {
                 path: '/notification',
                 name: 'notification',
-                icon: 'Notification',
-                capitalName: 'Notifications',
+                meta: {
+                  icon: 'Notification',
+                  capitalName: 'Notifications',
+                  highlight: 'notification',
+                  hidden: false,
+                },
                 component: () => import('@/views/Notification'),
             },
             {
                 path: '/myGroups',
                 name: 'myGroups',
-                icon: 'User',
-                capitalName: 'My Groups',
+                meta: {
+                  icon: 'User',
+                  capitalName: 'My Groups',
+                  highlight: 'myGroups',
+                  hidden: false,
+                },
                 component: () => import('@/views/MyGroups'),
             },
             {
                 path: '/groupDetails/:group_id',
                 name: 'groupDetails',
+                meta: {
+                  highlight: 'myGroups',
+                  hidden: true,
+                },
                 component: () => import('@/views/GroupDetails'),
             }
         ]
