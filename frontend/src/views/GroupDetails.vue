@@ -1,37 +1,40 @@
 <template>
   <div class="common-layout" >
     <el-card class="box-card">
-      <el-header id="header">
+      <el-header class="header">
         <div>
-          <span>{{group.course}}_Group{{group.name}}</span>
-          <el-tag class="ml-2" type="warning" round>{{group.course}}</el-tag>
-          <span>{{group.tutorial}}</span>
+          <span>{{group.course}}_Group{{group.name}}</span>&nbsp;
+          <el-tag class="ml-2" type="warning" round>{{group.course}}</el-tag>&nbsp;&nbsp;
+          <span class="grey_tag">{{group.tutorial}}</span>
         </div>
-
-        <span>Capacity: {{group["number of students"]}}/{{group.capacity}}</span>
+        <span class="grey_tag">Capacity: {{group["number of students"]}}/{{group.capacity}}</span>
       </el-header>
       <el-container>
-      <el-aside width="250px">
-        <div>Team board</div>
-        <el-input
-            v-model="group.description"
-            :rows="10"
-            type="textarea"
-            :placeholder=group.description
-            :disabled="is_leader === false"
-        />
-        <el-button type="primary" v-if="is_leader" @click="handleEditDescription">Edit</el-button>
+      <el-aside width="270px">
+        <div class="aside_div">
+          <div class="title aside">Team board</div>
+          <div class="divider_space"></div>
+          <el-input
+              v-model="group.description"
+              :rows="10"
+              type="textarea"
+              :placeholder=group.description
+              :disabled="is_leader === false"
+          />
+          <div class="divider_space"></div>
+          <el-button type="primary" v-if="is_leader" @click="handleEditDescription" class="rightBtn">Edit</el-button>
+        </div>
+
       </el-aside>
       <el-main>
         <el-container>
-          <el-header>
-            <span>Members</span>
+          <el-header class="header">
+            <span class="title">Members</span>
             <el-button type="warning" v-if="is_member == true" @click="handleLeave">Leave</el-button>
-            <el-button type="primary" v-else @click="handleSendJoinRequest">Send Join Request</el-button>
+            <el-button type="primary" v-else @click="handleSendJoinRequest" class="rightBtn">Send Join Request</el-button>
           </el-header>
           <el-main>
-<!--            <el-scrollbar height="300px">-->
-            <el-space :fill=true wrap>
+            <el-scrollbar height="300px">
               <div v-for="member in members" :key="member.id">
                 <el-card class="member_card">
                   <div class="member_div left">
@@ -43,21 +46,23 @@
                   </div>
                   <div class="member_div middle">
                     <div>
-                      <p>{{member.name}}</p>
-                      <el-tag class="ml-2" type="danger" v-if="member.is_leader">LEADER</el-tag>
+                      <span class="student_name_bold">{{member.name}}</span> &nbsp;
+                      <el-tag class="ml-2" type="danger" effect="dark" round v-if="member.is_leader">LEADER</el-tag>
                     </div>
-                    <p>{{member.email}}</p>
-                    <p>{{member.degree}}</p>
+                    <p class="student_email">{{member.email}}</p>
+                    <p class="student_degree">{{member.degree}}</p>
                   </div>
                   <div class="member_div right">
                     <el-button type="primary" :disabled="is_comment_available === false || member.id === user_id" @click="handleComment(member)">Comment</el-button>
                   </div>
                 </el-card>
+                <div class="divider_space"></div>
               </div>
-            </el-space>
-<!--            </el-scrollbar>-->
-            <el-button type="primary" v-if="is_leader" @click="handleSendInvitation">Send Invitation</el-button>
+            </el-scrollbar>
           </el-main>
+          <el-footer>
+            <el-button type="primary" v-if="is_leader" @click="handleSendInvitation" class="rightBtn">Send Invitation</el-button>
+          </el-footer>
         </el-container>
       </el-main>
       </el-container>
@@ -380,7 +385,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  #header {
+  .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -422,6 +427,36 @@ export default {
     font-style: italic;
   }
   .divider_space {
-    height: 3px;
+    height: 5px;
+  }
+  .grey_tag {
+    font-size: medium;
+    color: #787878;
+  }
+  .title {
+    font-size: x-large;
+    font-weight: bolder;
+  }
+  .aside {
+    margin-top: 35px;
+  }
+  .aside_div {
+    width: 250px;
+  }
+  .rightBtn {
+    float: right;
+  }
+  .student_name_bold {
+    color: black;
+    font-weight: bold;
+    font-size: large;
+  }
+  .student_email {
+    color: #787878;
+    font-size: small;
+  }
+  .student_degree {
+    color: black;
+    font-size: medium;
   }
 </style>
