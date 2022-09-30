@@ -1,5 +1,5 @@
 <template>
-  <auth-layout>
+  <auth-layout hide-log-in>
     <el-card class="box-card">
       <el-form label-position="top"
                :model="formModel"

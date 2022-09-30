@@ -1,5 +1,16 @@
 <template>
-  <auth-layout>
+  <auth-layout hide-sign-up>
+    <teleport to="body">
+      <el-dialog title="Error"
+                 :visible="!!error"
+                 width="30%"
+      >
+        <template>{{ error.message }}</template>
+        <template v-slot:footer>
+          <el-button @click="handleError">Confirm</el-button>
+        </template>
+      </el-dialog>
+    </teleport>
     <el-card class="box-card">
       <el-form label-position="top"
                :rules="rules"
@@ -85,7 +96,7 @@
 
 <script>
 import AuthLayout from "@/views/layout/AuthLayout";
-import { postRegister } from "@/api/auth";
+import {postRegister} from "@/api/auth";
 
 export default {
   name: 'Register',
@@ -106,7 +117,7 @@ export default {
       })
       if (isValid) {
         try {
-          await postRegister({
+          const response = await postRegister({
             firstName: this.formModel.firstname,
             lastName: this.formModel.lastname,
             degree: this.formModel.degree,
@@ -115,11 +126,20 @@ export default {
             universityId: this.formModel.university,
             password: this.formModel.password
           })
+          if (response.status === 200) {
+            alert("success");
+            this.$router.replace('/landing')
+          } else {
+            throw new Error('Something went wrong');
+          }
         } catch (error) {
           console.log(error);
           this.error = error;
         }
       }
+    },
+    handleError(){
+      this.error = null;
     },
     getFacultyNameById(facultyId) {
       return this.givenFaculties.find(faculty => faculty.id === facultyId);
