@@ -120,7 +120,7 @@ export default {
       })
       if (isValid) {
         try {
-          const response = await postRegister({
+          await postRegister({
             firstName: this.formModel.firstname,
             lastName: this.formModel.lastname,
             degree: this.formModel.degree,
@@ -129,12 +129,8 @@ export default {
             universityId: this.formModel.university,
             password: this.formModel.password
           })
-          if (response.status === 200) {
-            alert("success");
-            this.$router.replace('/landing')
-          } else {
-            throw new Error('Something went wrong');
-          }
+          alert("success");
+          this.$router.replace('/landing')
         } catch (error) {
           console.log(error);
           this.errorMsg = error.message;

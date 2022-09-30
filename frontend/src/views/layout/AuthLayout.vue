@@ -38,23 +38,26 @@
         <el-button class="register-btn"
                    v-if="!hideSignUp"
                    @click="handleSignUp"
-        >Sign up</el-button>
+        >Sign up
+        </el-button>
         <el-button type="primary"
                    v-if="!hideLogIn"
                    @click="handleLogIn"
-        >Log in</el-button>
+        >Log in
+        </el-button>
       </div>
     </div>
-
     <div class="content">
-      <div class="slogan">
-        <p>JoinTeams</p>
-      </div>
-      <div>
-        <el-row type="flex" justify="center">
-          <slot></slot>
+      <el-col type="flex" justify="center" :span="12" :offset="6">
+        <el-row type="flex" justify="center" align="middle">
+          <div class="slogan">
+            <p>JoinTeams</p>
+          </div>
+          <div>
+            <slot></slot>
+          </div>
         </el-row>
-      </div>
+      </el-col>
     </div>
   </div>
 </template>
@@ -113,6 +116,7 @@ export default {
   & .btns {
     padding-top: 25px;
     padding-right: 33px;
+
     & .register-btn {
       margin-right: 5px;
       background-color: transparent;
@@ -120,6 +124,7 @@ export default {
       border-color: white;
       transition: 0.5s;
     }
+
     & .register-btn:hover {
       color: #3BF3F0;
       border-color: #3BF3F0;
@@ -128,6 +133,14 @@ export default {
 }
 
 .content {
+
+  background-size: cover;
+  overflow: hidden;
+  margin: 0 auto;
+  height: 90%;
+  display: flex;
+  align-items: center;
+
   & .slogan {
     font-family: "Courier New", monospace;
     text-align: center;
@@ -136,9 +149,11 @@ export default {
     font-weight: 100;
     letter-spacing: 20px;
   }
-  background-size: cover;
-  overflow: hidden;
-  margin: 0 auto;
+
+  & .el-row {
+    height: 100%
+  }
+
   //display: flex;
   //align-items: center;
   //text-align: center;

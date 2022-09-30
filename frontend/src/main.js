@@ -8,6 +8,7 @@ import * as Icons from '@element-plus/icons-vue'
 
 // event bus
 import mitt from 'mitt';
+import store from "@/store";
 const emitter = mitt();
 
 const app = createApp(App)
@@ -20,4 +21,6 @@ app.config.globalProperties.$router = router;
 
 app.use(ElementPlus)
 app.use(router)
+app.use(store)
+
 app.mount('#app')

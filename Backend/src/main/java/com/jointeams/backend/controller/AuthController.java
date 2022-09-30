@@ -1,6 +1,5 @@
 package com.jointeams.backend.controller;
 
-import com.jointeams.backend.model.request.CheckEmailRequest;
 import com.jointeams.backend.model.request.LoginRequest;
 import com.jointeams.backend.model.response.CheckEmailResponse;
 import com.jointeams.backend.model.response.StandardResponse;
@@ -43,8 +42,8 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @GetMapping("/validEmailExist")
-    public ResponseEntity<?> isEmailExist(@RequestBody CheckEmailRequest request) {
-        Boolean result = userRepository.existsByEmail(request.getEmail());
+    public ResponseEntity<?> isEmailExist(@RequestParam(name="email") String email) {
+        Boolean result = userRepository.existsByEmail(email);
         return ResponseEntity.ok().body(new StandardResponse<>("Success", new CheckEmailResponse(result)));
     }
 
@@ -56,23 +55,22 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
 
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new StandardResponse<>("success",
-                        new UserInfoResponse(userDetails.getUsername(), roles)));
+            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                    .body(new StandardResponse<>("success",
+                            new UserInfoResponse(userDetails.getUsername(), roles)));
     }
 
     // TODO: fix logout utility

@@ -5,10 +5,13 @@ export const postRegister = async function (registerData) {
 }
 
 export const getEmailExist = async function (email) {
-    return get('/auth/validEmailExist', {email: email})
+    return get(`/auth/validEmailExist?email=${email}`)
+}
+
+export const postLogin = async function (loginRequest) {
+    return post('/auth/login', loginRequest)
 }
 
 export default {
     name: 'authAPI',
-    postRegister
 }
