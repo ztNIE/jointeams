@@ -85,23 +85,45 @@
 
 <script>
 import AuthLayout from "@/views/layout/AuthLayout";
+import { postRegister } from "@/api/auth";
 
 export default {
   name: 'Register',
   components: {AuthLayout},
   methods: {
     async submitForm(formName) {
+      let isValid = false;
       await this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('Success submit');
+          console.log('Valid register input');
           console.log(this.formModel);
+          isValid = true;
         } else {
           console.log('Submit failed');
           console.log(this.formModel);
           return false;
         }
       })
+      if (isValid) {
+        try {
+          await postRegister({
+            firstName: this.formModel.firstname,
+            lastName: this.formModel.lastname,
+            degree: this.formModel.degree,
+            email: this.formModel.email,
+            faculty: this.getFacultyNameById(this.formModel.faculty),
+            universityId: this.formModel.university,
+            password: this.formModel.password
+          })
+        } catch (error) {
+          console.log(error);
+          this.error = error;
+        }
+      }
     },
+    getFacultyNameById(facultyId) {
+      return this.givenFaculties.find(faculty => faculty.id === facultyId);
+    }
   },
   data() {
     let validateEmail = (_, value, callback) => {
@@ -136,6 +158,7 @@ export default {
       }
     };
     return {
+      error: null,
       rules: {
         firstname: [
           {required: true, message: 'Please input your firstname', trigger: 'blur'},
