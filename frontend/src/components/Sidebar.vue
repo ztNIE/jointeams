@@ -1,10 +1,10 @@
 <template>
-<el-menu :default-active="this.$router.currentRoute.value.name" :router="true" class="el-menu-vertical-demo" :collapse="isCollapse">
-  <el-menu-item v-for="route in routes" :key="route.name" :index="route.name">
+<el-menu :default-active="this.$router.currentRoute.value.meta.highlight" :router="false" class="el-menu-vertical-demo" :collapse="isCollapse">
+  <el-menu-item v-for="route in routes" :key="route.name" :index="route.name" @click="handleTransfer(route.path)">
     <el-icon>
-        <component :is="route.icon"></component>
+        <component :is="route.meta.icon"></component>
     </el-icon>
-    <span>{{route.capitalName}}</span>
+    <span>{{route.meta.capitalName}}</span>
   </el-menu-item>
   <el-menu-item :disabled="true" class="back">
     <el-icon @click="handleBack()">
@@ -30,11 +30,19 @@ export default {
         this.$emitter.on('handleSidebar', () => {
             _this.isCollapse = !_this.isCollapse
         })
-        this.routes = this.$router.options.routes[0].children.slice(3)
+
+        // filter out the routes that does not need a tab
+        let temp = this.$router.options.routes[0].children.slice(3)
+        this.routes = temp.filter((item) => {
+            return !item.meta.hidden
+        })
     },
     methods: {
         handleBack() {
             this.$router.back()
+        },
+        handleTransfer(path) {
+            this.$router.push(path)
         }
     }
 }
