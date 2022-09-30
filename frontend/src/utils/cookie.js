@@ -1,15 +1,15 @@
 import Cookies from 'js-cookie'
 
 const getTokenInCookies = function() {
-    return Cookies.get('token')
+    return Cookies.get('jointeams')
 }
 
 const setTokenInCookies = function(token) {
-    Cookies.set('token', token, {expires: 1})
+    Cookies.set('jointeams', token, {expires: 1})
 }
 
 const removeTokenInCookies = function() {
-    Cookies.remove('token')
+    Cookies.remove('jointeam')
 }
 
 export default{

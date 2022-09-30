@@ -2,7 +2,7 @@ import axios from 'axios'
 // import Cookies from 'js-cookie'
 // import { ElMessage } from "element-plus";
 
-let baseUrl = ''
+let baseUrl = 'http://localhost:8080/'
 axios.defaults.baseURL = baseUrl
 axios.defaults.timeout = 50000
 axios.defaults.withCredentials = true
