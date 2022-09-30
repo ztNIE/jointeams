@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);
 //    Iterable<User> findByIsAdminFalse();
+    Boolean existsByEmail(String email);
 
     @Query("select distinct u from Group g " +
             "    inner join Semester s on g.semester.id = s.id " +

@@ -1,16 +1,14 @@
 <template>
   <auth-layout hide-sign-up>
-    <teleport to="body">
-      <el-dialog title="Error"
-                 :visible="!!error"
-                 width="30%"
-      >
-        <template>{{ error.message }}</template>
-        <template v-slot:footer>
-          <el-button @click="handleError">Confirm</el-button>
-        </template>
-      </el-dialog>
-    </teleport>
+    <el-dialog title="Error"
+               v-model="showError"
+               width="30%"
+    >
+      <span>{{ errorMsg }}</span>
+      <template #footer>
+        <el-button @click="handleError">Confirm</el-button>
+      </template>
+    </el-dialog>
     <el-card class="box-card">
       <el-form label-position="top"
                :rules="rules"
@@ -101,6 +99,11 @@ import {postRegister} from "@/api/auth";
 export default {
   name: 'Register',
   components: {AuthLayout},
+  computed: {
+    showError() {
+      return !!this.errorMsg;
+    }
+  },
   methods: {
     async submitForm(formName) {
       let isValid = false;
@@ -134,12 +137,12 @@ export default {
           }
         } catch (error) {
           console.log(error);
-          this.error = error;
+          this.errorMsg = error.message;
         }
       }
     },
-    handleError(){
-      this.error = null;
+    handleError() {
+      this.errorMsg = null;
     },
     getFacultyNameById(facultyId) {
       return this.givenFaculties.find(faculty => faculty.id === facultyId);
@@ -178,7 +181,7 @@ export default {
       }
     };
     return {
-      error: null,
+      errorMsg: null,
       rules: {
         firstname: [
           {required: true, message: 'Please input your firstname', trigger: 'blur'},

@@ -27,16 +27,31 @@
 
 
 import AuthLayout from "@/views/layout/AuthLayout";
+import {getEmailExist} from "@/api/auth";
 
 export default {
   name: 'Login',
   components: {AuthLayout},
   data() {
+    let emailValidator = (_, value, callback) => {
+      getEmailExist(value).then((response) => {
+        console.log(response)
+        callback()
+      })
+    };
+    let passwordValidator = (_, value, callback) => {
+      console.log(value)
+      callback()
+    };
     return {
       formModel: {
         email: '',
         password: ''
       },
+      rules: {
+        email: [{validator: emailValidator, trigger: 'blur'}],
+        password: [{validator: passwordValidator, trigger: 'blur'}]
+      }
     };
   },
   methods: {

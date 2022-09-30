@@ -1,6 +1,8 @@
 package com.jointeams.backend.controller;
 
+import com.jointeams.backend.model.request.CheckEmailRequest;
 import com.jointeams.backend.model.request.LoginRequest;
+import com.jointeams.backend.model.response.CheckEmailResponse;
 import com.jointeams.backend.model.response.StandardResponse;
 import com.jointeams.backend.model.response.UserInfoResponse;
 import com.jointeams.backend.repositery.UserRepository;
@@ -16,10 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -42,6 +41,12 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @GetMapping("/validEmailExist")
+    public ResponseEntity<?> isEmailExist(@RequestBody CheckEmailRequest request) {
+        Boolean result = userRepository.existsByEmail(request.getEmail());
+        return ResponseEntity.ok().body(new StandardResponse<>("Success", new CheckEmailResponse(result)));
+    }
 
     /**
      *
