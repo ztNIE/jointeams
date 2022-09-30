@@ -1,16 +1,18 @@
 <template>
   <div class="common-layout" >
     <el-card class="box-card">
-      <el-header class="header">
-        <div>
-          <span>{{group.course}}_Group{{group.name}}</span>&nbsp;
-          <el-tag class="ml-2" type="warning" round>{{group.course}}</el-tag>&nbsp;&nbsp;
-          <span class="grey_tag">{{group.tutorial}}</span>
+      <template #header>
+        <div class="header">
+          <div>
+            <span class="main_header">{{group.course}}_Group{{group.name}}</span>&nbsp;
+            <el-tag class="ml-2" type="warning" round>{{group.course}}</el-tag>&nbsp;
+            <span class="grey_tag">{{group.tutorial}}</span>
+          </div>
+          <span class="grey_tag">Capacity: {{group["number of students"]}}/{{group.capacity}}</span>
         </div>
-        <span class="grey_tag">Capacity: {{group["number of students"]}}/{{group.capacity}}</span>
-      </el-header>
+      </template>
       <el-container>
-      <el-aside width="270px">
+      <el-aside width="300px">
         <div class="aside_div">
           <div class="title aside">Team board</div>
           <div class="divider_space"></div>
@@ -28,11 +30,11 @@
       </el-aside>
       <el-main>
         <el-container>
-          <el-header class="header">
+          <div class="header">
             <span class="title">Members</span>
             <el-button type="warning" v-if="is_member == true" @click="handleLeave">Leave</el-button>
             <el-button type="primary" v-else @click="handleSendJoinRequest" class="rightBtn">Send Join Request</el-button>
-          </el-header>
+          </div>
           <el-main>
             <el-scrollbar height="300px">
               <div v-for="member in members" :key="member.id">
@@ -389,6 +391,8 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 10px;
+    margin-right: 20px;
   }
   .member_div {
     float: left;
@@ -410,6 +414,9 @@ export default {
   }
   .student_card {
     height: 60px;
+  }
+  .student_card:hover {
+    background-color: #CBF3F0;
   }
   .student_div {
     display: flex;
@@ -441,7 +448,8 @@ export default {
     margin-top: 35px;
   }
   .aside_div {
-    width: 250px;
+    width: 270px;
+    margin-left: 15px;
   }
   .rightBtn {
     float: right;
@@ -458,5 +466,22 @@ export default {
   .student_degree {
     color: black;
     font-size: medium;
+  }
+  .main_header {
+    color: black;
+    font-weight: bold;
+    font-size: xx-large;
+  }
+  .box-card {
+    min-height: 550px;
+  }
+  .member_card:hover {
+    background-color: #CBF3F0;
+  }
+  .el-aside {
+    box-shadow: none;
+    border-right-style: solid;
+    border-color: #e4e7ed;
+    border-right-width: 1px;
   }
 </style>
