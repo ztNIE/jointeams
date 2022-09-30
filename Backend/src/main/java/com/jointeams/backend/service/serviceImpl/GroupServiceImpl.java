@@ -51,6 +51,7 @@ public class GroupServiceImpl implements GroupService {
             data.put("id", id);
             data.put("name", group.getNameId());
             data.put("course", group.getCourse().getCode());
+            data.put("course_id", group.getCourse().getId());
             data.put("tutorial", group.getTutorial());
             data.put("capacity", group.getCapacity());
             data.put("description", group.getDescription());
@@ -150,7 +151,7 @@ public class GroupServiceImpl implements GroupService {
                     JSONObject data = new JSONObject();
                     data.put("new_leader", targetUser.getGroupUserId().getUserId());
 
-                    jsonResult.put("msg", "Success! The group is disband!");
+                    jsonResult.put("msg", "Success! Leadership is handed over.");
                     jsonResult.put("data", data);
                 }
             }

@@ -80,7 +80,7 @@
     <template #default>
       <el-form :model="comment_form">
         <el-form-item label="Tag" label-width="90px">
-          <el-select v-model="comment_form.tag" placeholder="Please select a tag">
+          <el-select v-model="comment_form.tag_id" placeholder="Please select a tag">
             <el-option
                 v-for="item in tags"
                 :key="item.value"
@@ -118,7 +118,7 @@
         </el-form-item>
       </el-form>
 
-      <el-scrollbar height="200px">
+      <el-scrollbar height="200px" v-if="this.students !== null">
         <div v-for="student in searchResult" :key="student.id">
           <el-card class="student_card">
             <div class="student_div">
@@ -136,6 +136,7 @@
           <div class="divider_space"></div>
         </div>
       </el-scrollbar>
+      <el-empty description="No student in this course has no group." v-else />
 
     </template>
     <template #footer>
@@ -148,48 +149,20 @@
 </template>
 <script>
 // import cookieUtils from '../utils/cookie.js'
-// import GroupAPI from '../api/group.js'
+import GroupAPI from '../api/group.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import json from '../tags.json'
 
 export default {
   name: 'GroupDetails',
-  props: {
-    group_id: Object
-  },
   data() {
     return {
       user_id: null,
       is_leader: false,
       is_member: false,
       is_comment_available: false,
-      group: {
-        "name": 1,
-        "course": "ELEC5619",
-        "description": "Good",
-        "id": 1,
-        "tutorial": "CC02",
-        "number of students": 2,
-        "capacity": 3
-      },
-      members: [
-        {
-          "filename": null,
-          "name": "Yuyun Liu",
-          "degree": "Bachelor of Engineering",
-          "id": 1,
-          "is_leader": true,
-          "email": "devu0001@uni.sydney.edu.au"
-        },
-        {
-          "filename": null,
-          "name": "admin null",
-          "degree": null,
-          "id": 2,
-          "is_leader": false,
-          "email": "jointeamsspring@gmail.com"
-        }
-      ],
+      group: [],
+      members: [],
       outerVisible_comment: false,
       current_comment_member: null,
       comment_form: {
@@ -197,44 +170,58 @@ export default {
         receiverId: null,
         senderId: null,
         tag: null,
+        tag_id: null,
         content: null
       },
       tags: json,
       outerVisible_invitation: false,
       search_term: "",
-      students: [
-        {
-          "filename": null,
-          "name": "Jin Ma",
-          "id": 5
-        },
-        {
-          "filename": null,
-          "name": "Alice Cole",
-          "id": 9
-        },
-        {
-          "filename": null,
-          "name": "Zam Samern",
-          "id": 11
-        }
-      ],
+      students: [],
       searchResult: []
     }
   },
   mounted() {
-    // var userId = cookieUtils.getTokenInCookies()
-    // console.log(userId)
-    this.user_id = 1
     // TODO
-    // this.group = ...
-    // console.log(this.user_id)
+    // var userId = cookieUtils.getTokenInCookies()
+    // console.log(cookieUtils.getTokenInCookies())
+    this.user_id = 1
+
+    GroupAPI.getGroupInformationById(this.$route.params.group_id).then((res) => {
+      this.group = res.data.data
+
+      GroupAPI.listStudentsNotInAGroup(this.group.course_id).then((res) => {
+        this.students = res.data.data
+      })
+    })
+
+    GroupAPI.getAllMembers(this.$route.params.group_id).then((res) => {
+      // We have at least one member, that is the leader.
+      this.members = res.data.data
+
+      for(let i = 0; i < this.members.length; i++) {
+        if(this.members[i].is_leader === true) {
+          if(this.members[i].id === this.user_id) {
+            this.is_leader = true
+            break
+          }
+          break
+        }
+      }
+    })
+
+    // Should check cookie instead TODO
     if(this.$router.options.history.state.back == "/myGroups") {
       this.is_member = true
     }
-    this.is_leader = true
-    this.is_comment_available = true
-    this.comment_form.groupId = this.group_id
+
+    GroupAPI.isCommentFunctionOpen().then((res) => {
+      this.is_comment_available = res.data.data.isCommentFunctionAvailable
+
+      // Only for testing TODO (delete later)
+      this.is_comment_available = true
+    })
+
+    this.comment_form.groupId = this.$route.params.group_id
     this.comment_form.senderId = this.user_id
   },
   methods: {
@@ -251,9 +238,11 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        ElMessage({
-          type: 'success',
-          message: 'Leave group',
+        GroupAPI.leaveGroup(this.$route.params.group_id, this.user_id).then((res) => {
+          ElMessage({
+            type: 'success',
+            message: res.data.msg,
+          })
         })
         this.$router.push(this.$router.options.history.state.back)
       }).catch(() => {
@@ -264,22 +253,30 @@ export default {
       })
     },
     handleEditDescription() {
-      ElMessage({
-        message: 'Edit description successfully!',
-        type: 'success',
-        offset: -5
+      GroupAPI.updateDescription(this.$route.params.group_id, this.group.description).then(() => {
+        // console.log(res)
+        ElMessage({
+          message: 'Edit description successfully!',
+          type: 'success',
+          offset: -5
+        })
       })
     },
     handleComment(member) {
       this.outerVisible_comment = true
       this.current_comment_member = member
+
       // Should get from cookie.
-      // var senderId = 1
       this.comment_form.receiverId = member.id
 
       // Check whether comment exist --> fill the content and tag
-      this.comment_form.content = "exist one"
-      this.comment_form.tag = this.tags[1-1]["value"]
+      GroupAPI.checkCommentExistence(this.$route.params.group_id, this.comment_form.senderId, this.comment_form.receiverId).then((res) => {
+        if(res.data.data !== null) {
+          this.comment_form.content = res.data.data.content
+          this.comment_form.tag = this.tags[parseInt(res.data.data.tag)-1]["value"]
+          this.comment_form.tag_id = parseInt(res.data.data.tag)
+        }
+      })
     },
     handleCommentCancel() {
       this.outerVisible_comment = false
@@ -287,7 +284,6 @@ export default {
       this.comment_form.tag = null
     },
     handleCommentConfirm() {
-      // this.innerVisible_comment = true
       ElMessageBox.confirm(
           'You will submit a comment. Continue?',
           'Warning',
@@ -297,9 +293,26 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        ElMessage({
-          type: 'success',
-          message: 'Submit comment!',
+        // console.log(parseInt(this.comment_form.tag_id))
+        var request_data = {
+          "groupId": this.comment_form.groupId,
+          "receiverId": this.comment_form.receiverId,
+          "senderId": this.comment_form.senderId,
+          "tag": parseInt(this.comment_form.tag_id),
+          "content": this.comment_form.content
+        }
+        GroupAPI.leaveComment(request_data).then((res) => {
+          if(res.data.data !== null) {
+            ElMessage({
+              type: 'success',
+              message: 'Submit comment!',
+            })
+          } else {
+            ElMessage({
+              type: 'error',
+              message: res.data.msg,
+            })
+          }
         })
         this.outerVisible_comment = false
       }).catch(() => {
@@ -327,9 +340,18 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        ElMessage({
-          type: 'success',
-          message: 'Invitation sent!',
+        GroupAPI.sendInvitation(this.$route.params.group_id, student.id).then((res) => {
+          if(res.status === 200) {
+            ElMessage({
+              type: 'success',
+              message: res.data.msg,
+            })
+          } else {
+            ElMessage({
+              type: 'warning',
+              message: res.data.msg,
+            })
+          }
         })
       }).catch(() => {
         ElMessage({
@@ -372,9 +394,18 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        ElMessage({
-          type: 'success',
-          message: 'Request sent!',
+        GroupAPI.sendJoinRequest(this.$route.params.group_id, this.user_id).then((res) => {
+          if(res.status === 200) {
+            ElMessage({
+              type: 'success',
+              message: res.data.msg,
+            })
+          } else {
+            ElMessage({
+              type: 'warning',
+              message: res.data.msg,
+            })
+          }
         })
       }).catch(() => {
         ElMessage({

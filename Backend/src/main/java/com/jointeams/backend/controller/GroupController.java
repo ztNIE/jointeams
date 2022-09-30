@@ -19,7 +19,7 @@ public class GroupController {
     @GetMapping(path = "getGroupInformationById")
     public ResponseEntity<JSONObject> getGroupInformationById(@RequestParam("id") Long id) {
         if(id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject groupObj = groupService.getGroupById(id);
@@ -34,7 +34,7 @@ public class GroupController {
     @GetMapping(path = "getAllMembers")
     public  ResponseEntity<JSONObject> getAllMembersByGroupId(@RequestParam("id") Long id) {
         if(id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject allMembers = groupService.getAllMembers(id);
@@ -49,7 +49,7 @@ public class GroupController {
     @PutMapping(path = "updateDescription")
     public ResponseEntity<JSONObject> updateDescription(@RequestParam("id") Long id, @RequestParam("newDescription") String newDescription) {
         if(id == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.updateDescription(id, newDescription);
@@ -64,13 +64,13 @@ public class GroupController {
     @PutMapping(path = "leaveGroup")
     public ResponseEntity<JSONObject> leaveGroup(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
         if(groupId == null || userId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.deleteAMember(groupId, userId);
 
         if(result.get("msg").equals("Unable to find this user in this group!")) {
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
@@ -86,9 +86,9 @@ public class GroupController {
     @GetMapping(path = "checkCommentExistence")
     public ResponseEntity<JSONObject> checkCommentExistence(@RequestParam("groupId") Long groupId, @RequestParam("senderId") Long senderId, @RequestParam("receiverId") Long receiverId) {
         if(groupId == null || senderId == null || receiverId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } else if(senderId.equals(receiverId)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.getCommentById(groupId, senderId, receiverId);
@@ -111,17 +111,17 @@ public class GroupController {
     @PostMapping(path = "sendInvitation")
     public ResponseEntity<JSONObject> sendInvitation(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
         if(groupId == null || userId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.addInvitationNotification(groupId, userId);
 
         if(result.get("msg").equals("You have already sent an invitation to this user!")) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         } else if(result.get("msg").equals("This student is already in your group!")) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         }else if(result.get("msg").equals("Your group is already full!")) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
@@ -130,17 +130,17 @@ public class GroupController {
     @PostMapping(path = "sendJoinRequest")
     public ResponseEntity<JSONObject> sendJoinRequest(@RequestParam("groupId") Long groupId, @RequestParam("userId") Long userId) {
         if(groupId == null || userId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.addJoinRequestNotification(groupId, userId);
 
         if(result.get("msg").equals("You have already sent a joining request to this group!")) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         } else if(result.get("msg").equals("You are already in this group!")) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         }else if(result.get("msg").equals("This group is already full!")) {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
@@ -149,7 +149,7 @@ public class GroupController {
     @GetMapping(path = "listStudentsNotInAGroup")
     public ResponseEntity<JSONObject> listStudentsNotInAGroup(@RequestParam("courseId") Long courseId) {
         if(courseId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.getStudentsNotInAGroup(courseId);
@@ -159,7 +159,7 @@ public class GroupController {
     @GetMapping(path = "myGroups")
     public ResponseEntity<JSONObject> getAllCurrentGroupsOfAUser(@RequestParam("userId") Long userId) {
         if(userId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }
 
         JSONObject result = groupService.getAllCurrentGroupsOfAUser(userId);

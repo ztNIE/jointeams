@@ -40,8 +40,8 @@ export function get(url, data) {
 }
 
 // post
-export function post(url, data) {
-    return axios.post(url, data)
+export function post(url, data, params) {
+    return axios.post(url, data, params)
 }
 
 // put

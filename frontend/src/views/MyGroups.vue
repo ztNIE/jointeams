@@ -5,31 +5,32 @@
         <div class="main_header">My Groups</div>
       </template>
       <el-main>
-        <el-scrollbar max-height="420px">
-        <div v-for="group in groups" :key="group.group_id" class="text item">
-          <el-card class="group-card">
-            <div class="card-header">
-              <span id="name">{{group.group_name}}</span>
-              <span id="capacity">(Capacity: {{group.capacity}})</span>
-              <el-button @click="handleToDetail(group.group_id)" text>
-                <el-icon id="detailBtn-icon"><Right /></el-icon>
-              </el-button>
-            </div>
+        <el-scrollbar max-height="420px" v-if="groups.length !== 0">
+          <div v-for="group in groups" :key="group.group_id" class="text item">
+            <el-card class="group-card">
+              <div class="card-header">
+                <span id="name">{{group.group_name}}</span>
+                <span id="capacity">(Capacity: {{group.capacity}})</span>
+                <el-button @click="handleToDetail(group.group_id)" text>
+                  <el-icon id="detailBtn-icon"><Right /></el-icon>
+                </el-button>
+              </div>
+              <div class="divider_space"></div>
+              <div class="card-content">
+                <span v-for="member in group.members" :key="member.name" class="member">
+                  <el-avatar class="member_avatar" src={{member.avatar}} @error="errorHandler">
+                    <img
+                        src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+                    />
+                  </el-avatar>
+                  <span class="member_name"> {{ member.name }} </span>
+                </span>
+              </div>
+            </el-card>
             <div class="divider_space"></div>
-            <div class="card-content">
-              <span v-for="member in group.members" :key="member.name" class="member">
-                <el-avatar class="member_avatar" src={{member.avatar}} @error="errorHandler">
-                  <img
-                      src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
-                  />
-                </el-avatar>
-                <span class="member_name"> {{ member.name }} </span>
-              </span>
-            </div>
-          </el-card>
-          <div class="divider_space"></div>
-        </div>
+          </div>
         </el-scrollbar>
+        <el-empty description="No group" v-else />
       </el-main>
     </el-card>
   </div>
@@ -37,102 +38,24 @@
 
 <script>
 // import cookieUtils from '../utils/cookie.js'
-// import GroupAPI from '../api/group.js'
+import GroupAPI from '../api/group.js'
 
 export default {
   name: 'MyGroups',
   data() {
     return {
-      groups: [
-        {
-          "group_id": 1,
-          "group_name": "ELEC5619_Group1",
-          "members": [
-              {
-              "name": "Yuyun Liu",
-              "avatar": null
-            },
-            {
-              "name": "Alice Smith",
-              "avatar": null
-            },
-            {
-              "name": "Vera Wiesley",
-              "avatar": null
-            }
-          ],
-          "capacity": 3
-        },
-        {
-          "group_id": 2,
-          "group_name": "SOFT3888_Group1",
-          "members": [
-            {
-              "name": "Yuyun Liu",
-              "avatar": null
-            },
-            {
-              "name": "Cole Miloska",
-              "avatar": null
-            }
-          ],
-          "capacity": 4
-        },
-        {
-          "group_id": 5,
-          "group_name": "COMP3308_Group2",
-          "members": [
-            {
-              "name": "Yuyun Liu",
-              "avatar": null
-            }
-          ],
-          "capacity": 2
-        },
-        {
-          "group_id": 5,
-          "group_name": "COMP3308_Group2",
-          "members": [
-            {
-              "name": "Yuyun Liu",
-              "avatar": null
-            }
-          ],
-          "capacity": 2
-        },
-        {
-          "group_id": 5,
-          "group_name": "COMP3308_Group2",
-          "members": [
-            {
-              "name": "Yuyun Liu",
-              "avatar": null
-            }
-          ],
-          "capacity": 2
-        },
-        {
-          "group_id": 5,
-          "group_name": "COMP3308_Group2",
-          "members": [
-            {
-              "name": "Yuyun Liu",
-              "avatar": null
-            }
-          ],
-          "capacity": 2
-        }
-      ]
+      groups: []
     }
   },
   mounted() {
     // var userId = cookieUtils.getTokenInCookies()
     // console.log(userId)
-    // var userId = 1
-    // GroupAPI.findAllCurrentGroupsOfAUser(userId).then((res) => {
-    //   console.log((res))
-    //   this.groups = res
-    // })
+    var userId = 1
+    GroupAPI.findAllCurrentGroupsOfAUser(userId).then((res) => {
+      // console.log((res))
+      this.groups = res.data.data
+      // console.log(res.data.msg)
+    })
 
   },
   methods: {
@@ -140,6 +63,7 @@ export default {
       return true
     },
     handleToDetail(group_id) {
+      // console.log(group_id)
       this.$router.push({name: "groupDetails", params: {group_id: group_id}});
     },
   }
