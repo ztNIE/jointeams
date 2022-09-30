@@ -23,6 +23,7 @@ axios.defaults.withCredentials = true
 //   return Promise.error(error)
 // })
 //
+
 axios.interceptors.response.use(response => {
     return response
 }, error => {
@@ -31,6 +32,7 @@ axios.interceptors.response.use(response => {
         errorMsg = error.response.data.msg
     }
     console.log(`Status: ${error.response.status}, Msg: ${errorMsg}`)
+    console.log(error)
     return Promise.reject(new Error(errorMsg))
 })
 

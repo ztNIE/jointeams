@@ -55,7 +55,7 @@ public class BackendApplication {
             devUser.setActivate(true);
             devUser.setFirstName("firstname");
             devUser.setLastName("lastname");
-            devUser.setPassword(passwordEncoder.encode("12345678"));
+            devUser.setPassword(passwordEncoder.encode("qwe123ASD"));
             if (userRepository.findByEmail(devUser.getEmail()).isEmpty()) {
                 userRepository.save(devUser);
             }
@@ -65,7 +65,7 @@ public class BackendApplication {
             adminUser.setActivate(true);
             adminUser.setFirstName("admin");
             adminUser.setEmail("jointeamsspring@gmail.com");
-            adminUser.setPassword(passwordEncoder.encode("12345678"));
+            adminUser.setPassword(passwordEncoder.encode("qwe123ASD"));
             if (userRepository.findByEmail(adminUser.getEmail()).isEmpty()) {
                 userRepository.save(adminUser);
             }
