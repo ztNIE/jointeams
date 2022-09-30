@@ -1,7 +1,7 @@
 <template>
   <div class="common-layout" >
     <el-card class="box-card">
-      <el-header>My Groups</el-header>
+      <el-header class="main_header">My Groups</el-header>
       <el-main>
         <div v-for="group in groups" :key="group.group_id" class="text item">
           <el-card class="group-card">
@@ -12,6 +12,7 @@
                 <el-icon id="detailBtn-icon"><Right /></el-icon>
               </el-button>
             </div>
+            <div class="divider_space"></div>
             <div class="card-content">
               <span v-for="member in group.members" :key="member.name" class="member">
                 <el-avatar class="member_avatar" src={{member.avatar}} @error="errorHandler">
@@ -152,5 +153,10 @@ export default {
   }
   .divider_space {
     height: 3px;
+  }
+  .main_header {
+    color: black;
+    font-weight: bold;
+    font-size: xx-large;
   }
 </style>

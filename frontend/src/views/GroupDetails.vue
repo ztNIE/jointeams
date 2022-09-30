@@ -3,14 +3,14 @@
     <el-card class="box-card">
       <el-header class="header">
         <div>
-          <span>{{group.course}}_Group{{group.name}}</span>&nbsp;
+          <span class="main_header">{{group.course}}_Group{{group.name}}</span>&nbsp;
           <el-tag class="ml-2" type="warning" round>{{group.course}}</el-tag>&nbsp;&nbsp;
           <span class="grey_tag">{{group.tutorial}}</span>
         </div>
         <span class="grey_tag">Capacity: {{group["number of students"]}}/{{group.capacity}}</span>
       </el-header>
       <el-container>
-      <el-aside width="270px">
+      <el-aside width="300px">
         <div class="aside_div">
           <div class="title aside">Team board</div>
           <div class="divider_space"></div>
@@ -441,7 +441,8 @@ export default {
     margin-top: 35px;
   }
   .aside_div {
-    width: 250px;
+    width: 270px;
+    margin-left: 15px;
   }
   .rightBtn {
     float: right;
@@ -458,5 +459,10 @@ export default {
   .student_degree {
     color: black;
     font-size: medium;
+  }
+  .main_header {
+    color: black;
+    font-weight: bold;
+    font-size: xx-large;
   }
 </style>
