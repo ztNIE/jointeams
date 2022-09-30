@@ -1,8 +1,11 @@
 <template>
   <div class="common-layout" >
     <el-card class="box-card">
-      <el-header class="main_header">My Groups</el-header>
+      <template #header>
+        <div class="main_header">My Groups</div>
+      </template>
       <el-main>
+        <el-scrollbar max-height="420px">
         <div v-for="group in groups" :key="group.group_id" class="text item">
           <el-card class="group-card">
             <div class="card-header">
@@ -26,6 +29,7 @@
           </el-card>
           <div class="divider_space"></div>
         </div>
+        </el-scrollbar>
       </el-main>
     </el-card>
   </div>
@@ -44,7 +48,7 @@ export default {
           "group_id": 1,
           "group_name": "ELEC5619_Group1",
           "members": [
-            {
+              {
               "name": "Yuyun Liu",
               "avatar": null
             },
@@ -73,6 +77,39 @@ export default {
             }
           ],
           "capacity": 4
+        },
+        {
+          "group_id": 5,
+          "group_name": "COMP3308_Group2",
+          "members": [
+            {
+              "name": "Yuyun Liu",
+              "avatar": null
+            }
+          ],
+          "capacity": 2
+        },
+        {
+          "group_id": 5,
+          "group_name": "COMP3308_Group2",
+          "members": [
+            {
+              "name": "Yuyun Liu",
+              "avatar": null
+            }
+          ],
+          "capacity": 2
+        },
+        {
+          "group_id": 5,
+          "group_name": "COMP3308_Group2",
+          "members": [
+            {
+              "name": "Yuyun Liu",
+              "avatar": null
+            }
+          ],
+          "capacity": 2
         },
         {
           "group_id": 5,
@@ -158,5 +195,11 @@ export default {
     color: black;
     font-weight: bold;
     font-size: xx-large;
+  }
+  .box-card {
+    min-height: 550px;
+  }
+  .group-card:hover {
+    background-color: #CBF3F0;
   }
 </style>
