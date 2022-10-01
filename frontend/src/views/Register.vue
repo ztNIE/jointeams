@@ -159,10 +159,11 @@ export default {
     };
     let validatePassword = (_, value, callback) => {
       const regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,60}$";
-      if (value && (value.length < 8 || value.length > 60)) {
-        callback(new Error('Length should between 8 and 60'))
-      } else if (!value.match(regex)) {
-        callback(new Error('At least one uppercase, one lowercase and one number'))
+      // if (value && (value.length < 8 || value.length > 60)) {
+      //   callback(new Error('Length should between 8 and 60'))
+      // } else
+      if (!value.match(regex)) {
+        callback(new Error('8-60 chars with uppercase, lowercase & numbers'))
       } else {
         callback()
       }
@@ -196,7 +197,7 @@ export default {
         ],
         password: [
           {required: true, message: 'Please input your password', trigger: 'blur'},
-          {validator: validatePassword, trigger: 'blur'}
+          {validator: validatePassword, trigger: ['blur', 'change']}
         ],
         confirmPassword: [
           {required: true, message: 'Please confirm your password', trigger: 'blur'},
