@@ -20,12 +20,14 @@
             </el-tooltip>
             <el-avatar shape="circle" :size="40" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
             <p>{{this.currentUserName}}</p>
-            <el-button type="primary" size="small">Log Out</el-button>
+            <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
         </div>
     </div>
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
+
 export default {
     name: 'Header',
     data() {
@@ -40,6 +42,13 @@ export default {
             this.isCollapse = !this.isCollapse
             this.$emitter.emit('handleSidebar')
             this.$emitter.emit('handleLogoName')
+        },
+        handleLogOut() {
+            this.$router.push('/landing')
+            ElMessage({
+                message: 'You have logged out successfully!',
+                type: 'success',
+            })
         }
     }
 }

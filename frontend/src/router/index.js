@@ -72,7 +72,6 @@ const router = createRouter({
                 path: '/groupDetails/:group_id',
                 name: 'groupDetails',
                 meta: {
-                  highlight: 'myGroups',
                   hidden: true,
                 },
                 component: () => import('@/views/GroupDetails'),
