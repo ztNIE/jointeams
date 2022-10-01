@@ -5,7 +5,7 @@
         <div class="main_header">My Groups</div>
       </template>
       <el-main>
-        <el-scrollbar max-height="420px" v-if="groups.length !== 0">
+        <el-scrollbar max-height="450px" v-if="groups.length !== 0">
           <div v-for="group in groups" :key="group.group_id" class="text item">
             <el-card class="group-card">
               <div class="card-header">
@@ -121,7 +121,7 @@ export default {
     font-size: xx-large;
   }
   .box-card {
-    min-height: 550px;
+    min-height: 580px;
   }
   .group-card:hover {
     background-color: #CBF3F0;
