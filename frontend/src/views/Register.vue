@@ -94,9 +94,9 @@
                     placeholder="Data Science"
           ></el-input>
         </el-form-item>
-        <el-form-item>
-          <el-button @click="submitForm('registerForm')">Register</el-button>
-        </el-form-item>
+        <el-button type="primary"
+                   @click="submitForm('registerForm')">Register
+        </el-button>
       </el-form>
     </el-card>
   </auth-layout>
@@ -260,5 +260,7 @@ export default {
 <style lang="scss" scoped>
 .box-card {
   width: 500px;
+  text-align: center;
 }
+
 </style>

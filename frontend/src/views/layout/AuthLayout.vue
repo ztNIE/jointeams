@@ -3,7 +3,7 @@
     <div class="header clear-fix">
       <!-- logo and name -->
       <div class="box left">
-        <el-icon :size="40">
+        <el-icon :size="40" @click="gotoLanding">
           <!-- logo svg -->
           <svg width="278" height="279" viewBox="0 0 278 279" fill="none" xmlns="http://www.w3.org/2000/svg"
                xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -31,7 +31,7 @@
             </defs>
           </svg>
         </el-icon>
-        <span class="logo-name">JoinTeams</span>
+        <span class="logo-name" @click="gotoLanding">JoinTeams</span>
       </div>
       <!-- btns -->
       <div class="btns right">
@@ -40,7 +40,8 @@
                    @click="handleSignUp"
         >Sign up
         </el-button>
-        <el-button type="primary"
+        <el-button :type="loginButtonType"
+                   :class="loginButtonType"
                    v-if="!hideLogIn"
                    @click="handleLogIn"
         >Log in
@@ -65,6 +66,11 @@
 <script>
 export default {
   name: "AuthLayout",
+  computed: {
+    loginButtonType() {
+      return this.hideSignUp ? "register-btn" : "primary"
+    }
+  },
   props: {
     hideSignUp: {
       type: Boolean,
@@ -83,6 +89,9 @@ export default {
     },
     handleLogIn() {
       this.$router.push('/sign-in')
+    },
+    gotoLanding() {
+      this.$router.push('/landing')
     }
   }
 }
@@ -110,6 +119,11 @@ export default {
       color: white;
       font-size: 20px;
       font-weight: 500;
+      cursor: pointer;
+    }
+
+    & .el-icon {
+      cursor: pointer;
     }
   }
 

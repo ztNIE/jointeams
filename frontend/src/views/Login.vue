@@ -14,7 +14,7 @@
                ref="resetPassword"
                :rules="rules">
         <el-form-item label="Email" prop="email">
-          <el-input v-model="resetPasswordForm.email" />
+          <el-input v-model="resetPasswordForm.email"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -41,18 +41,17 @@
                     show-password
           />
         </el-form-item>
-        <el-row>
-          <el-col :offset="10" :span="4">
-            <el-form-item>
-              <el-button @click="submitForm('signInForm')">Login</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :offset="3" :span="4">
-            <el-form-item>
-              <el-button @click="resetPasswordVisible = true">Reset Password</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item>
+          <div class="btn">
+            <el-button type="primary"
+                       class="login-btn"
+                       @click="submitForm('signInForm')">Login
+            </el-button>
+            <el-button @click="resetPasswordVisible = true"
+                       class="reset-btn">Reset Password
+            </el-button>
+          </div>
+        </el-form-item>
 
       </el-form>
     </el-card>
@@ -189,5 +188,12 @@ export default {
 .box-card {
   width: 480px;
 }
+
+.btn {
+  text-align: center;
+}
+//.login-btn {
+//  position: absolute;
+//}
 
 </style>
