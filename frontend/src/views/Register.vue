@@ -95,13 +95,22 @@
 <script>
 import AuthLayout from "@/views/layout/AuthLayout";
 import {postRegister} from "@/api/auth";
+import {mapGetters} from "vuex";
 
 export default {
   name: 'Register',
   components: {AuthLayout},
   computed: {
+    ...mapGetters(["isLogIn", "isUser"]),
     showError() {
       return !!this.errorMsg;
+    }
+  },
+  created() {
+    if (this.isLogIn) {
+      if (this.isUser) {
+        this.$router.replace("/dashboard")
+      }
     }
   },
   methods: {

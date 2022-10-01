@@ -46,7 +46,6 @@ import Header from './components/Header'
 import Logo from './components/Logo'
 import PageNotFound from './views/404/404'
 import {mapActions, mapGetters} from "vuex";
-import {ElMessage} from "element-plus";
 
 export default {
   name: 'App',
@@ -78,11 +77,7 @@ export default {
     ...mapGetters(['isUser'])
   },
   created() {
-    this.tryAutoLogin().then((result) => {
-      console.log(result);
-      // TODO: jump to dashboard if in landing/login/register page, stay otherwise
-      ElMessage("Auto login success")
-    });
+    this.tryAutoLogin()
   }
 }
 </script>

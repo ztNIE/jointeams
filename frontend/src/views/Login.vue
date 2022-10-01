@@ -37,15 +37,23 @@
 
 import AuthLayout from "@/views/layout/AuthLayout";
 import {getEmailExist} from "@/api/auth";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import {ElMessage} from "element-plus";
 
 export default {
   name: 'Login',
   components: {AuthLayout},
   computed: {
+    ...mapGetters(['isUser', 'isLogIn']),
     showError() {
       return !!this.error
+    }
+  },
+  created() {
+    if (this.isLogIn) {
+      if (this.isUser) {
+        this.$router.replace('/dashboard')
+      }
     }
   },
   data() {

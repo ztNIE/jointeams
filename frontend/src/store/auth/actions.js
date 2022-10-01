@@ -1,4 +1,5 @@
 import {postLogin} from "@/api/auth";
+import Cookies from "js-cookie";
 
 export default {
     async login(context, loginRequest) {
@@ -15,6 +16,7 @@ export default {
             role: role,
             userId: userId
         })
+        return response;
     },
     tryAutoLogin(context) {
         if (!context.rootGetters.isLogIn) {
@@ -28,5 +30,16 @@ export default {
             userId: localStorage.getItem('userId')
         })
         return true;
+    },
+    logout(context) {
+        Cookies.remove('jointeams')
+        localStorage.removeItem('email')
+        localStorage.removeItem('role')
+        localStorage.removeItem('userId')
+        context.commit('setUserLogin', {
+            email: null,
+            role: null,
+            userId: null
+        })
     }
 }
