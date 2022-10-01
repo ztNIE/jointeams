@@ -9,6 +9,23 @@
         <el-button @click="handleError">Confirm</el-button>
       </template>
     </el-dialog>
+    <el-dialog v-model="resetPasswordVisible" title="Reset Password">
+      <el-form :model="resetPasswordForm"
+               ref="resetPassword"
+               :rules="rules">
+        <el-form-item label="Email" prop="email">
+          <el-input v-model="resetPasswordForm.email" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="resetPasswordVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="submitResetPassword"
+        >Confirm</el-button
+        >
+      </span>
+      </template>
+    </el-dialog>
     <el-card class="box-card">
       <el-form label-position="top"
                :model="formModel"
@@ -24,9 +41,19 @@
                     show-password
           />
         </el-form-item>
-        <el-form-item>
-          <el-button @click="submitForm('signInForm')">Login</el-button>
-        </el-form-item>
+        <el-row>
+          <el-col :offset="10" :span="4">
+            <el-form-item>
+              <el-button @click="submitForm('signInForm')">Login</el-button>
+            </el-form-item>
+          </el-col>
+          <el-col :offset="3" :span="4">
+            <el-form-item>
+              <el-button @click="resetPasswordVisible = true">Reset Password</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
       </el-form>
     </el-card>
   </auth-layout>
@@ -36,7 +63,7 @@
 
 
 import AuthLayout from "@/views/layout/AuthLayout";
-import {getEmailExist} from "@/api/auth";
+import {getEmailExist, postBeginResetPassword} from "@/api/auth";
 import {mapActions, mapGetters} from "vuex";
 import {ElMessage} from "element-plus";
 
@@ -49,7 +76,7 @@ export default {
       return !!this.error
     }
   },
-  created() {
+  beforeCreate() {
     if (this.isLogIn) {
       if (this.isUser) {
         this.$router.replace('/dashboard')
@@ -88,6 +115,10 @@ export default {
         email: '',
         password: ''
       },
+      resetPasswordForm: {
+        email: '',
+      },
+      resetPasswordVisible: false,
       rules: {
         email: [{validator: emailValidator, trigger: 'blur'}],
         password: [{validator: validatePassword, trigger: 'blur'}]
@@ -96,6 +127,30 @@ export default {
   },
   methods: {
     ...mapActions(['login']),
+    async submitResetPassword() {
+      this.resetPasswordVisible = false
+      let isValid = false
+      await this.$refs['resetPassword'].validate((valid) => {
+        if (valid) {
+          isValid = true
+        } else {
+          return false
+        }
+      })
+      if (!isValid) {
+        return
+      }
+      try {
+        await postBeginResetPassword(this.resetPasswordForm.email)
+        ElMessage({
+          message: `Reset password link sent to ${this.resetPasswordForm.email}`,
+          type: 'success'
+        })
+      } catch (error) {
+        console.log(error)
+      }
+      this.resetPasswordVisible = false
+    },
     async submitForm(formName) {
       let isValid = false;
       await this.$refs[formName].validate((valid) => {

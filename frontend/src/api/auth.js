@@ -20,6 +20,21 @@ export const getRegistrationVerify = async function (token) {
     return get(`/register/verify/?token=${token}`)
 }
 
+export const postBeginResetPassword = async function (email) {
+    return post('/register/resetPassword', {
+        email: email
+    })
+}
+
+export const getIsPasswordTokenExist = async function (token) {
+    return get(`/register/isResetTokenExist?token=${token}`)
+}
+
+export const postSavePassword = async function (token, newPassword) {
+    return post(`/register/savePassword?token=${token}`,
+        {newPassword: newPassword})
+}
+
 export default {
     name: 'authAPI',
 }

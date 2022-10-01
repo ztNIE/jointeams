@@ -9,4 +9,6 @@ public interface PasswordTokenRepository extends CrudRepository<PasswordToken, L
     boolean existsByUserId(Long userId);
 
     void deleteByUserId(Long userId);
+
+    boolean existsByToken(String token);
 }

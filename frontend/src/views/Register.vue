@@ -118,12 +118,14 @@ export default {
       return !!this.errorMsg;
     }
   },
-  created() {
+  beforeCreate() {
     if (this.isLogIn) {
       if (this.isUser) {
         this.$router.replace("/dashboard")
       }
     }
+  },
+  created() {
     this.loadUniversities()
   },
   methods: {

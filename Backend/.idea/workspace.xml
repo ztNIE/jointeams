@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="257cbee7-074a-4afd-8136-3941b30e3870" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../frontend/src/store/university/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/api/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/Login.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/views/Register.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/Register.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/ResetPassword.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/ResetPassword.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,14 +37,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />
