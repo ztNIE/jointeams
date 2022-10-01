@@ -83,7 +83,7 @@
 </template>
 
 <script>
-
+import userAPI from '@/api/user.js';
 
 export default {
   name: 'Dashboard',
@@ -101,6 +101,13 @@ export default {
   },
   created() {
     // fake data
+    userAPI.getUserInfo(1).then((res) => {
+      console.log(res.data.data)
+    }).catch((err) => {
+      console.log('fail')
+      console.log(err)
+    })
+
     for (let i = 0; i < 10; i ++) {
       let obj = {
         id: i,
