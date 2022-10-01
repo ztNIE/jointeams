@@ -39,7 +39,6 @@ values
     ('MATH1023', 'Multivariable Calculus and Modelling', 1, 1, false),
     ('MATH1021', 'Calculus Of One Variable', 1, 1, false),
     ('INFO1113', 'Object-Oriented Programming', 1, 1, false),
-    ('INFO1113', 'Object-Oriented Programming', 1, 1, false),
     ('COMP5347', 'Web Application Development', 1, 1, false),
     ('COMP2123', 'Data Structures and Algorithms', 1, 1, false),
     ('MATH1002', 'Linear Algebra', 1, 1, false),
