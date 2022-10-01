@@ -37,4 +37,9 @@ public class UniversityServiceImpl implements UniversityService {
         }
         return jsonResult;
     }
+
+    @Override
+    public Iterable<University> getAllUniversities() {
+        return universityRepository.findAll();
+    }
 }

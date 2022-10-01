@@ -1,6 +1,8 @@
 package com.jointeams.backend.springmail;
 
 import com.jointeams.backend.pojo.User;
+import com.jointeams.backend.pojo.token.PasswordToken;
+import com.jointeams.backend.repositery.PasswordTokenRepository;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.service.RegisterService;
 import com.jointeams.backend.service.serviceImpl.EmailSenderService;
@@ -25,12 +27,21 @@ public class EmailListener {
     @Autowired
     private EmailSenderService emailSenderService;
 
+    @Autowired
+    PasswordTokenRepository passwordTokenRepository;
+
     @Async
     @EventListener
     public void handleEmailEvent(SendEmailEvent event) throws ClassNotFoundException {
         User user = (User) userRepository.findByEmail(event.getEmail()).orElse(null);
         String token = UUID.randomUUID().toString();
-        registerService.saveVerificationTokenForUser(token, user);
+        if (event.getEmailType() == EmailType.VERIFY) {
+            registerService.saveVerificationTokenForUser(token, user);
+        } else {
+            PasswordToken passwordToken = new PasswordToken(token);
+            passwordToken.setUser(user);
+            passwordTokenRepository.save(passwordToken);
+        }
         log.debug("listener get event");
         emailSenderService.sendSimpleNoReplyEmail(
                 event.getEmail(),

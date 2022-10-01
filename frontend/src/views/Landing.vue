@@ -116,6 +116,10 @@ export default {
       color: white;
       font-size: 20px;
       font-weight: 500;
+      cursor: pointer;
+    }
+    & .el-icon {
+      cursor: pointer;
     }
   }
 

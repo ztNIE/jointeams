@@ -32,7 +32,7 @@ export default {
         })
 
         // filter out the routes that does not need a tab
-        let temp = this.$router.options.routes[0].children.slice(3)
+        let temp = this.$router.options.routes[0].children.slice(5)
         this.routes = temp.filter((item) => {
             return !item.meta.hidden
         })
