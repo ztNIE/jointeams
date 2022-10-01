@@ -1,10 +1,9 @@
 package com.jointeams.backend;
 
 
-import com.jointeams.backend.pojo.University;
-import com.jointeams.backend.pojo.User;
-import com.jointeams.backend.repositery.UniversityRepository;
-import com.jointeams.backend.repositery.UserRepository;
+import com.jointeams.backend.pojo.*;
+import com.jointeams.backend.pojo.id.InterestedCourseKey;
+import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.util.IsCommentAvailable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,6 +24,27 @@ public class BackendApplication {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+//    @Autowired
+//    private CourseRepository courseRepository;
+//
+//    @Autowired
+//    private GroupRepository groupRepository;
+//
+//    @Autowired
+//    private CommentRepository commentRepository;
+//
+//    @Autowired
+//    private EnrollmentRepository enrollmentRepository;
+//
+//    @Autowired
+//    private NotificationRepository notificationRepository;
+//
+//    @Autowired
+//    private SemesterRepository semesterRepository;
+//
+//    @Autowired
+//    private InterestedCourseRepository interestedCourseRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
@@ -33,47 +53,42 @@ public class BackendApplication {
     @Bean
     public CommandLineRunner CommandLineRunnerBean() {
         return (args) -> {
-            // Add University data
-            University usydUni = new University();
-            usydUni.setName("University of Sydney");
-            usydUni.setRegex("^[a-z]{4}[0-9]{4}@uni.sydney.edu.au$");
-            if (universityRepository.findUniversityByName(usydUni.getName()).isEmpty()) {
-                universityRepository.save(usydUni);
-            }
-            University adminUni = new University();
-            adminUni.setName("Admin");
-            adminUni.setRegex("^.+$");
-            if (universityRepository.findUniversityByName(adminUni.getName()).isEmpty()) {
-                universityRepository.save(adminUni);
-            }
-
-            // Add User data
-            User devUser = new User();
-            devUser.setUniversity(usydUni);
-            devUser.setEmail("devu0001@uni.sydney.edu.au");
-            devUser.setAdmin(false);
-            devUser.setActivate(true);
-            devUser.setFirstName("firstname");
-            devUser.setLastName("lastname");
-            devUser.setPassword(passwordEncoder.encode("qwe123ASD"));
-            if (userRepository.findByEmail(devUser.getEmail()).isEmpty()) {
-                userRepository.save(devUser);
-            }
-            User adminUser = new User();
-            adminUser.setUniversity(adminUni);
-            adminUser.setAdmin(true);
-            adminUser.setActivate(true);
-            adminUser.setFirstName("admin");
-            adminUser.setEmail("jointeamsspring@gmail.com");
-            adminUser.setPassword(passwordEncoder.encode("qwe123ASD"));
-            if (userRepository.findByEmail(adminUser.getEmail()).isEmpty()) {
-                userRepository.save(adminUser);
-            }
-
-//            boolean flag = IsCommentAvailable.Flag.getValue();
-//            System.out.println(flag);
-//            IsCommentAvailable.Flag.setValue(true);
-//            IsCommentAvailable.Flag.saveValue();
+//            // Add University data
+//            University usydUni = new University();
+//            usydUni.setName("University of Sydney");
+//            usydUni.setRegex("^[a-z]{4}[0-9]{4}@uni.sydney.edu.au$");
+//            if (universityRepository.findUniversityByName(usydUni.getName()).isEmpty()) {
+//                universityRepository.save(usydUni);
+//            }
+//            University adminUni = new University();
+//            adminUni.setName("Admin");
+//            adminUni.setRegex("^.+$");
+//            if (universityRepository.findUniversityByName(adminUni.getName()).isEmpty()) {
+//                universityRepository.save(adminUni);
+//            }
+//
+//            // Add User data
+//            User devUser = new User();
+//            devUser.setUniversity(usydUni);
+//            devUser.setEmail("devu0001@uni.sydney.edu.au");
+//            devUser.setAdmin(false);
+//            devUser.setActivate(true);
+//            devUser.setFirstName("firstname");
+//            devUser.setLastName("lastname");
+//            devUser.setPassword(passwordEncoder.encode("qwe123ASD"));
+//            if (userRepository.findByEmail(devUser.getEmail()).isEmpty()) {
+//                userRepository.save(devUser);
+//            }
+//            User adminUser = new User();
+//            adminUser.setUniversity(adminUni);
+//            adminUser.setAdmin(true);
+//            adminUser.setActivate(true);
+//            adminUser.setFirstName("admin");
+//            adminUser.setEmail("jointeamsspring@gmail.com");
+//            adminUser.setPassword(passwordEncoder.encode("qwe123ASD"));
+//            if (userRepository.findByEmail(adminUser.getEmail()).isEmpty()) {
+//                userRepository.save(adminUser);
+//            }
 
         };
     }
