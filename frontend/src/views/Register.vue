@@ -9,6 +9,16 @@
         <el-button @click="handleError">Confirm</el-button>
       </template>
     </el-dialog>
+    <el-dialog v-model="isRegisterSuccess"
+               title="Register Success"
+               width="40%"
+               center
+    >
+      <span>Activation link has sent to your university email, please activate your account first.</span>
+      <template #footer>
+        <el-button @click="confirmSuccess">Go Activate</el-button>
+      </template>
+    </el-dialog>
     <el-card class="box-card">
       <el-form label-position="top"
                :rules="rules"
@@ -32,7 +42,7 @@
           <el-col :span="12">
             <el-form-item label="University" prop="university">
               <el-select v-model="formModel.university">
-                <el-option v-for="givenUni in givenUniversities"
+                <el-option v-for="givenUni in universities"
                            :key="givenUni.id"
                            :label="givenUni.name"
                            :value="givenUni.id"/>
@@ -42,10 +52,10 @@
           <el-col :span="12">
             <el-form-item label="Faculty">
               <el-select v-model="formModel.faculty">
-                <el-option v-for="givenFaculty in givenFaculties"
-                           :key="givenFaculty.id"
-                           :label="givenFaculty.name"
-                           :value="givenFaculty.id"
+                <el-option v-for="faculty in faculties"
+                           :key="faculty.name"
+                           :label="faculty.name"
+                           :value="faculty.name"
                 />
               </el-select>
             </el-form-item>
@@ -94,14 +104,16 @@
 
 <script>
 import AuthLayout from "@/views/layout/AuthLayout";
-import {postRegister} from "@/api/auth";
-import {mapGetters} from "vuex";
+import {getEmailExist, postRegister} from "@/api/auth";
+import {mapActions, mapGetters} from "vuex";
+
 
 export default {
   name: 'Register',
   components: {AuthLayout},
   computed: {
     ...mapGetters(["isLogIn", "isUser"]),
+    ...mapGetters('university', ['universities']),
     showError() {
       return !!this.errorMsg;
     }
@@ -112,8 +124,10 @@ export default {
         this.$router.replace("/dashboard")
       }
     }
+    this.loadUniversities()
   },
   methods: {
+    ...mapActions('university', ['loadUniversities']),
     async submitForm(formName) {
       let isValid = false;
       await this.$refs[formName].validate((valid) => {
@@ -134,12 +148,12 @@ export default {
             lastName: this.formModel.lastname,
             degree: this.formModel.degree,
             email: this.formModel.email,
-            faculty: this.getFacultyNameById(this.formModel.faculty),
+            faculty: this.formModel.faculty,
             universityId: this.formModel.university,
             password: this.formModel.password
           })
-          alert("success");
-          this.$router.replace('/landing')
+          this.isRegisterSuccess = true;
+          this.emailUrl = this.universities.find(university => university.id === this.formModel.university).emailUrl
         } catch (error) {
           console.log(error);
           this.errorMsg = error.message;
@@ -149,8 +163,11 @@ export default {
     handleError() {
       this.errorMsg = null;
     },
-    getFacultyNameById(facultyId) {
-      return this.givenFaculties.find(faculty => faculty.id === facultyId);
+    confirmSuccess() {
+      this.isRegisterSuccess = false
+      console.log(this.emailUrl)
+      window.open(this.emailUrl);
+      this.$router.replace("/landing")
     }
   },
   data() {
@@ -158,19 +175,25 @@ export default {
       if (!this.formModel.university) {
         callback(new Error('Please select your university first'))
       } else {
-        let regex = this.givenUniversities.find(university => university.id === this.formModel.university).regex;
+        let regex = this.universities.find(university => university.id === this.formModel.university).regex;
         if (!value.match(regex)) {
           callback(new Error('Invalid university email address'))
         } else {
-          callback()
+          getEmailExist(value).then((result) => {
+            console.log(result)
+            if (result.data.data.result) {
+              callback(new Error('Email already registered'))
+            }
+            callback()
+          }).catch((reason) => {
+            console.log(reason)
+            callback()
+          })
         }
       }
     };
     let validatePassword = (_, value, callback) => {
       const regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,60}$";
-      // if (value && (value.length < 8 || value.length > 60)) {
-      //   callback(new Error('Length should between 8 and 60'))
-      // } else
       if (!value.match(regex)) {
         callback(new Error('8-60 chars with uppercase, lowercase & numbers'))
       } else {
@@ -188,6 +211,8 @@ export default {
     };
     return {
       errorMsg: null,
+      faculties: require('../faculties.json'),
+      isRegisterSuccess: false,
       rules: {
         firstname: [
           {required: true, message: 'Please input your firstname', trigger: 'blur'},
@@ -224,28 +249,7 @@ export default {
         degree: '',
         major: '',
       },
-      givenUniversities: [
-        {
-          id: 1,
-          name: 'University of Sydney',
-          regex: '^[a-z]{4}[0-9]{4}@uni.sydney.edu.au$'
-        },
-        {
-          id: 2,
-          name: 'Dummy University',
-          regex: '^.+$'
-        }
-      ],
-      givenFaculties: [
-        {
-          id: 1,
-          name: "School of Computer Science"
-        },
-        {
-          id: 2,
-          name: "School of Electrical Engineering"
-        }
-      ],
+      emailUrl: null,
     }
   }
 }

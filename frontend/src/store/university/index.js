@@ -1,3 +1,4 @@
+import {getUniversities} from "@/api/auth";
 
 export default {
     namespaced: true,
@@ -13,8 +14,18 @@ export default {
     },
     actions: {
         async loadUniversities(context) {
-            await
+            const response = await getUniversities()
+            console.log(response)
+            const universityData = response.data.data.filter((uni) => {
+                return uni.name !== "Test University"
+            })
+            context.commit('loadUniversities', universityData)
         }
     },
-    mutations
+    mutations: {
+        loadUniversities(state, payload) {
+            console.log(payload)
+            state.universities = payload;
+        }
+    }
 }

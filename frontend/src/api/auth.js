@@ -13,7 +13,7 @@ export const postLogin = async function (loginRequest) {
 }
 
 export const getUniversities = async function () {
-    return get()
+    return get('/university/getall')
 }
 
 export default {
