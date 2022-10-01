@@ -16,6 +16,10 @@ export const getUniversities = async function () {
     return get('/university/getall')
 }
 
+export const getRegistrationVerify = async function (token) {
+    return get(`/register/verify/?token=${token}`)
+}
+
 export default {
     name: 'authAPI',
 }

@@ -49,7 +49,6 @@ public class RegistrationController {
             publisher.publishEvent(
                     new SendEmailEvent(
                             user.getEmail(),
-                            getApplicationUrl(request),
                             EmailType.VERIFY)
             );
             return ResponseEntity.ok().body(new StandardResponse<>("success", registerResponse));
@@ -63,7 +62,7 @@ public class RegistrationController {
      * @param token verification_token
      * @param request HttpRequest
      * @return if success, msg: success, data: null, status code: 200
-     *         if failed, msg: error message, data: null, status code: 400
+     *         if failed, msg: error message, data: null, status code: 202
      */
     @GetMapping("/verify")
     public ResponseEntity<?> verifyRegistration(@RequestParam("token") String token, final HttpServletRequest request) {
@@ -76,32 +75,30 @@ public class RegistrationController {
             publisher.publishEvent(
                     new SendEmailEvent(
                             user.getEmail(),
-                            getApplicationUrl(request),
                             EmailType.VERIFY)
             );
-            return ResponseEntity.badRequest().body(
+            return ResponseEntity.status(202).body(
                     new StandardResponse<>("Token expired, resend token.", null));
         } else if (result.equalsIgnoreCase("notfound")){
-            return ResponseEntity.status(204).body(new StandardResponse<>("Token not found", null));
+            return ResponseEntity.status(202).body(new StandardResponse<>("Token not found", null));
         } else {
             log.error("Failed to catch validateVerificationToken");
-            return ResponseEntity.status(204).body(new StandardResponse<>("Unknown exception", null));
+            return ResponseEntity.status(202).body(new StandardResponse<>("Unknown exception", null));
         }
     }
 
     /**
      *
      * @param passwordRequest Give the email of the user
-     * @param request HttpRequest
      * @return if success, msg: success, status code: 200, send reset password token email
-     *         if failed, msg: User Not Found, status code: 400
+     *         if failed, msg: User Not Found, status code: 202
      */
 
     @PostMapping("/resetPassword")
-    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordRequest passwordRequest, HttpServletRequest request) {
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordRequest passwordRequest) {
         User user = registerService.findUserByEmail(passwordRequest.getEmail());
         if (user == null) {
-            return ResponseEntity.badRequest().body(new StandardResponse<>("User Not Found", null));
+            return ResponseEntity.status(202).body(new StandardResponse<>("User Not Found", null));
         }
 
         // If already sent a reset password email, delete the old token
@@ -109,10 +106,10 @@ public class RegistrationController {
             passwordTokenRepository.deleteByUserId(user.getId());
         }
 
+        log.info("send email event published");
         publisher.publishEvent(
                 new SendEmailEvent(
                         user.getEmail(),
-                        getApplicationUrl(request),
                         EmailType.RESET_PASSWORD)
         );
         return ResponseEntity.ok().body(new StandardResponse<>("success", null));
@@ -141,21 +138,12 @@ public class RegistrationController {
             publisher.publishEvent(
                     new SendEmailEvent(
                             user.getEmail(),
-                            getApplicationUrl(request),
                             EmailType.RESET_PASSWORD)
             );
-            return ResponseEntity.status(204).body(new StandardResponse<>("Token expired, resend", null));
+            return ResponseEntity.status(202).body(new StandardResponse<>("Token expired, resend", null));
         }
 
         registerService.savePassword(user, passwordRequest);
         return ResponseEntity.ok().body(new StandardResponse<>("success", null));
-    }
-
-    private String getApplicationUrl(HttpServletRequest request) {
-        return "http://" +
-                request.getServerName() +
-                ":" +
-                request.getServerPort() +
-                request.getContextPath();
     }
 }
