@@ -252,16 +252,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-//el-form {
-//  margin: 1rem;
-//  padding: 1rem;
-//}
-//
-//el-card {
-//  padding: 1rem;
-//  margin: 2rem auto;
-//  max-width: 40rem;
-//}
 .box-card {
   width: 500px;
 }

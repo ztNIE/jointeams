@@ -12,6 +12,10 @@ export const postLogin = async function (loginRequest) {
     return post('/auth/login', loginRequest)
 }
 
+export const getUniversities = async function () {
+    return get()
+}
+
 export default {
     name: 'authAPI',
 }
