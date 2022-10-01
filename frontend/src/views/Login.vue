@@ -106,8 +106,8 @@ export default {
           password: this.formModel.password
         })
         ElMessage({
-          message: 'Success login',
-          type: 'info'
+          message: 'You have successfully logged in!',
+          type: 'success'
         })
         this.$router.replace('/dashboard')
       } catch (error) {

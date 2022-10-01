@@ -18,7 +18,7 @@
                     <BellFilled class="icon-bell"></BellFilled>
                 </el-badge>
             </el-tooltip>
-            <el-avatar shape="circle" :size="40" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/>
+            <el-avatar shape="circle" :size="40" :src="avatar"/>
             <p>{{this.currentUserName}}</p>
             <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
         </div>
@@ -27,15 +27,27 @@
 
 <script>
 import { ElMessage } from 'element-plus'
+import userAPI from '@/api/user.js'
 
 export default {
     name: 'Header',
     data() {
         return {
             isCollapse: false,
-            currentUserName: 'Emma Kwan',
-            showDot: true
+            currentUserName: null,
+            showDot: true,
+            avatar: null
         }
+    },
+    created() {
+        let _this = this
+        userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
+            let data = res.data.data
+            _this.currentUserName = data.firstName + ' ' + data.lastName
+            _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
+        }).catch((err) => {
+            ElMessage.error(err.data.msg)
+        })
     },
     methods: {
         handleOpenAndClose() {
