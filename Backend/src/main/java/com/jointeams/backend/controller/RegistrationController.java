@@ -54,7 +54,7 @@ public class RegistrationController {
             );
             return ResponseEntity.ok().body(new StandardResponse<>("success", registerResponse));
         } else {
-            return ResponseEntity.badRequest().body(new StandardResponse<>(result, null));
+            return ResponseEntity.status(204).body(new StandardResponse<>(result, null));
         }
     }
 
@@ -82,10 +82,10 @@ public class RegistrationController {
             return ResponseEntity.badRequest().body(
                     new StandardResponse<>("Token expired, resend token.", null));
         } else if (result.equalsIgnoreCase("notfound")){
-            return ResponseEntity.badRequest().body(new StandardResponse<>("Token not found", null));
+            return ResponseEntity.status(204).body(new StandardResponse<>("Token not found", null));
         } else {
             log.error("Failed to catch validateVerificationToken");
-            return ResponseEntity.internalServerError().body(new StandardResponse<>("Unknown exception", null));
+            return ResponseEntity.status(204).body(new StandardResponse<>("Unknown exception", null));
         }
     }
 
@@ -144,7 +144,7 @@ public class RegistrationController {
                             getApplicationUrl(request),
                             EmailType.RESET_PASSWORD)
             );
-            return ResponseEntity.badRequest().body(new StandardResponse<>("Token expired, resend", null));
+            return ResponseEntity.status(204).body(new StandardResponse<>("Token expired, resend", null));
         }
 
         registerService.savePassword(user, passwordRequest);
