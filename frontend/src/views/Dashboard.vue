@@ -85,14 +85,15 @@
 <script>
 import userAPI from '@/api/user.js';
 import courseAPI from '@/api/course.js';
+import adminAPI from '@/api/admin.js';
 import { ElMessage } from 'element-plus'
 
 export default {
   name: 'Dashboard',
   data() {
     return {
-      year: 2022,
-      semester: 2,
+      year: null,
+      semester: null,
       currentCourse: [],
       pastCourse: [],
       interestedCourse: [],
@@ -104,6 +105,7 @@ export default {
   created() {
     let _this = this
 
+    // get current, past and interested courses
     userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
       let data = res.data.data
       _this.currentCourse = data.currentCourse
@@ -113,10 +115,20 @@ export default {
       ElMessage.error(err.data.msg)
     })
 
+    // get all courses
     courseAPI.getAllCourse(this.$store.getters.userId).then((res) => {
       let data = res.data.data
       _this.allCourse = data.allCourse
       _this.searchedAllCourse = this.allCourse
+    }).catch((err) => {
+      ElMessage.error(err.data.msg)
+    })
+
+    // get current semester
+    adminAPI.getCurrentSemester().then((res) => {
+      let data = res.data.data
+      _this.year = data.Semester.year
+      _this.semester = data.Semester.semesterNumber
     }).catch((err) => {
       ElMessage.error(err.data.msg)
     })
