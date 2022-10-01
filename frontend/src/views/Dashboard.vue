@@ -84,6 +84,8 @@
 
 <script>
 import userAPI from '@/api/user.js';
+import courseAPI from '@/api/course.js';
+import { ElMessage } from 'element-plus'
 
 export default {
   name: 'Dashboard',
@@ -100,38 +102,24 @@ export default {
     }
   },
   created() {
-    // fake data
-    userAPI.getUserInfo(1).then((res) => {
-      console.log(res.data.data)
+    let _this = this
+
+    userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
+      let data = res.data.data
+      _this.currentCourse = data.currentCourse
+      _this.pastCourse = data.previousCourse
+      _this.interestedCourse = data.interestedCourse
     }).catch((err) => {
-      console.log('fail')
-      console.log(err)
+      ElMessage.error(err.data.msg)
     })
 
-    for (let i = 0; i < 10; i ++) {
-      let obj = {
-        id: i,
-        code: "ELEC5619",
-        name: "Object Oriented Application Framework"
-      }
-
-      let obj2 = {
-        id: 100+i,
-        code: "ELEC5619",
-        name: "Object Oriented"
-      }
-
-      this.currentCourse.push(obj)
-      this.pastCourse.push(obj)
-      this.interestedCourse.push(obj)
-      this.allCourse.push(obj)
-
-      this.currentCourse.push(obj2)
-      this.pastCourse.push(obj2)
-      this.interestedCourse.push(obj2)
-      this.allCourse.push(obj2)
-    }
-    this.searchedAllCourse = this.allCourse
+    courseAPI.getAllCourse(this.$store.getters.userId).then((res) => {
+      let data = res.data.data
+      _this.allCourse = data.allCourse
+      _this.searchedAllCourse = this.allCourse
+    }).catch((err) => {
+      ElMessage.error(err.data.msg)
+    })
   },
   methods: {
     handleClickCourse(courseId) {
@@ -140,7 +128,11 @@ export default {
     handleSearch() {
       let _this = this
       this.searchedAllCourse = this.allCourse.filter(function(item) {
-        return item.code.toLowerCase().indexOf(_this.input.toLowerCase()) != -1 || item.name.toLowerCase().indexOf(_this.input.toLowerCase()) != -1
+        if (_this.input.toLowerCase().trim() !== '') {
+          return item.code.toLowerCase().indexOf(_this.input.toLowerCase().trim()) != -1 || item.name.toLowerCase().indexOf(_this.input.toLowerCase().trim()) != -1
+        } else {
+          return true
+        }
       })
     }
   }
