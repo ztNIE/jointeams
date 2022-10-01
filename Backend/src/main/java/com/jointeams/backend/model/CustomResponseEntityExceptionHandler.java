@@ -16,6 +16,6 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
                                                                   HttpHeaders headers,
                                                                   HttpStatus status,
                                                                   WebRequest request) {
-        return ResponseEntity.badRequest().body(new StandardResponse<>(ex.getMessage(), null));
+        return ResponseEntity.badRequest().body(new StandardResponse<>("argument not valid: " + ex.getMessage(), null));
     }
 }

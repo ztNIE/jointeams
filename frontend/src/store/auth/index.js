@@ -4,7 +4,8 @@ export default {
     state() {
         return {
             email: null,
-            role: null
+            role: null,
+            userId: null
         }
     },
     actions: {
@@ -13,11 +14,14 @@ export default {
             console.log(response)
             const email = response.data.data.email
             const role = response.data.data.roles[0]
+            const userId = response.data.data.userId
             localStorage.setItem('email', email)
             localStorage.setItem('role', role)
+            localStorage.setItem('userId', userId)
             context.commit('setUserLogin', {
                 email: email,
-                role: role
+                role: role,
+                userId: userId
             })
         }
     },
@@ -26,6 +30,7 @@ export default {
             console.log(payload)
             state.email = payload.email
             state.role = payload.role
+            state.userId = payload.userId
         }
     },
     getters: {
@@ -34,6 +39,12 @@ export default {
         },
         isUser(state) {
             return state.role === "ROLE_USER";
+        },
+        email(state) {
+            return state.email;
+        },
+        userId(state) {
+            return state.userId;
         }
     }
 }
