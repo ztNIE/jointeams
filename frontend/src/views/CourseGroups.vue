@@ -44,7 +44,7 @@
             </el-form-item>
           </el-form>
         </div>
-        <el-scrollbar max-height="45s0px" v-if="searchResult.length !== 0">
+        <el-scrollbar max-height="300px" v-if="searchResult.length !== 0">
           <div v-for="group in searchResult" :key="group.group_id" class="text item">
             <el-card class="group-card">
               <div class="card-header">
@@ -100,7 +100,7 @@
 
 <script>
 // import cookieUtils from '../utils/cookie.js'
-// import GroupAPI from '../api/group.js'
+import CourseGroupAPI from '../api/courseGroup.js'
 import {ElMessage, ElMessageBox} from 'element-plus'
 
 export default {
@@ -112,42 +112,8 @@ export default {
         "name": "Spring Boot Framework",
         "id": 1
       },
-      groups: [
-        {
-          "is_current_user_group": true,
-          "group_id": 1,
-          "group_name": "ELEC5619_Group1",
-          "members": [
-            {
-              "name": "firstname lastname",
-              "avatar": null,
-              "id": 1
-            },
-            {
-              "name": "admin null",
-              "avatar": null,
-              "id": 2
-            }
-          ],
-          "tutorial": "CC02",
-          "capacity": 3
-        },
-        {
-          "is_current_user_group": false,
-          "group_id": 4,
-          "group_name": "ELEC5619_Group2",
-          "members": [
-            {
-              "name": "Yuyun Liu",
-              "avatar": null,
-              "id": 3
-            }
-          ],
-          "tutorial": "CC09",
-          "capacity": 3
-        }
-      ],
-      tutorial: "RE02",
+      groups: [],
+      tutorial: "",
       search_term: "",
       search_tut: "",
       user_id: null,
@@ -157,8 +123,24 @@ export default {
     }
   },
   mounted() {
-    this.user_id = 1
-    this.searchResult = this.groups
+    // TODO (get user_id from cookie)
+    this.user_id = 6
+
+    CourseGroupAPI.getTutorial(this.user_id, this.course.id).then((res) => {
+      if(res !== null) {
+        this.tutorial = res.data.data.tutorial
+      }
+    })
+
+    CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then((res) => {
+      if(res.data.data === null) {
+        this.groups = []
+      } else {
+        this.groups = res.data.data
+      }
+
+      this.searchResult = this.groups
+    })
   },
   methods: {
     errorHandler() {
@@ -219,9 +201,11 @@ export default {
       }
     },
     handleEditTutorial() {
-      ElMessage({
-        type: 'success',
-        message: "Edit success!",
+      CourseGroupAPI.setTutorial(this.user_id, this.course.id, this.tutorial).then((res) => {
+        ElMessage({
+          type: res.data.msg,
+          message: "Edit success!",
+        })
       })
     },
     handleToDetail(group_id) {
@@ -240,22 +224,19 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        // GroupAPI.sendJoinRequest(this.$route.params.group_id, this.user_id).then((res) => {
-        //   if(res.status === 200) {
-        //     ElMessage({
-        //       type: 'success',
-        //       message: res.data.msg,
-        //     })
-        //   } else {
-        //     ElMessage({
-        //       type: 'warning',
-        //       message: res.data.msg,
-        //     })
-        //   }
-        // })
-        ElMessage({
-          type: 'success',
-          message: "Success!",
+        CourseGroupAPI.addAGroup(this.course.id, this.user_id, this.group_capacity).then((res) => {
+          if(res.status === 200) {
+            ElMessage({
+              type: 'success',
+              message: res.data.msg,
+
+            })
+          } else {
+            ElMessage({
+              type: 'warning',
+              message: res.data.msg,
+            })
+          }
         })
       }).catch(() => {
         ElMessage({

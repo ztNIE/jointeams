@@ -112,26 +112,43 @@ public class CourseGroupServiceImpl implements CourseGroupService {
 
         // Find corresponding tutorial and semester.
         List<Object[]> information = enrollmentRepository.getCurrentEnrollmentTutorialByCourseIdAndUserId(courseId, userId).orElse(null);
-        String currentStudentTutrial = (String) null;
+        String currentStudentTutorial = (String) null;
         Long currentSemester = (Long) null;
-        if(information != null) {
-            currentStudentTutrial = (String) information.get(0)[0];
-            currentSemester = ((BigInteger) information.get(0)[1]).longValue();
+//        if(information != null && information.size() > 0) {
+//            currentStudentTutorial = (String) information.get(0)[0];
+//            currentSemester = ((BigInteger) information.get(0)[1]).longValue();
+//        } else {
+//            jsonResult.put("msg", "You do not enroll in this course this semester!");
+//            jsonResult.put("data", null);
+//            return jsonResult;
+//        }
+        if(information == null || information.size() == 0) {
+            jsonResult.put("msg", "You do not enroll in this course this semester!");
+            jsonResult.put("data", null);
+            return jsonResult;
         } else {
-            jsonResult.put("msg", "Unable to find a student in this semester enrolled in this course!");
+            currentStudentTutorial = (String) information.get(0)[0];
+            currentSemester = ((BigInteger) information.get(0)[1]).longValue();
+        }
+
+        // Check whether the student already have a group
+        Course course = courseRepository.findById(courseId).orElse(null);
+        Semester semester = semesterRepository.findById(currentSemester).orElse(null);
+
+        List<Object[]> groupsExisted = groupRepository.isStudentAlreadyInAGroup(course.getId(), semester.getId(), userId).orElse(null);
+        if(groupsExisted != null && groupsExisted.size() > 0) {
+            jsonResult.put("msg", "You are already in a group!");
             jsonResult.put("data", null);
             return jsonResult;
         }
-        System.out.println(currentStudentTutrial);
-        System.out.println(currentSemester);
 
         // Add a group.
         Group newGroup = new Group();
-        Course course = courseRepository.findById(courseId).orElse(null);
-        Semester semester = semesterRepository.findById(currentSemester).orElse(null);
+//        Course course = courseRepository.findById(courseId).orElse(null);
+        // Semester semester = semesterRepository.findById(currentSemester).orElse(null);
         newGroup.setCapacity(capacity);
         newGroup.setNameId(course.getNextGroupNameId());
-        newGroup.setTutorial(currentStudentTutrial);
+        newGroup.setTutorial(currentStudentTutorial);
         newGroup.setCourse(course);
         newGroup.setSemester(semester);
         Group result = groupRepository.save(newGroup);
@@ -141,8 +158,8 @@ public class CourseGroupServiceImpl implements CourseGroupService {
         GroupUserId groupUserId = new GroupUserId(result.getId(), userId);
         groupUser.setGroupUserId(groupUserId);
         groupUser.setLeader(true);
-        groupUserRepository.save(groupUser);
 
+        System.out.println(groupUser);
         // Update next group name id in course.
         course.setNextGroupNameId(course.getNextGroupNameId() + 1);
         courseRepository.save(course);

@@ -27,6 +27,14 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
             "where g.course_id = ?1\n" +
             "  and s.is_current = true;", nativeQuery = true)
     public Optional<List<Object[]>> getAllCurrentGroupsByCourseId(Long courseId);
+
+    @Query(value="select g.id \n" +
+            "from `group` as g\n" +
+            "inner join group_user gu on g.id = gu.group_id\n" +
+            "where gu.user_id = ?3\n" +
+            "and g.semester_id = ?2\n" +
+            "and g.course_id = ?1", nativeQuery = true)
+    public Optional<List<Object[]>> isStudentAlreadyInAGroup(Long courseId, Long semesterId, Long userId);
 }
 
 
