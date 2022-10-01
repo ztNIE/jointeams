@@ -43,8 +43,8 @@ export default {
         email(state) {
             return state.email;
         },
-        userId() {
-            return localStorage.getItem('userId');
+        userId(state) {
+            return state.userId;
         }
     }
 }
