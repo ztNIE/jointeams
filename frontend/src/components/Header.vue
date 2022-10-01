@@ -23,23 +23,6 @@
             <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
         </div>
     </div>
-
-    <!-- right -->
-    <div class="right vertical-center">
-      <el-tooltip
-          class="box-item"
-          effect="light"
-          content="Notification"
-          placement="left"
-      >
-        <el-badge :is-dot="showDot" class="item">
-          <BellFilled class="icon-bell"></BellFilled>
-        </el-badge>
-      </el-tooltip>
-      <el-avatar shape="circle" :size="40" :src="avatar"/>
-      <p>{{ this.currentUserName }}</p>
-      <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
-    </div>
 </template>
 
 <script>
@@ -59,13 +42,15 @@ export default {
     },
     created() {
         let _this = this
-        userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
-            let data = res.data.data
-            _this.currentUserName = data.firstName + ' ' + data.lastName
-            _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
-        }).catch((err) => {
-            ElMessage.error(err.data.msg)
-        })
+        if (this.$store.getters.userId != null) {
+            userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
+                let data = res.data.data
+                _this.currentUserName = data.firstName + ' ' + data.lastName
+                _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
+            }).catch((err) => {
+                ElMessage.error(err.data.msg)
+            })
+        }
     },
     methods: {
         ...mapActions(['logout']),
