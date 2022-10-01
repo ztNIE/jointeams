@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="257cbee7-074a-4afd-8136-3941b30e3870" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../frontend/src/store/auth/actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/store/auth/getters.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend/src/store/auth/mutations.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/store/auth/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/store/auth/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="257cbee7-074a-4afd-8136-3941b30e3870" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,14 +32,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources" />
@@ -70,6 +68,9 @@
       <updated>1661922995513</updated>
       <workItem from="1661922996896" duration="129000" />
       <workItem from="1661923286842" duration="8000" />
+      <workItem from="1663391074063" duration="1949000" />
+      <workItem from="1664464475082" duration="540000" />
+      <workItem from="1664511245633" duration="10658000" />
     </task>
     <servers />
   </component>
@@ -86,6 +87,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="API getIsAdmin &amp; getUserInfoById done." />
