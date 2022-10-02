@@ -19,7 +19,7 @@ export default {
         return response;
     },
     tryAutoLogin(context) {
-        if (!context.rootGetters.isLogIn) {
+        if (!Cookies.get('jointeams')) {
             return false;
         }
 
