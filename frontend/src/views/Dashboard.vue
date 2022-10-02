@@ -111,35 +111,40 @@ export default {
     authenticateIdentity("ROLE_USER")
   },
   created() {
-    let _this = this
+    if (!this.$store.getters.isLogIn) {
+      ElMessage.info('Please log in first.')
+      this.$router.push('/sign-in')
+    } else {
+      let _this = this
 
-    // get current, past and interested courses
-    userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
-      let data = res.data.data
-      _this.currentCourse = data.currentCourse
-      _this.pastCourse = data.previousCourse
-      _this.interestedCourse = data.interestedCourse
-    }).catch((err) => {
-      ElMessage.error(err.data.msg)
-    })
+      // get current, past and interested courses
+      userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
+        let data = res.data.data
+        _this.currentCourse = data.currentCourse
+        _this.pastCourse = data.previousCourse
+        _this.interestedCourse = data.interestedCourse
+      }).catch((err) => {
+        ElMessage.error(err.data.msg)
+      })
 
-    // get all courses
-    courseAPI.getAllCourse(this.$store.getters.userId).then((res) => {
-      let data = res.data.data
-      _this.allCourse = data.allCourse
-      _this.searchedAllCourse = this.allCourse
-    }).catch((err) => {
-      ElMessage.error(err.data.msg)
-    })
+      // get all courses
+      courseAPI.getAllCourse(this.$store.getters.userId).then((res) => {
+        let data = res.data.data
+        _this.allCourse = data.allCourse
+        _this.searchedAllCourse = this.allCourse
+      }).catch((err) => {
+        ElMessage.error(err.data.msg)
+      })
 
-    // get current semester
-    adminAPI.getCurrentSemester().then((res) => {
-      let data = res.data.data
-      _this.year = data.Semester.year
-      _this.semester = data.Semester.semesterNumber
-    }).catch((err) => {
-      ElMessage.error(err.data.msg)
-    })
+      // get current semester
+      adminAPI.getCurrentSemester().then((res) => {
+        let data = res.data.data
+        _this.year = data.Semester.year
+        _this.semester = data.Semester.semesterNumber
+      }).catch((err) => {
+        ElMessage.error(err.data.msg)
+      })
+    }
   },
   methods: {
     handleClickCourse(courseId) {
