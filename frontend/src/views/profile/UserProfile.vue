@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 import Profile from './Profile.vue'
 
 export default {
@@ -12,10 +12,10 @@ export default {
     Profile
   },
   created() {
-    if (!this.$store.getters.isLogIn) {
-      ElMessage.info('Please log in first.')
-      this.$router.push('/sign-in')
-    }
+    // if (!this.$store.getters.isLogIn) {
+    //   ElMessage.info('Please log in first.')
+    //   this.$router.push('/sign-in')
+    // }
   }
 }
 </script>

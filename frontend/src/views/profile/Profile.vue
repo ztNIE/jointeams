@@ -45,13 +45,13 @@
 
 <script>
 
-import authenticateIdentity from "@/util/login";
+// import authenticateIdentity from "@/util/login";
 
 export default {
   name: 'Profile',
-  beforeCreate() {
-    authenticateIdentity("ROLE_USER")
-  }
+  // beforeCreate() {
+  //   authenticateIdentity("ROLE_USER")
+  // }
 }
 </script>
 

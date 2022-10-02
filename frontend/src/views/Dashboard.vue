@@ -94,7 +94,6 @@ import courseAPI from '@/api/course.js';
 import adminAPI from '@/api/admin.js';
 import {ElMessage} from 'element-plus'
 import {mapGetters} from "vuex";
-import authenticateIdentity from "@/util/login";
 
 export default {
   name: 'Dashboard',
@@ -112,9 +111,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isUser'])
-  },
-  beforeCreate() {
-    authenticateIdentity("ROLE_USER")
   },
   created() {
 

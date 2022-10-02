@@ -30,7 +30,6 @@ import {ElMessage} from 'element-plus'
 import userAPI from '@/api/user.js'
 import {mapActions} from "vuex";
 
-
 export default {
   name: 'Header',
   data() {
@@ -61,6 +60,8 @@ export default {
       this.$emitter.emit('handleLogoName')
     },
     handleLogOut() {
+      this.$store.commit('setAddRoutes', false)
+      localStorage.removeItem('routes')
       this.logout()
       this.$router.push('/landing')
       ElMessage({

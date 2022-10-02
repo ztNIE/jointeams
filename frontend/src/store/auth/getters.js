@@ -8,5 +8,8 @@ export default {
     },
     userId(state) {
         return state.userId;
+    },
+    addRoutes(state) {
+        return state.addRoutes
     }
 }

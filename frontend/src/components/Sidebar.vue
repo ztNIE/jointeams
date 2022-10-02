@@ -34,10 +34,15 @@ export default {
     })
 
     // filter out the routes that does not need a tab
-    let temp = this.$router.options.routes[0].children.slice(5)
-    this.routes = temp.filter((item) => {
-      return !item.meta.hidden
-    })
+    // store the routes in local storage since addRoutes() does not save the new route in this.$router.options
+    let localStorageRoutes = localStorage.getItem('routes')
+    if (localStorageRoutes && JSON.parse(localStorageRoutes)[0].children.length > 5) {
+        let temp = JSON.parse(localStorageRoutes)[0].children.slice(0, JSON.parse(localStorageRoutes)[0].children.length - 5)
+        this.routes = temp.filter((item) => {
+            return !item.meta.hidden
+        })
+        this.routes.reverse()
+    }
   },
   methods: {
     handleBack() {
