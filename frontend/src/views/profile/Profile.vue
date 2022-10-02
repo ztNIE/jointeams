@@ -44,15 +44,13 @@
 </template>
 
 <script>
-// import { ElMessage } from 'element-plus'
+
+import authenticateIdentity from "@/util/login";
 
 export default {
   name: 'Profile',
-  created() {
-    // if (!this.$store.getters.isLogIn) {
-    //   ElMessage.info('Please log in first.')
-    //   this.$router.push('/sign-in')
-    // }
+  beforeCreate() {
+    authenticateIdentity("ROLE_USER")
   }
 }
 </script>

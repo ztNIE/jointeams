@@ -1,10 +1,6 @@
-import Cookies from 'js-cookie'
-
 export default {
-    isLogIn() {
-        return !!Cookies.get('jointeams');
-    },
     isUser(state) {
+        console.log(state.role)
         return state.role === "ROLE_USER";
     },
     email(state) {
