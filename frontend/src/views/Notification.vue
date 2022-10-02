@@ -1,19 +1,205 @@
 <template>
-    <p>notification</p>
+  <div class="common-layout" >
+    <el-card class="box-card">
+      <template #header>
+        <div class="main_header">Notification</div>
+      </template>
+      <el-main>
+        <el-scrollbar max-height="450px" v-if="notifications.length !== 0">
+          <div v-for="notification in notifications" :key="notification.id" class="text item">
+            <el-card class="notification-card">
+              <div class="card-header">
+                <span id="type">{{notification.content}}</span>
+                <span id="from">From: {{from(notification.type, notification)}}</span>
+                <div class="action-button">
+                  <el-button v-if="notification.type === 0 || notification.type === 1" id="accept-button" type="primary"
+                             @click="actionOnNotification(notification,0)">{{ actionList[0] }}</el-button>
+                  <el-button v-if="notification.type === 0 || notification.type === 1" id="decline-button" type="warning"
+                             @click="actionOnNotification(notification,1)">{{actionList[1]}}</el-button>
+                  <el-button id="delete-button" type="info" @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
+                </div>
+              </div>
+              <div class="card-content">
+                <span id="time">Time: {{test(notification)}}</span>
+                <br>
+                <span id="message">{{notification.message}}</span>
+              </div>
+            </el-card>
+            <div class="divider_space"></div>
+          </div>
+        </el-scrollbar>
+      </el-main>
+    </el-card>
+  </div>
 </template>
 
-<script>
 
+<script >
+import { parseTime } from '@/util/ParseTime'
 
+import NotificationAPI from '../api/notification.js'
 import authenticateIdentity from "@/util/login";
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default {
   name: 'Notification',
   beforeCreate() {
     authenticateIdentity("ROLE_USER")
+  },
+  data() {
+    return {
+      actionList: ["Accept","Decline","Delete"],
+      notifications: []
+    }
+  },
+  mounted() {
+    let userId = 3
+    NotificationAPI.findAllByUserId(userId).then((res) => {
+      // console.log((res))
+      this.notifications = res.data.data.NotificationResponseDataList
+      // console.log(res.data.data)
+    })
+  },
+  methods: {
+    actionOnNotification(notification,action) {
+
+      ElMessageBox.confirm(
+          'You are going to ' + this.actionList[action].toLowerCase() + ' this ' + notification.content.toLowerCase() + '?',
+          'Warning',
+          {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+      ).then(() => {
+        NotificationAPI.actionOnNotification(notification.id, action).then((res) => {
+          ElMessage({
+            type: 'success',
+            message: res.data.msg,
+          })
+
+          console.log(res.data.msg)
+        })
+        let index = this.notifications.indexOf(notification)
+        this.notifications.splice(index,1)
+      }).catch(() => {
+        ElMessage({
+          type: 'info',
+          message: this.actionList[action] + ' is cancelled',
+        })
+      })
+    },
+    test(notification)
+    {
+      return parseTime(notification.timestamp)
+    },
+    from(type, notification){
+      if(type === 1 || type === 4 || type === 5)
+        return notification.userName
+      else
+        return notification.groupName
+    },
+    deleteNotification(id)
+    {
+      /*******一般方法********/
+      // for(let i = 0; i<this.notifications.length; i++)
+      // {
+      //   if(this.notifications[i].notification_id == notification_id)
+      //   {
+      //     this.notifications.splice(i, 1)
+      //     break
+      //   }
+      // }
+      /*******使用find回调*******/
+      // let result = this.notifications.find(function (element){
+      //   return element.notification_id == notification_id
+      // }, this.notifications)
+      // let index = this.notifications.indexOf(result)
+      // this.notifications.splice(index,1)
+      /*****简化为findIndex回调*****/
+      let index = this.notifications.findIndex(function (element){
+        if(element.id === id)
+          return element
+      }, this.notifications)
+      this.notifications.splice(index,1)
+      alert("Delete successfully!")
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.common-layout {
+  background-color: #CBF3F0;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.card-content {
+  display: block;
+  justify-content: space-between;
+  align-items: center;
+}
+.member {
+  display:inline-block;
+  margin-right:20px;
+  align-items: center;
+}
+#detailBtn-icon {
+  color: #2EC4B6;
+  font-size: 3em;
+}
+#name {
+  font-size: large;
+  color: #FF9F1C;
+  font-weight: bold;
+}
+.divider_space {
+  height: 3px;
+}
+
+.main_header {
+  color: black;
+  font-weight: bold;
+  font-size: xx-large;
+}
+.box-card {
+  min-height: 580px;
+}
+.notification-card:hover {
+  background-color: #CBF3F0;
+}
+.notification-card{
+  min-height: 120px;
+}
+
+#type{
+  font-size: 20px;
+  min-width: 400px;
+  color: #f99827;
+}
+
+#from{
+  min-width: 300px;
+}
+.action-button {
+  text-align:right;
+  min-width: 300px;
+}
+.action-button > .el-button {
+  width: 80px;
+}
+#time{
+  font-size: 16px;
+  min-width: 1000px;
+  color: gray;
+}
+#message{
+  font-size: 16px;
+  min-width: 1000px;
+  color: black;
+}
 </style>

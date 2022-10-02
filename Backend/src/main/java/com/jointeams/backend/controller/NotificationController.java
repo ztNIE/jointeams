@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/notification")
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 public class NotificationController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class NotificationController {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
     }
 
-    @GetMapping(path="/actionOnNotification")
+    @PostMapping(path="/actionOnNotification")
     public ResponseEntity<JSONObject> actionOnNotification(@RequestParam("notificationId") Long notificationId, @RequestParam("action") Integer action)
     {
         if(notificationId == null || action == null) {

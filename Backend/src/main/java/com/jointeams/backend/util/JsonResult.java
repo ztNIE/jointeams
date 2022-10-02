@@ -44,12 +44,12 @@ public class JsonResult {
         else {
             String[] name = data.get(0).getClass().getName().split("\\.");
             String key = name[name.length-1];
-            ((JSONObject)this.msgAndData.get("data")).put(key + " List", data);
+            ((JSONObject)this.msgAndData.get("data")).put(key + "List", data);
         }
     }
 
     public <E> void setDataList(String key, List<E> data) {
-        ((JSONObject)this.msgAndData.get("data")).put(key + " List", data);
+        ((JSONObject)this.msgAndData.get("data")).put(key + "List", data);
     }
 
     public <T> void setMsgAndData(String msg, T data) {
