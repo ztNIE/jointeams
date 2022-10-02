@@ -104,6 +104,7 @@ export default {
   },
   created() {
     if (!this.$store.getters.isLogIn) {
+      ElMessage.info('Please log in first.')
       this.$router.push('/sign-in')
     } else {
       let _this = this

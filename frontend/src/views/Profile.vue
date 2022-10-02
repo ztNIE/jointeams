@@ -44,12 +44,13 @@
 </template>
 
 <script>
-
+import { ElMessage } from 'element-plus'
 
 export default {
   name: 'Profile',
   created() {
     if (!this.$store.getters.isLogIn) {
+      ElMessage.info('Please log in first.')
       this.$router.push('/sign-in')
     }
   }
