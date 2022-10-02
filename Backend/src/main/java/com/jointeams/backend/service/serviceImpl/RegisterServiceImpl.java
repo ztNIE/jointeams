@@ -68,6 +68,7 @@ public class RegisterServiceImpl implements RegisterService {
         user.setFirstName(registerUserRequest.getFirstName());
         user.setLastName(registerUserRequest.getLastName());
         user.setDegree(registerUserRequest.getDegree());
+        user.setFaculty(registerUserRequest.getFaculty());
         University university = universityRepository.findById(registerUserRequest.getUniversityId()).orElse(null);
         if (university == null) {
             log.error("Cannot find university");

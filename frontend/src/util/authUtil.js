@@ -3,7 +3,7 @@ import store from "@/store";
 import Cookies from "js-cookie";
 import {ElMessage} from "element-plus";
 
-export default function authenticateIdentity(role) {
+const authenticateIdentity = function (role) {
     const cookie = Cookies.get('jointeams');
     if (!cookie) {
         router.replace('/sign-in')
@@ -18,4 +18,26 @@ export default function authenticateIdentity(role) {
         router.replace('/dashboard')
         return
     }
+}
+
+const isLogin = function () {
+    return !!Cookies.get('jointeams')
+}
+
+const skipLogin = function () {
+    if (isLogin()) {
+        if (store.getters.isUser) {
+            router.push('/dashboard')
+            ElMessage("You've already logged in")
+        } else {
+            console.log('should jump to admin page')
+        }
+    }
+}
+
+export default {
+    name: 'authUtil',
+    authenticateIdentity,
+    isLogin,
+    skipLogin
 }

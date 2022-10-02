@@ -47,6 +47,12 @@ public class AuthController {
         return ResponseEntity.ok().body(new StandardResponse<>("Success", new CheckEmailResponse(result)));
     }
 
+    @GetMapping("/validEmailActivate")
+    public ResponseEntity<?> isEmailActivate(@RequestParam(name="email") String email) {
+        Boolean result = userRepository.existsByEmailAndIsActivateTrue(email);
+        return ResponseEntity.ok().body(new StandardResponse<>("Success", new CheckEmailResponse(result)));
+    }
+
     /**
      *
      * @param loginRequest  email & password

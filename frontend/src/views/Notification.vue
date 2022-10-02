@@ -36,15 +36,14 @@
 
 <script >
 import { parseTime } from '@/util/ParseTime'
-
 import NotificationAPI from '../api/notification.js'
-import authenticateIdentity from "@/util/login";
 import { ElMessage, ElMessageBox } from 'element-plus'
+import authUtil from "@/util/authUtil";
 
 export default {
   name: 'Notification',
   beforeCreate() {
-    authenticateIdentity("ROLE_USER")
+    authUtil.authenticateIdentity("ROLE_USER")
   },
   data() {
     return {

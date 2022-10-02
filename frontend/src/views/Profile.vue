@@ -45,12 +45,12 @@
 
 <script>
 
-import authenticateIdentity from "@/util/login";
+import authUtil from "@/util/authUtil";
 
 export default {
   name: 'Profile',
   beforeCreate() {
-    authenticateIdentity("ROLE_USER")
+    authUtil.authenticateIdentity("ROLE_USER")
   }
 }
 </script>

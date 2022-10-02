@@ -106,24 +106,21 @@
 import AuthLayout from "@/views/layout/AuthLayout";
 import {getEmailExist, postRegister} from "@/api/auth";
 import {mapActions, mapGetters} from "vuex";
+import authUtil from '@/util/authUtil'
 
 
 export default {
   name: 'Register',
   components: {AuthLayout},
   computed: {
-    ...mapGetters(["isLogIn", "isUser"]),
+    ...mapGetters(["isUser"]),
     ...mapGetters('university', ['universities']),
     showError() {
       return !!this.errorMsg;
     }
   },
   beforeCreate() {
-    if (this.isLogIn) {
-      if (this.isUser) {
-        this.$router.replace("/dashboard")
-      }
-    }
+    authUtil.skipLogin()
   },
   created() {
     this.loadUniversities()

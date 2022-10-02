@@ -13,6 +13,8 @@ public interface UserRepository extends CrudRepository<User, Long> {
 //    Iterable<User> findByIsAdminFalse();
     Boolean existsByEmail(String email);
 
+    Boolean existsByEmailAndIsActivateTrue(String email);
+
     @Query("select distinct u from Group g " +
             "    inner join Semester s on g.semester.id = s.id " +
             "    inner join GroupUser gu on g.id = gu.groupUserId.groupId " +
