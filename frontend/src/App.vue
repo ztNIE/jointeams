@@ -8,6 +8,10 @@
   <!-- register -->
   <Register v-else-if="route.name === 'register'" />
 
+  <VerifyRegisterToken v-else-if="route.name === 'verifyRegisterToken'" />
+
+  <ResetPassword v-else-if="route.name === 'resetPassword'" />
+
   <!-- 404 -->
   <PageNotFound v-else-if="route.name === '404'" />
 
@@ -45,10 +49,15 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Logo from './components/Logo'
 import PageNotFound from './views/404/404'
+import {mapActions, mapGetters} from "vuex";
+import VerifyRegisterToken from "@/views/VerifyRegisterToken";
+import ResetPassword from "@/views/ResetPassword";
 
 export default {
   name: 'App',
   components: {
+    ResetPassword,
+    VerifyRegisterToken,
     Landing,
     Login,
     Register,
@@ -68,7 +77,16 @@ export default {
     return {
       route
     }
-  }, 
+  },
+  methods: {
+    ...mapActions(['tryAutoLogin'])
+  },
+  computed: {
+    ...mapGetters(['isUser'])
+  },
+  created() {
+    this.tryAutoLogin()
+  }
 }
 </script>
 

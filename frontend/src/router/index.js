@@ -25,6 +25,16 @@ const router = createRouter({
                 component: () => import('@/views/Register'),
             },
             {
+                path: '/verify/register/:token',
+                name: 'verifyRegisterToken',
+                component: () => import('@/views/VerifyRegisterToken')
+            },
+            {
+                path: '/reset-password/:token',
+                name: 'resetPassword',
+                component: () => import('@/views/ResetPassword')
+            },
+            {
                 path: '/dashboard',
                 name: 'dashboard',
                 meta: {

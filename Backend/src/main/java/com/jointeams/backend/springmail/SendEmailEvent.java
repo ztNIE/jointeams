@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationEvent;
 public class SendEmailEvent extends ApplicationEvent {
 
     private String email;
-    private String applicationUrl;
+    private final String applicationUrl = "http://localhost:8888/";
     private EmailType emailType;
     private String path;
 
@@ -16,15 +16,14 @@ public class SendEmailEvent extends ApplicationEvent {
         super(email);
     }
 
-    public SendEmailEvent(String email, String applicationUrl, EmailType emailType) {
+    public SendEmailEvent(String email, EmailType emailType) {
         super(email);
-        this.applicationUrl = applicationUrl;
         this.emailType = emailType;
         this.email = email;
         if (emailType.equals(EmailType.VERIFY)) {
-            this.path = "/register/verify?token=";
+            this.path = "verify/register/";
         } else if (emailType.equals(EmailType.RESET_PASSWORD)) {
-            this.path = "/register/savePassword?token=";
+            this.path = "reset-password/";
         }
     }
 

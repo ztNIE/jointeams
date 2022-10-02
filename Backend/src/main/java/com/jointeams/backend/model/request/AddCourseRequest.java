@@ -1,8 +1,8 @@
 package com.jointeams.backend.model.request;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class AddCourseRequest {
     private String code;
     private String name;

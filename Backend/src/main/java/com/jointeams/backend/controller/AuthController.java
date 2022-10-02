@@ -6,6 +6,7 @@ import com.jointeams.backend.model.response.StandardResponse;
 import com.jointeams.backend.model.response.UserInfoResponse;
 import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.security.jwt.JwtUtils;
+import com.jointeams.backend.security.service.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -15,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +60,7 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
             ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
@@ -70,10 +70,10 @@ public class AuthController {
 
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .body(new StandardResponse<>("success",
-                            new UserInfoResponse(userDetails.getUsername(), roles)));
+                            new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), roles)));
     }
 
-    // TODO: fix logout utility
+    // Function Not Needed
     @PostMapping("/logout")
     public ResponseEntity<?> logoutUser() {
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();

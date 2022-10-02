@@ -23,6 +23,8 @@ public class University {
     @Column(length = 50, nullable = false)
     private String regex;
 
+    private String emailUrl;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

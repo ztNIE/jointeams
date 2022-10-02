@@ -1,17 +1,19 @@
 package com.jointeams.backend.model.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 public class PasswordRequest {
-    @NotEmpty(message = "Email is required")
-    private String email;
 
+    private String email;
     private String newPassword;
+
+//    public PasswordRequest(String email) {
+//        this.email = email;
+//    }
+//
+//    public PasswordRequest(String email, String newPassword) {
+//        this.email = email;
+//        this.newPassword = newPassword;
+//    }
 }

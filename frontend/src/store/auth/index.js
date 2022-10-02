@@ -1,39 +1,16 @@
-import {postLogin} from "@/api/auth";
+import actions from "@/store/auth/actions";
+import mutations from "@/store/auth/mutations";
+import getters from "@/store/auth/getters"
 
 export default {
     state() {
         return {
             email: null,
-            role: null
+            role: null,
+            userId: null
         }
     },
-    actions: {
-        async login(context, loginRequest) {
-            const response = await postLogin(loginRequest)
-            console.log(response)
-            const email = response.data.data.email
-            const role = response.data.data.roles[0]
-            localStorage.setItem('email', email)
-            localStorage.setItem('role', role)
-            context.commit('setUserLogin', {
-                email: email,
-                role: role
-            })
-        }
-    },
-    mutations: {
-        setUserLogin(state, payload) {
-            console.log(payload)
-            state.email = payload.email
-            state.role = payload.role
-        }
-    },
-    getters: {
-        isLogIn(state) {
-            return (!!state.email) && (!!state.role);
-        },
-        isUser(state) {
-            return state.role === "ROLE_USER";
-        }
-    }
+    actions,
+    mutations,
+    getters
 }
