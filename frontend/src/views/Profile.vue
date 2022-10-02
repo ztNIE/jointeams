@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
 
 import authenticateIdentity from "@/util/login";
 
