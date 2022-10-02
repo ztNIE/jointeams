@@ -152,6 +152,7 @@
 import GroupAPI from '../api/group.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import json from '../tags.json'
+import authenticateIdentity from "@/util/login";
 
 export default {
   name: 'GroupDetails',
@@ -223,6 +224,9 @@ export default {
 
     this.comment_form.groupId = this.$route.params.group_id
     this.comment_form.senderId = this.user_id
+  },
+  beforeCreate() {
+    authenticateIdentity("ROLE_USER")
   },
   methods: {
     errorHandler() {

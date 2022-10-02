@@ -1,74 +1,75 @@
 <template>
-    <div class="clear-fix header">
-        <!-- left -->
-        <div class="left vertical-center">
-            <Expand v-if="isCollapse" class="icon-expand" @click="handleOpenAndClose"></Expand>
-            <Fold v-else class="icon-expand" @click="handleOpenAndClose"></Fold>
-        </div>
-
-        <!-- right -->
-        <div class="right vertical-center">
-            <el-tooltip 
-                class="box-item"
-                effect="light"
-                content="Notification"
-                placement="left"
-            >
-                <el-badge :is-dot="showDot" class="item">
-                    <BellFilled class="icon-bell"></BellFilled>
-                </el-badge>
-            </el-tooltip>
-            <el-avatar shape="circle" :size="40" :src="avatar"/>
-            <p>{{this.currentUserName}}</p>
-            <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
-        </div>
+  <div class="clear-fix header">
+    <!-- left -->
+    <div class="left vertical-center">
+      <Expand v-if="isCollapse" class="icon-expand" @click="handleOpenAndClose"></Expand>
+      <Fold v-else class="icon-expand" @click="handleOpenAndClose"></Fold>
     </div>
+
+    <!-- right -->
+    <div class="right vertical-center">
+      <el-tooltip
+          class="box-item"
+          effect="light"
+          content="Notification"
+          placement="left"
+      >
+        <el-badge :is-dot="showDot" class="item">
+          <BellFilled class="icon-bell"></BellFilled>
+        </el-badge>
+      </el-tooltip>
+      <el-avatar shape="circle" :size="40" :src="avatar"/>
+      <p>{{ this.currentUserName }}</p>
+      <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
+    </div>
+  </div>
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
 import userAPI from '@/api/user.js'
 import {mapActions} from "vuex";
 
+
 export default {
-    name: 'Header',
-    data() {
-        return {
-            isCollapse: false,
-            currentUserName: null,
-            showDot: true,
-            avatar: null
-        }
-    },
-    created() {
-        let _this = this
-        if (this.$store.getters.userId != null) {
-            userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
-                let data = res.data.data
-                _this.currentUserName = data.firstName + ' ' + data.lastName
-                _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
-            }).catch((err) => {
-                ElMessage.error(err.data.msg)
-            })
-        }
-    },
-    methods: {
-        ...mapActions(['logout']),
-        handleOpenAndClose() {
-            this.isCollapse = !this.isCollapse
-            this.$emitter.emit('handleSidebar')
-            this.$emitter.emit('handleLogoName')
-        },
-        handleLogOut() {
-            this.logout()
-            this.$router.push('/landing')
-            ElMessage({
-                message: 'You have logged out successfully!',
-                type: 'success',
-            })
-        }
+  name: 'Header',
+  data() {
+    return {
+      isCollapse: false,
+      currentUserName: null,
+      showDot: true,
+      avatar: null
     }
+  },
+  created() {
+    let _this = this
+    if (this.$store.getters.userId != null) {
+      userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
+        let data = res.data.data
+        _this.currentUserName = data.firstName + ' ' + data.lastName
+        _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
+      }).catch((err) => {
+        ElMessage.error(err.data.msg)
+      })
+    }
+  },
+  methods: {
+    ...mapActions(['logout']),
+    handleOpenAndClose() {
+      this.isCollapse = !this.isCollapse
+      this.$emitter.emit('handleSidebar')
+      this.$emitter.emit('handleLogoName')
+    },
+    handleLogOut() {
+      this.logout()
+      this.$router.push('/landing')
+      ElMessage({
+        message: 'You have logged out successfully!',
+        type: 'success',
+      })
+    },
   }
+}
 </script>
 
 <style lang="scss" scoped>
