@@ -8,6 +8,10 @@ export const getEmailExist = async function (email) {
     return get(`/auth/validEmailExist?email=${email}`)
 }
 
+export const getEmailActivate = async function (email) {
+    return get(`/auth/validEmailActivate?email=${email}`)
+}
+
 export const postLogin = async function (loginRequest) {
     return post('/auth/login', loginRequest)
 }

@@ -7,6 +7,7 @@ import com.jointeams.backend.util.JsonResult;
 import com.jointeams.backend.util.NotificationActionResultMsg;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.NotificationRepository;
+import com.jointeams.backend.util.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,12 +47,18 @@ public class NotificationServiceImpl implements NotificationService {
             notifications.forEach(notification -> {NotificationResponseData notificationResponseData = new NotificationResponseData();
                 Group group = notification.getGroup();
                 User user = notification.getUser();
+                String userName = user.getFirstName() + " " + user.getLastName();
+                String groupName = group.getCourse().getCode() + "_Group" + group.getNameId();
                 notificationResponseData.setId(notification.getId());
-                notificationResponseData.setType(notification.getType());
+                int type = notification.getType();
+                notificationResponseData.setType(type);
+                notificationResponseData.setContent(NotificationType.getContentByCode(type));
+                notificationResponseData.setMessage(NotificationType.getMessageByCode(type,userName,groupName));
+                notificationResponseData.setTimestamp(notification.getTimestamp());
                 notificationResponseData.setGroupId(group.getId());
-                notificationResponseData.setGroupName(group.getCourse().getCode() + group.getNameId());
+                notificationResponseData.setGroupName(groupName);
                 notificationResponseData.setUserId(user.getId());
-                notificationResponseData.setUserName(user.getFirstName()+user.getLastName());
+                notificationResponseData.setUserName(userName);
                 notificationResponseData.setEmail(user.getEmail());
                 notificationResponseDataList.add(notificationResponseData);});
             if (notifications.size() == 0)
@@ -73,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
         return jsonResult;
     }
 
-    public int actionOnNotification(Long notificationId, int action) //action: 1: accept, 2: decline, 3: delete
+    public int actionOnNotification(Long notificationId, int action) //action: 0: accept, 1: decline, 2: delete
     {
         Notification notification = notificationRepository.findById(notificationId).orElse(null);
         if(notification == null)
@@ -84,15 +91,15 @@ public class NotificationServiceImpl implements NotificationService {
         switch (tempType) {
             case 0: {
                 switch (action) {
-                    case 1: {//accept an invitation
+                    case 0: {//accept an invitation
                         return accept(notification, 4, new int[]{-4, 1, -3});
                     }
-                    case 2: {//decline an invitation
+                    case 1: {//decline an invitation
                         notification.setType(5);
                         notificationRepository.save(notification);
                         return 2;//"The invitation has been declined";
                     }
-                    case 3: {//delete an invitation
+                    case 2: {//delete an invitation
                         notificationRepository.delete(notification);
                         return 3;//"The invitation has been deleted"
                     }
@@ -103,15 +110,15 @@ public class NotificationServiceImpl implements NotificationService {
             }
             case 1: {
                 switch (action) {
-                    case 1: {//accept a join request
+                    case 0: {//accept a join request
                         return accept(notification, 2, new int[]{-6, 4, -5});
                     }
-                    case 2: {//decline a join request
+                    case 1: {//decline a join request
                         notification.setType(3);
                         notificationRepository.save(notification);
                         return 5;
                     }
-                    case 3: {//delete a join request
+                    case 2: {//delete a join request
                         notificationRepository.delete(notification);
                         return 6;
                     }
@@ -121,11 +128,11 @@ public class NotificationServiceImpl implements NotificationService {
                 }
             }
             case 2:{
-                if (action == 3)//delete a notification which has been read
+                if (action == 2)//delete a notification which has been read
                 {
                     notificationRepository.delete(notification);
                     return 7;
-                } else if (action == 1 || action == 2) {//the response cannot be accepted or declined
+                } else if (action == 0 || action == 1) {//the response cannot be accepted or declined
                     return -2;
                 } else {//invalided action
                     return -1;

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,6 +14,9 @@ import lombok.Setter;
 public class NotificationResponseData {
     private Long id;
     private int type;
+    private String content;
+    private String message;
+    private Timestamp timestamp;
     private Long groupId;
     private String groupName;
     private Long userId;
