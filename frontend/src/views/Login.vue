@@ -65,22 +65,19 @@ import AuthLayout from "@/views/layout/AuthLayout";
 import {getEmailExist, postBeginResetPassword} from "@/api/auth";
 import {mapActions, mapGetters} from "vuex";
 import {ElMessage} from "element-plus";
+import authUtil from "@/util/authUtil";
 
 export default {
   name: 'Login',
   components: {AuthLayout},
   computed: {
-    ...mapGetters(['isUser', 'isLogIn']),
+    ...mapGetters(['isUser']),
     showError() {
       return !!this.error
     }
   },
   beforeCreate() {
-    if (this.isLogIn) {
-      if (this.isUser) {
-        this.$router.replace('/dashboard')
-      }
-    }
+    authUtil.skipLogin()
   },
   data() {
     let emailValidator = (_, value, callback) => {

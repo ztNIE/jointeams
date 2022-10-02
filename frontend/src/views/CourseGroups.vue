@@ -102,7 +102,7 @@
 // import cookieUtils from '../utils/cookie.js'
 import CourseGroupAPI from '../api/courseGroup.js'
 import {ElMessage, ElMessageBox} from 'element-plus'
-import authenticateIdentity from "@/util/login";
+import authUtil from "@/util/authUtil";
 
 export default {
   name: 'CourseGroups',
@@ -124,7 +124,7 @@ export default {
     }
   },
   beforeCreate() {
-    authenticateIdentity("ROLE_USER")
+    authUtil.authenticateIdentity("ROLE_USER")
   },
   mounted() {
     // TODO (get user_id from cookie)

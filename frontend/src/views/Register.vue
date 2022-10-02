@@ -106,6 +106,7 @@
 import AuthLayout from "@/views/layout/AuthLayout";
 import {getEmailExist, postRegister} from "@/api/auth";
 import {mapActions, mapGetters} from "vuex";
+import authUtil from '@/util/authUtil'
 
 
 export default {
@@ -119,11 +120,7 @@ export default {
     }
   },
   beforeCreate() {
-    if (isLogin()) {
-      if (this.isUser) {
-        this.$router.replace("/dashboard")
-      }
-    }
+    authUtil.skipLogin()
   },
   created() {
     this.loadUniversities()

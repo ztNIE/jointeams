@@ -15,6 +15,7 @@
 import AuthLayout from "@/views/layout/AuthLayout";
 import {getRegistrationVerify} from "@/api/auth";
 import {ElMessage} from "element-plus";
+import authUtil from "@/util/authUtil";
 
 export default {
   name: "VerifyRegisterToken",
@@ -37,7 +38,7 @@ export default {
       return !!this.dialogMsg;
     }
   },
-  created() {
+  beforeCreate() {
     const token = this.$route.params.token
     getRegistrationVerify(token).then((response) => {
       console.log(response)
@@ -53,6 +54,9 @@ export default {
       ElMessage("Invalid token")
       this.$router.replace('/landing')
     })
+  },
+  created() {
+    authUtil.skipLogin()
   }
 }
 </script>
