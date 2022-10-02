@@ -5,13 +5,13 @@
 <script>
 
 
-import authenticateIdentity from "@/util/login";
+// import authenticateIdentity from "@/util/login";
 
 export default {
   name: 'Dashboard',
-  beforeCreate() {
-    authenticateIdentity("ROLE_ADMIN")
-  }
+//   beforeCreate() {
+//     authenticateIdentity("ROLE_ADMIN")
+//   }
 }
 </script>
 
