@@ -48,6 +48,11 @@
 
 export default {
   name: 'Profile',
+  created() {
+    if (!this.$store.getters.isLogIn) {
+      this.$router.push('/sign-in')
+    } else {
+  }
 }
 </script>
 
