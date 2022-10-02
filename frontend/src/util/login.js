@@ -19,3 +19,7 @@ export default function authenticateIdentity(role) {
         return
     }
 }
+
+export function isLogin() {
+    return !!Cookies.get('jointeams')
+}

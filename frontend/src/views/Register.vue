@@ -112,14 +112,14 @@ export default {
   name: 'Register',
   components: {AuthLayout},
   computed: {
-    ...mapGetters(["isLogIn", "isUser"]),
+    ...mapGetters(["isUser"]),
     ...mapGetters('university', ['universities']),
     showError() {
       return !!this.errorMsg;
     }
   },
   beforeCreate() {
-    if (this.isLogIn) {
+    if (isLogin()) {
       if (this.isUser) {
         this.$router.replace("/dashboard")
       }
