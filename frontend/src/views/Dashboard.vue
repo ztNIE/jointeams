@@ -91,7 +91,6 @@
 <script>
 import userAPI from '@/api/user.js';
 import courseAPI from '@/api/course.js';
-import adminAPI from '@/api/admin.js';
 import {ElMessage} from 'element-plus'
 import {mapGetters} from "vuex";
 
@@ -137,7 +136,7 @@ export default {
     })
 
     // get current semester
-    adminAPI.getCurrentSemester().then((res) => {
+    courseAPI.getCurrentSemester().then((res) => {
       let data = res.data.data
       _this.year = data.Semester.year
       _this.semester = data.Semester.semesterNumber
