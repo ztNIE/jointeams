@@ -46,15 +46,23 @@ const router = createRouter({
                 component: () => import('@/views/Dashboard'),
             },
             {
-                path: '/profile',
-                name: 'profile',
+                path: '/myProfile',
+                name: 'myProfile',
                 meta: {
                   icon: 'Memo',
-                  capitalName: 'Profile',
-                  highlight: 'profile',
+                  capitalName: 'My Profile',
+                  highlight: 'myProfile',
                   hidden: false,
                 },
-                component: () => import('@/views/Profile'),
+                component: () => import('@/views/profile/MyProfile'),
+            },
+            {
+              path: '/userProfile',
+              name: 'userProfile',
+              meta: {
+                hidden: true,
+              },
+              component: () => import('@/views/profile/UserProfile'),
             },
             {
                 path: '/notification',
