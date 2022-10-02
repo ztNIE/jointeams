@@ -172,7 +172,10 @@ export default {
 }
 
 :deep(.el-card__body) {
+  box-sizing: border-box;
   height: 90%;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .left {
