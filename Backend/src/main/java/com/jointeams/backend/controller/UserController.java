@@ -9,13 +9,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@PreAuthorize("hasRole('USER')")
 @RequestMapping(path="/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "getIsAdmin")
     public ResponseEntity<JSONObject> getIsAdminById(@RequestParam("id") Long id) {
         if(id == null) {
@@ -46,7 +46,7 @@ public class UserController {
         }
     }
 
-    @PreAuthorize("hasRole('USER')")
+
     @PutMapping(path = "updateUserInfoById")
     public ResponseEntity<JSONObject> editUserInfoById(@RequestParam("id") Long id, @RequestBody JSONObject newInfo) {
         if(id == null) {
