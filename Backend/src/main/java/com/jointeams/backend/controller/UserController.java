@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/user")
-@PreAuthorize("hasRole('USER')")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "getIsAdmin")
     public ResponseEntity<JSONObject> getIsAdminById(@RequestParam("id") Long id) {
         if(id == null) {
@@ -31,7 +31,7 @@ public class UserController {
         }
     }
 
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping(path = "getUserInfoById")
     public ResponseEntity<JSONObject> getUserInfoById(@RequestParam("id") Long id) {
         if(id == null) {
@@ -47,6 +47,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping(path = "updateUserInfoById")
     public ResponseEntity<JSONObject> editUserInfoById(@RequestParam("id") Long id, @RequestBody JSONObject newInfo) {
         if(id == null) {
