@@ -44,14 +44,8 @@
 </template>
 
 <script>
-
-import authUtil from "@/util/authUtil";
-
 export default {
   name: 'Profile',
-  beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_USER")
-  }
 }
 </script>
 

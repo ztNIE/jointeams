@@ -12,22 +12,22 @@
 --     ('IT', 'from IT', 'devu0001@uni.sydney.edu.au',
 --      'faculty1', 'avator1.jpg', 'devFName1',
 --      true, false, 'devLName1',
---      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+--      '$2a$10$4Y.YYVx0K2zVYGsMXiw2E.7lhEzuUmegm6/tcC8uNXIlfqoNnwyhy',
 --      null, 1),
 --     ('IT', 'from IT', 'devu0002@uni.sydney.edu.au',
 --      'faculty2', 'avator2.jpg', 'devFName2',
 --      true, false, 'devLName2',
---      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+--      '$2a$10$4Y.YYVx0K2zVYGsMXiw2E.7lhEzuUmegm6/tcC8uNXIlfqoNnwyhy',
 --      null, 1),
 --     ('IT', 'from IT', 'devu0003@uni.sydney.edu.au',
 --      'faculty2', 'avator3.jpg', 'devFName3',
 --      true, false, 'devLName3',
---      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+--      '$2a$10$4Y.YYVx0K2zVYGsMXiw2E.7lhEzuUmegm6/tcC8uNXIlfqoNnwyhy',
 --      null, 1),
 --     (null, null, 'jointeamsspring@gmail.com',
 --      null, null, 'admin',
 --      true, true, 'admin',
---      '$2a$11$7RSfIct4qbJHVrsFoSEqmOosn7rCSfDL3QqL/DX2gWEccTL4hiH46',
+--      '$2a$10$krU.5/cHT0Zzi.o3dYgM6.yELqTPG6FKrhOuYEyNhglosd67GCRNG',
 --      null, 2);
 --
 -- insert into semester (year, semester_number, is_current)
@@ -48,7 +48,7 @@
 --     (1, 1, 1, 'tutorial1', 4, 'description1'),
 --     (2, 2, 2, 'tutorial2', 5, 'description2'),
 --     (3, 3, 1, 'tutorial3', 6, 'description3');
--- --因为group是一个在sql种被定义了的单词，以必须用`符号包起来
+-- -- 因为group是一个在sql种被定义了的单词，以必须用`符号包起来
 --
 -- insert into group_user (group_id, user_id, is_leader)
 -- values

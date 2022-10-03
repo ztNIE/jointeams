@@ -41,5 +41,8 @@ export default {
             role: null,
             userId: null
         })
-    }
+    },
+    // setRoutes(context, routes) {
+    //     context.commit('setRoutes', routes)
+    // }
 }
