@@ -20,7 +20,7 @@
                 </div>
               </div>
               <div class="card-content">
-                <span id="time">Time: {{test(notification)}}</span>
+                <span id="time">Time: {{parseTime(notification)}}</span>
                 <br>
                 <span id="message">{{notification.message}}</span>
               </div>
@@ -39,6 +39,7 @@ import { parseTime } from '@/util/ParseTime'
 import NotificationAPI from '../api/notification.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import authUtil from "@/util/authUtil";
+import store from "@/store";
 
 export default {
   name: 'Notification',
@@ -52,11 +53,10 @@ export default {
     }
   },
   mounted() {
-    let userId = 3
+    let userId = store.getters.userId
+    // let userId = 3
     NotificationAPI.findAllByUserId(userId).then((res) => {
-      // console.log((res))
       this.notifications = res.data.data.NotificationResponseDataList
-      // console.log(res.data.data)
     })
   },
   methods: {
@@ -71,16 +71,17 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        NotificationAPI.actionOnNotification(notification.id, action).then((res) => {
-          ElMessage({
-            type: 'success',
-            message: res.data.msg,
+          NotificationAPI.actionOnNotification(notification.id, action).then((res) => {
+            if(res !== null)
+            {
+              ElMessage({
+                type: 'success',
+                message: res.data.msg,
+              })
+              let index = this.notifications.indexOf(notification)
+              this.notifications.splice(index, 1)
+            }
           })
-
-          console.log(res.data.msg)
-        })
-        let index = this.notifications.indexOf(notification)
-        this.notifications.splice(index,1)
       }).catch(() => {
         ElMessage({
           type: 'info',
@@ -88,7 +89,7 @@ export default {
         })
       })
     },
-    test(notification)
+    parseTime(notification)
     {
       return parseTime(notification.timestamp)
     },
@@ -98,31 +99,31 @@ export default {
       else
         return notification.groupName
     },
-    deleteNotification(id)
-    {
-      /*******一般方法********/
-      // for(let i = 0; i<this.notifications.length; i++)
-      // {
-      //   if(this.notifications[i].notification_id == notification_id)
-      //   {
-      //     this.notifications.splice(i, 1)
-      //     break
-      //   }
-      // }
-      /*******使用find回调*******/
-      // let result = this.notifications.find(function (element){
-      //   return element.notification_id == notification_id
-      // }, this.notifications)
-      // let index = this.notifications.indexOf(result)
-      // this.notifications.splice(index,1)
-      /*****简化为findIndex回调*****/
-      let index = this.notifications.findIndex(function (element){
-        if(element.id === id)
-          return element
-      }, this.notifications)
-      this.notifications.splice(index,1)
-      alert("Delete successfully!")
-    },
+    // deleteNotification(id)
+    // {
+    //   /*******一般方法********/
+    //   // for(let i = 0; i<this.notifications.length; i++)
+    //   // {
+    //   //   if(this.notifications[i].notification_id == notification_id)
+    //   //   {
+    //   //     this.notifications.splice(i, 1)
+    //   //     break
+    //   //   }
+    //   // }
+    //   /*******使用find回调*******/
+    //   // let result = this.notifications.find(function (element){
+    //   //   return element.notification_id == notification_id
+    //   // }, this.notifications)
+    //   // let index = this.notifications.indexOf(result)
+    //   // this.notifications.splice(index,1)
+    //   /*****简化为findIndex回调*****/
+    //   let index = this.notifications.findIndex(function (element){
+    //     if(element.id === id)
+    //       return element
+    //   }, this.notifications)
+    //   this.notifications.splice(index,1)
+    //   alert("Delete successfully!")
+    // },
   }
 }
 </script>

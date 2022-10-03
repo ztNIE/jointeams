@@ -30,8 +30,7 @@ public class UserController {
             return new ResponseEntity<JSONObject>(isAdmin, HttpStatus.OK);
         }
     }
-
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER') ")
     @GetMapping(path = "getUserInfoById")
     public ResponseEntity<JSONObject> getUserInfoById(@RequestParam("id") Long id) {
         if(id == null) {

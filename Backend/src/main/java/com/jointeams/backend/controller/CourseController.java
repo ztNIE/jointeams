@@ -198,16 +198,4 @@ public class CourseController {
             return new ResponseEntity<JSONObject>(result, HttpStatus.OK);
         }
     }
-
-    @GetMapping(path = "/findCurrentSemester")
-    public ResponseEntity<JSONObject> findCurrentSemester()
-    {
-        JsonResult jsonResult = semesterService.findCurrentSemesterFeedback();
-
-        if(jsonResult.getStatus() == 0) {
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
-        }
-    }
 }

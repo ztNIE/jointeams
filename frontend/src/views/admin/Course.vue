@@ -1,5 +1,5 @@
 <template>
-    <p>admin dashboard</p>
+  <p>admin course</p>
 </template>
 
 <script>

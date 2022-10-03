@@ -27,6 +27,7 @@ public class AdminController {
     private CommentService commentService;
 
     //including finding IsCommentAvailable
+    @PreAuthorize("hasAnyRole('ADMIN','USER') ")
     @GetMapping(path = "/findCurrentSemester")
     public ResponseEntity<JSONObject> findCurrentSemester()
     {
