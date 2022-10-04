@@ -6,5 +6,5 @@ const getAllCourse = async function(userId) {
 
 export default {
     name: 'courseAPI',
-    getAllCourse
+    getAllCourse,
 }

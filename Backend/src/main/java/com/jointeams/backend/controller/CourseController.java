@@ -1,6 +1,8 @@
 package com.jointeams.backend.controller;
 
 import com.jointeams.backend.service.CourseService;
+import com.jointeams.backend.service.SemesterService;
+import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController {
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private SemesterService semesterService;
 
     @GetMapping(path = "getAllCourse")
     public ResponseEntity<JSONObject> getAllCourse(@RequestParam("id") Long id) {

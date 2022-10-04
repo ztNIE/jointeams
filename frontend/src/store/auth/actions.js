@@ -6,7 +6,7 @@ export default {
         const response = await postLogin(loginRequest)
         console.log(response)
         const email = response.data.data.email
-        const role = response.data.data.roles[0]
+        const role = response.data.data.roles[0] 
         const userId = response.data.data.userId
         localStorage.setItem('email', email)
         localStorage.setItem('role', role)
@@ -19,7 +19,7 @@ export default {
         return response;
     },
     tryAutoLogin(context) {
-        if (!context.rootGetters.isLogIn) {
+        if (!Cookies.get('jointeams')) {
             return false;
         }
 
@@ -41,5 +41,8 @@ export default {
             role: null,
             userId: null
         })
-    }
+    },
+    // setRoutes(context, routes) {
+    //     context.commit('setRoutes', routes)
+    // }
 }

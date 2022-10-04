@@ -31,6 +31,7 @@
 import AuthLayout from "@/views/layout/AuthLayout";
 import {getIsPasswordTokenExist, postSavePassword} from "@/api/auth";
 import {ElMessage} from "element-plus";
+import authUtil from "@/util/authUtil";
 
 export default {
   name: "ResetPassword",
@@ -107,6 +108,9 @@ export default {
         this.$router.replace("/landing")
       }
     })
+  },
+  created() {
+    authUtil.skipLogin()
   },
   computed: {
     showError() {

@@ -10,7 +10,7 @@
 			<h2>Oops! Page Not Be Found</h2>
 			<p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
             <div style="height: 25px"></div>
-			<a href="/landing">Back to homepage</a>
+			<a @click="handleBack">Back to previous page</a>
 		</div>
 	</div>
 </template>
@@ -19,6 +19,11 @@
 import './css/style.css'
 export default {
   name: 'pageNotFound',
+  methods: {
+	handleBack() {
+		this.$router.back()
+	}
+  }
 }
 </script>
 

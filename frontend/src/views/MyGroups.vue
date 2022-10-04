@@ -39,6 +39,7 @@
 <script>
 // import cookieUtils from '../utils/cookie.js'
 import GroupAPI from '../api/group.js'
+import authUtil from "@/util/authUtil";
 
 export default {
   name: 'MyGroups',
@@ -57,6 +58,9 @@ export default {
       // console.log(res.data.msg)
     })
 
+  },
+  beforeCreate() {
+    authUtil.authenticateIdentity("ROLE_USER")
   },
   methods: {
     errorHandler() {

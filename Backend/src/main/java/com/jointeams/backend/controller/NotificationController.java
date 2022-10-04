@@ -31,7 +31,7 @@ public class NotificationController {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
     }
 
-    @GetMapping(path="/actionOnNotification")
+    @PostMapping(path="/actionOnNotification")
     public ResponseEntity<JSONObject> actionOnNotification(@RequestParam("notificationId") Long notificationId, @RequestParam("action") Integer action)
     {
         if(notificationId == null || action == null) {

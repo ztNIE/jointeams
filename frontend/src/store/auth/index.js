@@ -7,7 +7,8 @@ export default {
         return {
             email: null,
             role: null,
-            userId: null
+            userId: null,
+            addRoutes: false
         }
     },
     actions,
