@@ -134,7 +134,7 @@ const adminRoutes = [
         meta: {
             icon: 'ChatSquare',
             capitalName: 'Comment',
-            highlight: 'comment',
+            highlight: 'comment_admin',
             hidden: false,
         },
         component: () => import('@/views/admin/Comment'),
@@ -145,7 +145,7 @@ const adminRoutes = [
         meta: {
             icon: 'Management',
             capitalName: 'Course',
-            highlight: 'course',
+            highlight: 'course_admin',
             hidden: false,
         },
         component: () => import('@/views/admin/Course'),
@@ -156,7 +156,7 @@ const adminRoutes = [
         meta: {
             icon: 'Calendar',
             capitalName: 'Semester',
-            highlight: 'semester',
+            highlight: 'semester_admin',
             hidden: false,
         },
         component: () => import('@/views/admin/Semester'),

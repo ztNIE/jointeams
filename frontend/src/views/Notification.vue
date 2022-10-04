@@ -12,11 +12,11 @@
                 <span id="type">{{notification.content}}</span>
                 <span id="from">From: {{from(notification.type, notification)}}</span>
                 <div class="action-button">
-                  <el-button v-if="notification.type === 0 || notification.type === 1" id="accept-button" type="primary"
+                  <el-button v-if="notification.type === 0 || notification.type === 1" type="primary"
                              @click="actionOnNotification(notification,0)">{{ actionList[0] }}</el-button>
-                  <el-button v-if="notification.type === 0 || notification.type === 1" id="decline-button" type="warning"
+                  <el-button v-if="notification.type === 0 || notification.type === 1" type="warning"
                              @click="actionOnNotification(notification,1)">{{actionList[1]}}</el-button>
-                  <el-button id="delete-button" type="info" @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
+                  <el-button type="info" @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
                 </div>
               </div>
               <div class="card-content">
@@ -36,7 +36,7 @@
 
 <script >
 import { parseTime } from '@/util/ParseTime'
-import NotificationAPI from '../api/notification.js'
+import notificationAPI from '../api/notification.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import authUtil from "@/util/authUtil";
 import store from "@/store";
@@ -55,7 +55,7 @@ export default {
   mounted() {
     let userId = store.getters.userId
     // let userId = 3
-    NotificationAPI.findAllByUserId(userId).then((res) => {
+    notificationAPI.findAllByUserId(userId).then((res) => {
       this.notifications = res.data.data.NotificationResponseDataList
     })
   },
@@ -66,22 +66,22 @@ export default {
           'You are going to ' + this.actionList[action].toLowerCase() + ' this ' + notification.content.toLowerCase() + '?',
           'Warning',
           {
-            confirmButtonText: 'OK',
+            confirmButtonText: 'Confirm',
             cancelButtonText: 'Cancel',
             type: 'warning',
           }
       ).then(() => {
-          NotificationAPI.actionOnNotification(notification.id, action).then((res) => {
-            if(res !== null)
-            {
-              ElMessage({
-                type: 'success',
-                message: res.data.msg,
-              })
-              let index = this.notifications.indexOf(notification)
-              this.notifications.splice(index, 1)
-            }
-          })
+        notificationAPI.actionOnNotification(notification.id, action).then((res) => {
+          if(res !== null)
+          {
+            ElMessage({
+              type: 'success',
+              message: res.data.msg,
+            })
+            let index = this.notifications.indexOf(notification)
+            this.notifications.splice(index, 1)
+          }
+        })
       }).catch(() => {
         ElMessage({
           type: 'info',
@@ -142,15 +142,6 @@ export default {
   display: block;
   justify-content: space-between;
   align-items: center;
-}
-.member {
-  display:inline-block;
-  margin-right:20px;
-  align-items: center;
-}
-#detailBtn-icon {
-  color: #2EC4B6;
-  font-size: 3em;
 }
 #name {
   font-size: large;

@@ -47,10 +47,14 @@ public class CommentServiceImpl implements CommentService {
                 commentResponseData.setId(comment.getId());
                 commentResponseData.setSenderId(comment.getSender().getId());
                 commentResponseData.setReceiverId(comment.getReceiver().getId());
+                commentResponseData.setSenderName(comment.getSender().getFirstName() + " "
+                        + comment.getSender().getLastName());
+                commentResponseData.setReceiverName(comment.getReceiver().getFirstName() + " "
+                        + comment.getReceiver().getLastName());
                 commentResponseData.setTag(comment.getTag());
                 commentResponseData.setContent(comment.getContent());
                 commentResponseData.setTimestamp(comment.getTimestamp());
-                commentResponseData.setIsHide(comment.getIsHide());
+                commentResponseData.setIsHidden(comment.getIsHide());
                 commentResponseDataList.add(commentResponseData);
             });
             jsonResult.setStatus(1);

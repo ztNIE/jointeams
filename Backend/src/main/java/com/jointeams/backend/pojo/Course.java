@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.*;
 import java.util.HashSet;
