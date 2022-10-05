@@ -45,19 +45,23 @@ export default {
   name: 'MyGroups',
   data() {
     return {
-      groups: []
+      groups: [],
+      user_id: null
     }
   },
   mounted() {
-    // var userId = cookieUtils.getTokenInCookies()
-    // console.log(userId)
-    var userId = 1
-    GroupAPI.findAllCurrentGroupsOfAUser(userId).then((res) => {
-      // console.log((res))
+    this.user_id = this.$store.getters.userId
+    console.log(this.user_id)
+    GroupAPI.findAllCurrentGroupsOfAUser(this.user_id).then((res) => {
       this.groups = res.data.data
-      // console.log(res.data.msg)
     })
-
+  },
+  watch: {
+    'groups': function() {
+      GroupAPI.findAllCurrentGroupsOfAUser(this.user_id).then((res) => {
+        this.groups = res.data.data
+      })
+    }
   },
   beforeCreate() {
     authUtil.authenticateIdentity("ROLE_USER")

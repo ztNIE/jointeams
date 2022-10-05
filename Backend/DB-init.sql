@@ -16,7 +16,17 @@ values
      null, null, 'admin',
      true, true, null,
      '$2a$10$krU.5/cHT0Zzi.o3dYgM6.yELqTPG6FKrhOuYEyNhglosd67GCRNG',
-     null, 2);
+     null, 2),
+    (null, null, 'devu0002@uni.sydney.edu.au',
+     null, null, 'firstname2',
+     true, false, 'lastname2',
+     '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
+     null, 1),
+    (null, null, 'devu0003@uni.sydney.edu.au',
+     null, null, 'firstname3',
+     true, false, 'lastname3',
+     '$2a$10$XmrZEyt/WDR5uz0fC8Y7l.T1o/VSCiO1GNcI1ME67.RPeXWLA4B1S',
+     null, 1);
 
 insert into semester (year, semester_number, is_current)
 values
@@ -57,7 +67,10 @@ values (null, 1, 2, 1),
        (null, 9, 1, 1),
        (null, 10, 1, 1),
        (null, 11, 1, 1),
-       (null, 12, 1, 1);
+       (null, 12, 1, 1),
+       (null, 1, 2, 3),
+       (null, 2, 2, 3),
+       (null, 1, 2, 4);
 
 insert into interested_course (course_id, user_id)
 values (13, 1),
@@ -65,21 +78,27 @@ values (13, 1),
        (15, 1),
        (16, 1),
        (18, 1);
--- insert into `group` (course_id, name_id, semester_id,
---                    tutorial, capacity, description)
--- values
---     (1, 1, 1, 'tutorial1', 4, 'description1'),
---     (2, 2, 2, 'tutorial2', 5, 'description2'),
---     (3, 3, 1, 'tutorial3', 6, 'description3');
+
+insert into `group` (course_id, name_id, semester_id,
+                   tutorial, capacity, description)
+values
+    (1, 1, 1, 'tutorial1', 4, 'description1'),
+    (2, 2, 2, 'tutorial2', 5, 'description2'),
+    (3, 3, 1, 'tutorial3', 6, 'description3'),
+    (1, 1, 2, 'CC02', 3, 'description4');
 -- 因为group是一个在sql种被定义了的单词，以必须用`符号包起来
 
--- insert into group_user (group_id, user_id, is_leader)
--- values
---     (1, 1, true),
---     (1, 2, false),
---     (2, 2, true),
---     (2, 3, false),
---     (3, 1, true);
+update course set next_group_name_id = 2 where id = 1;
+
+insert into group_user (group_id, user_id, is_leader)
+values
+    (1, 1, true),
+    (1, 2, false),
+    (2, 2, true),
+    (2, 3, false),
+    (3, 1, true),
+    (4, 1, true),
+    (4, 3, false);
 
 -- insert into notification (content, message,
 --                             timestamp, type, group_id, user_id)

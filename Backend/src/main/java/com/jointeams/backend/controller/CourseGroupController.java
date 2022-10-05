@@ -40,7 +40,7 @@ public class CourseGroupController {
         JSONObject groupObj = courseGroupService.addAGroup(courseId, userId, capacity);
 
         if(groupObj.get("data") == null) {
-            return new ResponseEntity<>(groupObj, HttpStatus.ACCEPTED);
+            return new ResponseEntity<JSONObject>(groupObj, HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<JSONObject>(groupObj, HttpStatus.OK);
         }
