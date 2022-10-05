@@ -1,5 +1,6 @@
 package com.jointeams.backend.service.serviceImpl;
 
+import com.jointeams.backend.model.response.CourseDetailResponse;
 import com.jointeams.backend.model.response.responseData.CourseResponseData;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
@@ -598,5 +599,14 @@ public class CourseServiceImpl implements CourseService {
                 break;
         }
         return jsonResult;
+    }
+
+    @Override
+    public CourseDetailResponse getCourseById(Long id) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course == null) {
+            return null;
+        }
+        return new CourseDetailResponse(course);
     }
 }
