@@ -1,5 +1,5 @@
 <template>
-    <Profile/>
+    <Profile :userId="userId"/>
 </template>
 
 <script>
@@ -8,14 +8,16 @@ import Profile from './Profile.vue'
 
 export default {
   name: 'MyProfile',
+  data() {
+    return {
+      userId: null
+    }
+  },
   components: {
     Profile
   },
   created() {
-    // if (!this.$store.getters.isLogIn) {
-    //   ElMessage.info('Please log in first.')
-    //   this.$router.push('/sign-in')
-    // }
+    this.userId = this.$store.getters.userId
   }
 }
 </script>

@@ -28,6 +28,7 @@
             <div class="divider_space"></div>
           </div>
         </el-scrollbar>
+        <el-empty description="No notification" v-else />
       </el-main>
     </el-card>
   </div>
@@ -99,39 +100,12 @@ export default {
       else
         return notification.groupName
     },
-    // deleteNotification(id)
-    // {
-    //   /*******一般方法********/
-    //   // for(let i = 0; i<this.notifications.length; i++)
-    //   // {
-    //   //   if(this.notifications[i].notification_id == notification_id)
-    //   //   {
-    //   //     this.notifications.splice(i, 1)
-    //   //     break
-    //   //   }
-    //   // }
-    //   /*******使用find回调*******/
-    //   // let result = this.notifications.find(function (element){
-    //   //   return element.notification_id == notification_id
-    //   // }, this.notifications)
-    //   // let index = this.notifications.indexOf(result)
-    //   // this.notifications.splice(index,1)
-    //   /*****简化为findIndex回调*****/
-    //   let index = this.notifications.findIndex(function (element){
-    //     if(element.id === id)
-    //       return element
-    //   }, this.notifications)
-    //   this.notifications.splice(index,1)
-    //   alert("Delete successfully!")
-    // },
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.common-layout {
-  background-color: #CBF3F0;
-}
+
 .card-header {
   display: flex;
   justify-content: space-between;

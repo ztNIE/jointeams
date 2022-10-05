@@ -43,7 +43,7 @@ public class AdminController {
         }
     }
 
-    @GetMapping(path = "changeCurrentSemester")
+    @PostMapping(path = "changeCurrentSemester")
     public ResponseEntity<JSONObject> changeCurrentSemester(@RequestParam("year") int year, @RequestParam("semesterNumber") int semesterNumber)
     {
         JsonResult jsonResult = semesterService.changeCurrentSemesterFeedback(year, semesterNumber);
