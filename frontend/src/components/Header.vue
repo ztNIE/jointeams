@@ -14,7 +14,7 @@
           content="Notification"
           placement="left"
       >
-        <el-badge :is-dot="showDot" class="item">
+        <el-badge v-if="this.$store.getters.isUser" :is-dot="showDot" class="item">
           <BellFilled class="icon-bell"></BellFilled>
         </el-badge>
       </el-tooltip>
