@@ -1,5 +1,6 @@
 package com.jointeams.backend.service.serviceImpl;
 
+import com.jointeams.backend.model.response.responseData.CourseResponseData;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
 import com.jointeams.backend.repositery.*;
@@ -458,7 +459,17 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public JsonResult findAllFeedback() {
         List<Course> courses = (List<Course>) courseRepository.findAll();
-        courses.forEach(course -> course.setGroups(null));
+        ArrayList<CourseResponseData> courseResponseDataArrayList = new ArrayList<>();
+        courses.forEach(course -> {
+            CourseResponseData courseResponseData = new CourseResponseData();
+            courseResponseData.setId(course.getId());
+            courseResponseData.setCode(course.getCode());
+            courseResponseData.setName(course.getName());
+            courseResponseData.setUniversityId(course.getUniversity().getId());
+            courseResponseData.setUniversityName(course.getUniversity().getName());
+            courseResponseData.setIsLocked(course.getIsLocked());
+            courseResponseDataArrayList.add(courseResponseData);
+        });
         JsonResult jsonResult = new JsonResult();
         if(courses.size() == 0)
         {
@@ -467,7 +478,7 @@ public class CourseServiceImpl implements CourseService {
         }
         else {
             jsonResult.setStatus(1);
-            jsonResult.setMsgAndData("Finding all course successful", courses);
+            jsonResult.setMsgAndData("Finding all course successful", courseResponseDataArrayList);
         }
         return jsonResult;
     }
@@ -488,6 +499,7 @@ public class CourseServiceImpl implements CourseService {
             course.setName(name);
             course.setNextGroupNameId(0);
             course.setIsLocked(false);
+            course.setUniversity(university);
             courseRepository.save(course);
             return 1;
         }
@@ -502,10 +514,10 @@ public class CourseServiceImpl implements CourseService {
         jsonResult.setStatus(resultCode);
         switch (resultCode) {
             case -1:
-                jsonResult.setMsgAndData("The university is not found", Optional.empty());
+                jsonResult.setMsgAndData("The university is not found!", Optional.empty());
                 break;
             case 0:
-                jsonResult.setMsgAndData("The course code or name is duplicated", Optional.empty());
+                jsonResult.setMsgAndData("The course code or name is duplicated for this university!", Optional.empty());
                 break;
             case 1:
                 jsonResult.setMsgAndData( "The course, " + code + ": " + name +" is added successfully.",

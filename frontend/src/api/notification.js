@@ -19,7 +19,7 @@ const findAllByUserId = async function(userId) {
 
 const actionOnNotification = async function(notificationId, action) {
     try {
-        const res = await post('/notification/actionOnNotification?notificationId=' + notificationId + "&action=" + action)
+        const res = await post('/notification/actionOnNotification?notificationId=' + notificationId + '&action=' + action)
         if(res.request.status === 200)
             return res
         else
@@ -33,7 +33,7 @@ const actionOnNotification = async function(notificationId, action) {
     }
 }
 export default {
-    name: 'NotificationAPI',
+    name: 'notificationAPI',
     findAllByUserId,
     actionOnNotification
 }

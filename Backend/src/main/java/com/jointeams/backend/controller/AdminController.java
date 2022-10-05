@@ -4,6 +4,7 @@ import com.jointeams.backend.model.request.AddCourseRequest;
 import com.jointeams.backend.service.CommentService;
 import com.jointeams.backend.service.CourseService;
 import com.jointeams.backend.service.SemesterService;
+import com.jointeams.backend.service.UniversityService;
 import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class AdminController {
 
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private UniversityService universityService;
 
     //including finding IsCommentAvailable
     @PreAuthorize("hasAnyRole('ADMIN','USER') ")
@@ -76,7 +79,7 @@ public class AdminController {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
         }
     }
-    @DeleteMapping(path = "deleteACourse")
+    @PostMapping(path = "deleteACourse")
     public ResponseEntity<JSONObject> deleteACourse(@RequestParam("courseId") Long courseId) {
 
         JsonResult jsonResult = courseService.deleteACourseFeedback(courseId);
@@ -88,7 +91,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping(path = "changeCourseLockStatus")
+    @PostMapping(path = "changeACourseLockStatus")
     public ResponseEntity<JSONObject> changeACourseLockStatus(@RequestParam("courseId") Long courseId, @RequestParam("isLocked") boolean isLocked)
     {
         JsonResult jsonResult = courseService.changeCourseLockStatusFeedback(courseId, isLocked);
@@ -112,7 +115,7 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping(path = "deleteAComment")
+    @PostMapping(path = "deleteAComment")
     public ResponseEntity<JSONObject> deleteAComment(@Param("commentId") Long commentId)
     {
         JsonResult jsonResult = commentService.deleteACommentFeedback(commentId);
@@ -128,6 +131,18 @@ public class AdminController {
     public ResponseEntity<JSONObject> changeIsCommentAvailableStatus(@Param("isAvailable") boolean isAvailable)
     {
         JsonResult jsonResult = commentService.changeIsCommentAvailableStatus(isAvailable);
+
+        if(jsonResult.getStatus() == 0) {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(path = "findAllUniversities")
+    public ResponseEntity<JSONObject> findAllUniversities()
+    {
+        JsonResult jsonResult = universityService.findAllFeedback();
 
         if(jsonResult.getStatus() == 0) {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);

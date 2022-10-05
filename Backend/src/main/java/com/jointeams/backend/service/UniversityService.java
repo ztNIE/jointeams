@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UniversityService {
     public University addUniversity(University university);
-    public JsonResult findAll();
+    public JsonResult findAllFeedback();
 
     Iterable<University> getAllUniversities();
 }
