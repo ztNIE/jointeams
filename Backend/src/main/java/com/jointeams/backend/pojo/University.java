@@ -1,6 +1,7 @@
 package com.jointeams.backend.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class University {
 
     @Id
@@ -22,7 +24,7 @@ public class University {
     private String name;
     @Column(length = 50, nullable = false)
     private String regex;
-
+    @Column(length = 50)
     private String emailUrl;
 
     @Override

@@ -67,7 +67,7 @@ public enum NotificationActionResultMsg {
     AcceptingInvitationFailedCozAnotherGroup(-3) {
         @Override
         public String toString() {
-            return "Accepting the invitation failed because you are already in another group of the same course and semester.";
+            return "Accepting the invitation failed because you are already in a group of this course in this semester.";
         }
     },
     AcceptingInvitationFailedCozGroupFull(-4) {
@@ -79,7 +79,7 @@ public enum NotificationActionResultMsg {
     AcceptingJoinRequestFailedCozAnotherGroup(-5) {
         @Override
         public String toString() {
-            return "Accepting the join request failed because he/she is already in another group of the same course and semester.";
+            return "Accepting the join request failed because he/she is already in a group of this course in this semester.";
         }
     },
     AcceptingJoinRequestFailedCozGroupFull(-6) {

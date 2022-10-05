@@ -127,7 +127,40 @@ const adminRoutes = [
       hidden: false,
     },
     component: () => import('@/views/admin/Dashboard'),
-  }
+  },
+    {
+        path: '/comment',
+        name: 'comment_admin',
+        meta: {
+            icon: 'ChatSquare',
+            capitalName: 'Comment',
+            highlight: 'comment_admin',
+            hidden: false,
+        },
+        component: () => import('@/views/admin/Comment'),
+    },
+    {
+        path: '/course',
+        name: 'course_admin',
+        meta: {
+            icon: 'Management',
+            capitalName: 'Course',
+            highlight: 'course_admin',
+            hidden: false,
+        },
+        component: () => import('@/views/admin/Course'),
+    },
+    {
+        path: '/semester',
+        name: 'semester_admin',
+        meta: {
+            icon: 'Calendar',
+            capitalName: 'Semester',
+            highlight: 'semester_admin',
+            hidden: false,
+        },
+        component: () => import('@/views/admin/Semester'),
+    },
 ]
 
 // create router

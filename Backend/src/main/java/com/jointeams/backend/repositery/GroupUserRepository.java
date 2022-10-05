@@ -21,7 +21,7 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
     @Query(value = "select id, is_leader, first_name, last_name, filename, email, degree from group_user inner join user on group_user.user_id = user.id where group_id = ?1", nativeQuery = true)
     public Optional<List<Object[]>> getGroupUserDetailByGroupId(Long groupId);
 
-    @Query(value = "select u.id, u.first_name, u.last_name, u.filename\n" +
+    @Query(value = "select distinct u.id, u.first_name, u.last_name, u.filename\n" +
             "from user as u\n" +
             "    inner join enrollment as e\n" +
             "        on u.id = e.user_id\n" +
@@ -31,7 +31,7 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
             "  and e.course_id = ?1\n" +
             "  and u.is_activate = true\n" +
             "  and u.is_admin = false\n" +
-            "  and u.id not in (select u.id\n" +
+            "  and u.id not in (select distinct u.id\n" +
             "  from user as u\n" +
             "      inner join enrollment as e\n" +
             "          on u.id = e.user_id\n" +
@@ -45,7 +45,7 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
             "  and u.is_admin = false)", nativeQuery = true)
     public Optional<List<Object[]>> getUserEnrolledInACurrentSemesterCourseWithoutAGroup(Long courseId);
 
-    @Query(value = "select u.id, u.first_name, u.last_name, u.filename\n" +
+    @Query(value = "select distinct u.id, u.first_name, u.last_name, u.filename\n" +
             "from user as u\n" +
             "         inner join enrollment as e\n" +
             "                    on u.id = e.user_id\n" +

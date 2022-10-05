@@ -21,7 +21,7 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
-    public JsonResult findAll()
+    public JsonResult findAllFeedback()
     {
         List<University> universities = (List<University>) universityRepository.findAll();
         JsonResult jsonResult = new JsonResult();

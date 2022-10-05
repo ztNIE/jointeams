@@ -47,7 +47,6 @@ public class CourseGroupServiceImpl implements CourseGroupService {
                 group.put("group_name", element[7] + "_Group" + element[3]);
                 group.put("tutorial", element[4]);
                 group.put("capacity", element[1]);
-                group.put("is_current_user_group", false);
 
                 JSONObject member = new JSONObject();
                 member.put("name", element[8] + " " + element[9]);
@@ -55,11 +54,8 @@ public class CourseGroupServiceImpl implements CourseGroupService {
                 member.put("id", element[11]);
 
                 if(((BigInteger) element[11]).longValue() == userId) {
-                    group.put("is_current_user_group", true);
                     currentUserGroupKey = group;
                     targetGroupId = (BigInteger) element[0];
-                } else if(((BigInteger) element[0]).equals(targetGroupId)) {
-                    group.put("is_current_user_group", true);
                 }
 
                 if(map.get(group) == null) {
@@ -76,7 +72,12 @@ public class CourseGroupServiceImpl implements CourseGroupService {
                     currentGroupMembers.add(v);
                 }
 
-                JSONObject targetGroup = currentUserGroupKey;
+                JSONObject targetGroup = new JSONObject();
+                targetGroup.put("group_id", currentUserGroupKey.get("group_id"));
+                targetGroup.put("group_name", currentUserGroupKey.get("group_name"));
+                targetGroup.put("tutorial", currentUserGroupKey.get("tutorial"));
+                targetGroup.put("capacity", currentUserGroupKey.get("capacity"));
+                targetGroup.put("is_current_user_group", true);
                 targetGroup.put("members", currentGroupMembers);
                 data.add(targetGroup);
             }
@@ -95,6 +96,7 @@ public class CourseGroupServiceImpl implements CourseGroupService {
 
                 JSONObject element = key;
                 element.put("members", members);
+                element.put("is_current_user_group", false);
                 data.add(element);
             }
 
@@ -158,14 +160,14 @@ public class CourseGroupServiceImpl implements CourseGroupService {
         GroupUserId groupUserId = new GroupUserId(result.getId(), userId);
         groupUser.setGroupUserId(groupUserId);
         groupUser.setLeader(true);
+        GroupUser groupUserResult = groupUserRepository.save(groupUser);
 
-        System.out.println(groupUser);
         // Update next group name id in course.
         course.setNextGroupNameId(course.getNextGroupNameId() + 1);
         courseRepository.save(course);
 
         jsonResult.put("msg", "Success!");
-        jsonResult.put("data", result);
+        jsonResult.put("data", new JSONObject().toJSONString());
         return jsonResult;
     }
 }

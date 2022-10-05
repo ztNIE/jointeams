@@ -55,7 +55,7 @@
                     <p class="student_degree">{{member.degree}}</p>
                   </div>
                   <div class="member_div right">
-                    <el-button type="primary" :disabled="is_comment_available === false || member.id === user_id" @click="handleComment(member)">Comment</el-button>
+                    <el-button type="primary" :disabled="is_comment_available === false || member.id === user_id || is_member === false" @click="handleComment(member)">Comment</el-button>
                   </div>
                 </el-card>
                 <div class="divider_space"></div>
@@ -182,10 +182,7 @@ export default {
     }
   },
   mounted() {
-    // TODO
-    // var userId = cookieUtils.getTokenInCookies()
-    // console.log(cookieUtils.getTokenInCookies())
-    this.user_id = 1
+    this.user_id = parseInt(this.$store.getters.userId)
 
     GroupAPI.getGroupInformationById(this.$route.params.group_id).then((res) => {
       this.group = res.data.data
@@ -208,12 +205,14 @@ export default {
           break
         }
       }
-    })
 
-    // Should check cookie instead TODO
-    if(this.$router.options.history.state.back == "/myGroups") {
-      this.is_member = true
-    }
+      for(let i = 0; i < this.members.length; i++) {
+        if(this.members[i].id === this.user_id) {
+          this.is_member = true
+          break
+        }
+      }
+    })
 
     GroupAPI.isCommentFunctionOpen().then((res) => {
       this.is_comment_available = res.data.data.isCommentFunctionAvailable
@@ -248,7 +247,10 @@ export default {
             message: res.data.msg,
           })
         })
-        this.$router.push(this.$router.options.history.state.back)
+        // this.$router.push(this.$router.options.history.state.back)
+        // window.history.back()
+        // this.$router.go(-1)
+        this.$router.push({name: 'myGroups'})
       }).catch(() => {
         ElMessage({
           type: 'info',

@@ -127,8 +127,7 @@ export default {
     authUtil.authenticateIdentity("ROLE_USER")
   },
   mounted() {
-    // TODO (get user_id from cookie)
-    this.user_id = 6
+    this.user_id = this.$store.getters.userId
 
     CourseGroupAPI.getTutorial(this.user_id, this.course.id).then((res) => {
       if(res !== null) {
@@ -233,7 +232,14 @@ export default {
             ElMessage({
               type: 'success',
               message: res.data.msg,
-
+            })
+            CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then((res) => {
+              if(res.data.data === null) {
+                this.groups = []
+              } else {
+                this.groups = res.data.data
+              }
+              this.searchResult = this.groups
             })
           } else {
             ElMessage({

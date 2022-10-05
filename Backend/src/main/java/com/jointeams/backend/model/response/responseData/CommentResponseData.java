@@ -15,9 +15,11 @@ import java.sql.Timestamp;
 public class CommentResponseData {
     private Long id;
     private Long senderId;
+    private String senderName;
     private Long receiverId;
+    private String receiverName;
     private Integer tag;
     private String content;
     private Timestamp timestamp;
-    private Boolean isHide;
+    private Boolean isHidden;
 }

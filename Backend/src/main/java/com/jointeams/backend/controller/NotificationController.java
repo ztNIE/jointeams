@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/notification")
-//@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('USER')")
 public class NotificationController {
 
     @Autowired
