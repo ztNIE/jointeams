@@ -10,19 +10,21 @@
     </template>
     <el-row :gutter="20" class="full-height">
       <el-col :span="12">
-        <base-card v-for="student in previousStudents" :key="student.id">
-          <span>{{ student.firstName }}</span>
-          <span>{{ student.lastName }}</span>
-          <span>{{ student.id }}</span>
-          <span>{{ student.email }}</span>
+        <el-empty description="No previous student" v-if="isPreviousStudentEmpty"/>
+        <base-card v-for="student in previousStudents" :key="student.id" v-else>
+          <user-card :first-name="student.firstName"
+                     :last-name="student.lastName"
+                     :email="student.email"
+                     :id="student.id"></user-card>
         </base-card>
       </el-col>
       <el-col :span="12">
-        <base-card v-for="student in currentStudents" :key="student.id">
-          <span>{{ student.firstName }}</span>
-          <span>{{ student.lastName }}</span>
-          <span>{{ student.id }}</span>
-          <span>{{ student.email }}</span>
+        <el-empty description="No current student" v-if="isCurrentStudentEmpty"/>
+        <base-card v-for="student in currentStudents" :key="student.id" v-else>
+          <user-card :first-name="student.firstName"
+                     :last-name="student.lastName"
+                     :email="student.email"
+                     :id="student.id"></user-card>
         </base-card>
       </el-col>
     </el-row>
@@ -33,10 +35,11 @@
 import courseDetailAPI from '@/api/courseDetail.js'
 import {mapGetters} from "vuex";
 import BaseCard from "@/views/CourseDetails/components/BaseCard";
+import UserCard from "@/views/CourseDetails/components/UserCard";
 
 export default {
   name: "CourseDetails",
-  components: {BaseCard},
+  components: {UserCard, BaseCard},
   props: ['courseId'],
   data() {
     return {
