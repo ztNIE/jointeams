@@ -7,24 +7,24 @@ insert into user (degree, description, email,
                   is_activate, is_admin, last_name,
                   password, self_tag, university_id)
 values
-    (null, null, 'devu0001@uni.sydney.edu.au',
-     null, null, 'firstname',
-     true, false, 'lastname',
+    ('Bachelor of Engineering Honors (Software)', 'Hi, I am Emma Kwan :)', 'devu0001@uni.sydney.edu.au',
+     'Faculty of Engineering and IT', null, 'Emma',
+     true, false, 'Kwan',
      '$2a$10$4Y.YYVx0K2zVYGsMXiw2E.7lhEzuUmegm6/tcC8uNXIlfqoNnwyhy',
-     null, 1),
+     1, 1),
     (null, null, 'jointeamsspring@gmail.com',
      null, null, 'admin',
      true, true, null,
      '$2a$10$krU.5/cHT0Zzi.o3dYgM6.yELqTPG6FKrhOuYEyNhglosd67GCRNG',
      null, 2),
-    (null, null, 'devu0002@uni.sydney.edu.au',
-     null, null, 'firstname2',
-     true, false, 'lastname2',
+    ('Bachelor of Advanced Computing', 'Hi, I am Sarah Lee :)', 'devu0002@uni.sydney.edu.au',
+     'Faculty of Engineering and IT', null, 'Sarah',
+     true, false, 'Lee',
      '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
      null, 1),
-    (null, null, 'devu0003@uni.sydney.edu.au',
-     null, null, 'firstname3',
-     true, false, 'lastname3',
+    ('Master of Information Technology', 'Hi, I am John Davis :)', 'devu0003@uni.sydney.edu.au',
+     'Faculty of Engineering and IT', null, 'John',
+     true, false, 'Davis',
      '$2a$10$XmrZEyt/WDR5uz0fC8Y7l.T1o/VSCiO1GNcI1ME67.RPeXWLA4B1S',
      null, 1);
 
@@ -108,9 +108,9 @@ values
 --     (NULL, NULL, '2022-09-16 12:35:13.000000', 2, 2, 3),
 --     (NULL, NULL, '2022-09-17 13:35:13.000000', 5, 3, 2);
 
--- insert into `comment` (content, is_hide, 'tag',
---                        timestamp, group_id, receiver_id, sender_id)
--- values
---     ('content xxxx1', true, 1, '2022-09-23 09:23:27.000000', 1, 2, 1),
---     ('content xxxx2', false, 2, '2022-09-23 09:24:27.000000', 2, 3, 2);
+insert into `comment` (content, is_hide, tag,
+                       timestamp, group_id, receiver_id, sender_id)
+values
+    ('Great collaboration experience! Hope to team up next time :) ', false, 3, '2022-09-23 09:23:27.000000', 1, 1, 2),
+    ('Good job!', true, 2, '2022-09-23 09:24:27.000000', 4, 1, 3);
 
