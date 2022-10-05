@@ -12,7 +12,10 @@ import com.jointeams.backend.repositery.CourseRepository;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +128,30 @@ public class CourseServiceImpl implements CourseService {
             newStudent.put("firstName", student.getFirstName());
             newStudent.put("lastName", student.getLastName());
             newStudent.put("email", student.getEmail());
+
+            JSONArray tags = new JSONArray();
+            if (student.getSelfTag() != null) {
+                tags.add(student.getSelfTag());
+            }
+            List<Comment> comments = commentRepository.findAllCommentsByUserId(student.getId());
+            for (Comment comment : comments) {
+                if (!tags.contains(comment.getTag())) {
+                    tags.add(comment.getTag());
+                }
+            }
+            tags.sort(Comparator.comparing(obj -> ((int) obj)));
+            newStudent.put("tags", tags);
+
+            Enrollment currentEnrollment = null;
+            List<Enrollment> enrollments = enrollmentRepository.findEnrollmentByUserIdAndCourseId(student.getId(), courseId);
+            for (Enrollment enrollment : enrollments) {
+                if (enrollment.getSemester().isCurrent()) {
+                    currentEnrollment = enrollment;
+                    break;
+                }
+            }
+            newStudent.put("tutorial", currentEnrollment.getTutorial());
+
             currentStudent.add(newStudent);
         }
 

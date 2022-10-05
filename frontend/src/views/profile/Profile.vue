@@ -12,13 +12,13 @@
               <div class="tag-box">
                 <span>Self-tag: </span>
                 <el-tag v-if="selfTag != null" class="mx-1 info-tag" effect="dark" type="" size="large">{{tagName[selfTag - 1].label}}</el-tag>
-                <span v-else>None</span>
+                <span class="none" v-else>None</span>
               </div>
               <!-- gift-tag -->
               <div class="tag-box">
                 <span>Gift-tag: </span>
                 <el-tag v-for="comment in comments" :key="comment.id" class="mx-1 info-tag" effect="dark" type="warning" size="large">{{tagName[comment.tag - 1].label}}</el-tag>
-                <span v-if="comments.length === 0">None</span>
+                <span class="none" v-if="comments.length === 0">None</span>
               </div>
             </el-col>
 
@@ -38,7 +38,9 @@
                   <p class="name">Current Courses</p>
                 </div>
                 <!-- past course -->
-                <div class="past-course"></div>
+                <div class="past-course">
+                  <p class="name">Past Courses</p>
+                </div>
               </div>
             </el-col>
           </el-row> 
@@ -154,6 +156,12 @@ export default {
         & .info-tag{
           margin-left: 5px;
           margin-top: 10px;
+        }
+        & .none {
+          margin-left: 5px;
+          color: #B5B5B5;
+          font-weight: 700;
+          line-height: 35px;
         }
       }
     }
