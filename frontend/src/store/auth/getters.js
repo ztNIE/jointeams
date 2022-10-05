@@ -1,6 +1,5 @@
 export default {
     isUser(state) {
-        console.log(state.role)
         return state.role === "ROLE_USER";
     },
     email(state) {

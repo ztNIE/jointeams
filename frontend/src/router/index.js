@@ -77,12 +77,13 @@ const userRoutes = [
         component: () => import('@/views/profile/UserProfile'),
     },
     {
-        path: '/courseDetails/:course_id',
+        path: '/courseDetails/:courseId',
         name: 'courseDetails',
         meta: {
             hidden: true
         },
-        component: () => import('@/views/CourseDetails')
+        props: true,
+        component: () => import('@/views/CourseDetails/CourseDetails')
     },
     {
         path: '/notification',
