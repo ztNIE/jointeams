@@ -1,11 +1,11 @@
 <template>
-  <div class="common-layout" >
+  <div class="common-layout">
     <el-card class="box-card">
       <template #header>
         <div>
           <div>
-            <span class="main_header">{{course.code}}</span>&nbsp;&nbsp;
-            <span class="sub_header">{{course.name}} - Groups</span>
+            <span class="main_header">{{ course.code }}</span>&nbsp;&nbsp;
+            <span class="sub_header">{{ course.name }} - Groups</span>
           </div>
           <div class="divider_space"/>
           <div>
@@ -48,18 +48,21 @@
           <div v-for="group in searchResult" :key="group.group_id" class="text item">
             <el-card class="group-card">
               <div class="card-header">
-                <span id="name">{{group.group_name}}</span>
-                <span id="capacity">(Capacity: {{group.capacity}})</span>
+                <span id="name">{{ group.group_name }}</span>
+                <span id="capacity">(Capacity: {{ group.capacity }})</span>
                 <el-button @click="handleToDetail(group.group_id)" text>
-                  <el-icon id="detailBtn-icon"><Right /></el-icon>
+                  <el-icon id="detailBtn-icon">
+                    <Right/>
+                  </el-icon>
                 </el-button>
               </div>
               <div class="divider_space"></div>
               <div class="card-content">
                 <span v-for="member in group.members" :key="member.name" class="member">
                   <el-avatar class="member_avatar" src={{member.avatar}} @error="errorHandler">
+                    <!--src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"-->
                     <img
-                        src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                     />
                   </el-avatar>
                   <span class="member_name"> {{ member.name }} </span>
@@ -69,7 +72,7 @@
             <div class="divider_space"></div>
           </div>
         </el-scrollbar>
-        <el-empty description="No group" v-else />
+        <el-empty description="No group" v-else/>
       </el-main>
       <el-footer class="createGroupBtn">
         <el-button type="primary" @click="handleCreateGroup">Create Group</el-button>
@@ -130,13 +133,13 @@ export default {
     this.user_id = this.$store.getters.userId
 
     CourseGroupAPI.getTutorial(this.user_id, this.course.id).then((res) => {
-      if(res !== null) {
+      if (res !== null) {
         this.tutorial = res.data.data.tutorial
       }
     })
 
     CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then((res) => {
-      if(res.data.data === null) {
+      if (res.data.data === null) {
         this.groups = []
       } else {
         this.groups = res.data.data
@@ -151,13 +154,13 @@ export default {
     },
     handleSearch() {
       this.searchResult = []
-      if(this.search_term !== "") {
+      if (this.search_term !== "") {
         for (let i = 0; i < this.groups.length; i++) {
-          if(this.groups[i].group_name.toLowerCase().indexOf(this.search_term.toLowerCase()) !== -1) {
+          if (this.groups[i].group_name.toLowerCase().indexOf(this.search_term.toLowerCase()) !== -1) {
             this.searchResult.push(this.groups[i])
           }
         }
-        if(this.searchResult.length === 0) {
+        if (this.searchResult.length === 0) {
           this.$message({
             type: "info",
             message: 'No such a group!',
@@ -176,9 +179,9 @@ export default {
     getAllTutorials() {
       var tutorials = []
       tutorials.push('<All Tutorials>')
-      for(let i = 0; i < this.groups.length; i++) {
+      for (let i = 0; i < this.groups.length; i++) {
         var tut = this.groups[i].tutorial
-        if(!tutorials.includes(tut)) {
+        if (!tutorials.includes(tut)) {
           tutorials.push(tut)
         }
       }
@@ -186,13 +189,13 @@ export default {
     },
     handleSelect() {
       this.searchResult = []
-      if(this.search_tut !== '<All Tutorials>') {
+      if (this.search_tut !== '<All Tutorials>') {
         for (let i = 0; i < this.groups.length; i++) {
-          if(this.groups[i].tutorial.toLowerCase().indexOf(this.search_tut.toLowerCase()) !== -1) {
+          if (this.groups[i].tutorial.toLowerCase().indexOf(this.search_tut.toLowerCase()) !== -1) {
             this.searchResult.push(this.groups[i])
           }
         }
-        if(this.searchResult.length === 0) {
+        if (this.searchResult.length === 0) {
           this.$message({
             type: "info",
             message: 'No such a tutorial!',
@@ -228,13 +231,13 @@ export default {
           }
       ).then(() => {
         CourseGroupAPI.addAGroup(this.course.id, this.user_id, this.group_capacity).then((res) => {
-          if(res.status === 200) {
+          if (res.status === 200) {
             ElMessage({
               type: 'success',
               message: res.data.msg,
             })
             CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then((res) => {
-              if(res.data.data === null) {
+              if (res.data.data === null) {
                 this.groups = []
               } else {
                 this.groups = res.data.data
@@ -267,66 +270,81 @@ export default {
 .common-layout {
   background-color: #CBF3F0;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .card-content {
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .member {
-  display:inline-block;
-  margin-right:20px;
+  display: inline-block;
+  margin-right: 20px;
   align-items: center;
 }
+
 #detailBtn-icon {
   color: #2EC4B6;
   font-size: 3em;
 }
+
 #name {
   font-size: large;
   color: #FF9F1C;
   font-weight: bold;
 }
+
 #capacity {
   font-size: small;
   color: #787878;
 }
+
 .member_avatar {
   height: 25px;
   width: 25px;
   vertical-align: middle;
   margin-right: 10px;
 }
+
 .member_name {
   font-size: small;
   vertical-align: center;
 }
+
 .divider_space {
   height: 3px;
 }
+
 .main_header {
   color: black;
   font-weight: bold;
   font-size: xx-large;
 }
+
 .sub_header {
   color: black;
   font-weight: normal;
   font-size: x-large;
 }
+
 .box-card {
   min-height: 580px;
 }
+
 .group-card:hover {
   background-color: #CBF3F0;
 }
+
 .el-form-item.asterisk-left.tutorial_form {
   margin-bottom: 0px;
 }
+
 .createGroupBtn {
   text-align: center;
 }
