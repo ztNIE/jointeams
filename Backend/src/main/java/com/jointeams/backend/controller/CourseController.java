@@ -54,7 +54,7 @@ public class CourseController {
         JSONObject previousStudents = courseService.getAllPreviousStudent(id);
 
         if(previousStudents.get("data") == null) {
-            return new ResponseEntity<>(previousStudents, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(previousStudents, HttpStatus.valueOf(202));
         } else {
             return new ResponseEntity<JSONObject>(previousStudents, HttpStatus.OK);
         }
@@ -69,7 +69,7 @@ public class CourseController {
         JSONObject currentStudents = courseService.getAllCurrentStudent(id);
 
         if(currentStudents.get("data") == null) {
-            return new ResponseEntity<>(currentStudents, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(currentStudents, HttpStatus.valueOf(202));
         } else {
             return new ResponseEntity<JSONObject>(currentStudents, HttpStatus.OK);
         }
@@ -84,7 +84,7 @@ public class CourseController {
         JSONObject previousTeammates = courseService.getAllPreviousTeammates(userId, courseId);
 
         if(previousTeammates.get("data") == null) {
-            return new ResponseEntity<>(previousTeammates, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(previousTeammates, HttpStatus.valueOf(202));
         } else {
             return new ResponseEntity<JSONObject>(previousTeammates, HttpStatus.OK);
         }
