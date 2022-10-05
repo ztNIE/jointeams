@@ -37,17 +37,10 @@
                 <span id="content">{{comment.content}}</span>
               </div>
             </el-card>
-<!--            <el-select v-model="comment_form.tag_id" placeholder="Please select a tag">-->
-<!--              <el-option-->
-<!--                  v-for="item in tags"-->
-<!--                  :key="item.value"-->
-<!--                  :label="item.label"-->
-<!--                  :value="item.value"-->
-<!--              />-->
-<!--            </el-select>-->
             <div class="divider_space"></div>
           </div>
         </el-scrollbar>
+        <el-empty description="No comment" v-else />
       </el-main>
     </el-card>
   </div>

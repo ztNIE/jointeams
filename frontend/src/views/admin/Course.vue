@@ -64,6 +64,7 @@
             <div class="divider_space"></div>
           </div>
         </el-scrollbar>
+        <el-empty description="No course" v-else />
       </el-main>
     </el-card>
   </div>
@@ -86,7 +87,6 @@ export default {
     return {
       universityId: '',
       universities: [],
-      labels: ['From:', 'To:'],
       searchInput: '',
       universityIdSelected: '',
       courseCodeInput: '',
@@ -172,9 +172,7 @@ export default {
               message: res.data.msg,
             })
             let index = this.courses.indexOf(course)
-            this.courses[index].isLocked = (course.isLocked)?false:true
-            // let index2 = this.coursesAfterSearch.indexOf(course)
-            // this.coursesAfterSearch[index2].isLocked = (course.isLocked)?false:true
+            this.courses[index].isLocked = (course.isLocked) ? false : true
           }
         })
       }).catch(() => {
@@ -220,9 +218,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.common-layout {
-  background-color: #CBF3F0;
-}
 
 .card-content {
   display: flex;

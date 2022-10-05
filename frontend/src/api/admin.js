@@ -1,8 +1,33 @@
 import {get, post} from './http'
-import {ElMessage} from "element-plus";
+import catchError from "@/util/catchError";
 
 const getCurrentSemester = async function() {
-    return await get(`/admin/findCurrentSemester`, {})
+    try {
+        const res = await get(`/admin/findCurrentSemester`)
+        if(res.request.status === 200)
+            return res
+        else
+            throw new Error(res.data.data.msg)
+    } catch(err) {
+        if(err.message === 'No university is found!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
+    }
+}
+const changeCurrentSemester = async function(year,semesterNumber) {
+    try {
+        const res = await post(`/admin/changeCurrentSemester?year=`+ year + `&semesterNumber=`+ semesterNumber)
+        if(res.request.status === 200)
+            return res
+        else
+            throw new Error(res.data.data.msg)
+    } catch(err) {
+        if(err.message === 'The current semester isn\'t changed, because it\'s the same to the one stored in the database!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
+    }
 }
 const findAllComments = async function() {
     try {
@@ -12,7 +37,10 @@ const findAllComments = async function() {
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        if(err.message === 'No comment is found!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
     }
 }
 
@@ -24,86 +52,95 @@ const deleteAComment = async function(commentId) {
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        return catchError.outputError(err)
+    }
+}
+const changeIsCommentAvailableStatus = async function(isAvailable) {
+    try {
+        const res = await post(`/admin/changeIsCommentAvailableStatus?isAvailable=`+ isAvailable)
+        if(res.request.status === 200)
+            return res
+        else
+            throw new Error(res.data.data.msg)
+    } catch(err) {
+        if(err.message === 'Change IsCommentAvailable status failed, because the new status is the same to the current one!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
     }
 }
 const findAllCourses = async function() {
     try {
         const res = await get(`/admin/findAllCourses`, {})
-        console.log(res.data.data.msg)
         if(res.request.status === 200)
             return res
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        if(err.message === 'No course is found!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
     }
 }
 const deleteACourse = async function(courseId) {
     try {
         const res = await post(`/admin/deleteACourse?courseId=`+ courseId)
-        console.log(res.data.data.msg)
         if(res.request.status === 200)
             return res
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        return catchError.outputError(err)
     }
 }
 
 const addACourse = async function(code, name, universityId) {
     try {
         const res = await post(`/admin/addACourse`, {'code':code,'name':name,'universityId':universityId})
-            // ?code=` + code +`&name=` + name + `&universityId=` + universityId
-        console.log(res.data.data.msg)
         if(res.request.status === 200)
             return res
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        return catchError.outputError(err)
     }
 }
 
 const changeACourseLockStatus = async function(courseId, isLocked) {
     try {
         const res = await post(`/admin/changeACourseLockStatus?courseId=`+ courseId +'&isLocked=' + isLocked)
-        console.log(res.data.data.msg)
         if(res.request.status === 200)
             return res
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        return catchError.outputError(err)
     }
 }
 
 const findAllUniversities = async function() {
     try {
         const res = await get(`/admin/findAllUniversities`)
-        console.log(res.data.data.msg)
         if(res.request.status === 200)
             return res
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        outputError(err)
+        if(err.message === 'No university is found!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
     }
 }
 
-const outputError = function(err) {
-    ElMessage({
-        type: 'error',
-        message: err,
-    })
-    return null;
-}
 export default {
     name: 'adminAPI',
     getCurrentSemester,
+    changeCurrentSemester,
     findAllComments,
     deleteAComment,
+    changeIsCommentAvailableStatus,
     findAllCourses,
     deleteACourse,
     addACourse,

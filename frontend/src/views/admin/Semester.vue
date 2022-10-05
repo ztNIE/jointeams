@@ -1,5 +1,52 @@
 <template>
-  <p>admin semester</p>
+  <div class="common-layout" >
+    <el-card class="box-card">
+      <template #header>
+        <div class="main_header">Semester</div>
+      </template>
+      <el-main id="container">
+        <el-card class="semester-card">
+          <div id="content">
+            <label>Current Year</label>
+            <br>
+            <el-select v-bind:disabled="Boolean(1 - isEditActive)" v-model="currentYear" class="m-2">
+              <el-option
+                  v-for="year in yearList"
+                  :key="year"
+                  :label= "year"
+                  :value= "year"
+              />
+            </el-select>
+          </div>
+          <div id="content">
+            <label>Semester Number</label>
+            <br>
+            <el-select v-bind:disabled="Boolean(1 - isEditActive)" v-model="currentSemesterNo" class="m-2">
+              <el-option
+                  v-for="semesterNo in semesterNoList"
+                  :key="semesterNo"
+                  :label= "semesterNo"
+                  :value= "semesterNo"
+              />
+            </el-select>
+          </div>
+          <div id="content">
+            <label id="comment-function-label">Enable the comment function</label>
+            <el-switch v-bind:disabled="Boolean(isEditActive)"
+                v-model="isCommentAvailable"
+                size="large"
+                active-text="Enable"
+                inactive-text="Disable"
+                @click="changeIsCommentAvailableStatus()"
+            />
+          </div>
+        </el-card>
+        <div>
+          <el-button type="primary" @click="changeEditActiveStatus()">{{ buttonContext[isEditActive] }}</el-button>
+        </div>
+      </el-main>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -8,14 +55,148 @@
 
 
 import authUtil from "@/util/authUtil";
+import adminAPI from "@/api/admin";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 export default {
-  name: 'Dashboard',
+  name: 'Semester',
   beforeCreate() {
     authUtil.authenticateIdentity("ROLE_ADMIN")
   },
+  data() {
+    return {
+      isEditActive: 0,
+      buttonContext: ['Edit','Confirm'],
+      universityId: '',
+      universities: [],
+      currentYear: null,
+      yearList: [],
+      currentSemesterNo: '',
+      semesterNoList: ['semester 1','semester 2'],
+      isCommentAvailable: false,
+    }
+  },
+  mounted() {
+    adminAPI.getCurrentSemester().then((res) => {
+      this.currentYear = res.data.data.Semester.year
+      this.currentSemesterNo = this.semesterNoList[res.data.data.Semester.semesterNumber - 1]
+      this.isCommentAvailable = res.data.data.isCommentAvailable
+    })
+    for(let year = 2000; year < 2055; year++)
+    {
+      this.yearList.push(year)
+    }
+  },
+  methods: {
+    changeEditActiveStatus() {
+      if(this.isEditActive === 0)
+        this.isEditActive = 1 - this.isEditActive
+      else
+      {
+        ElMessageBox.confirm(
+            'You are going to reset the current semester?',
+            'Warning',
+            {
+              confirmButtonText: 'Confirm',
+              cancelButtonText: 'Cancel',
+              type: 'warning',
+            }
+        ).then(() => {
+          adminAPI.changeCurrentSemester(this.currentYear, 1+this.semesterNoList.indexOf(this.currentSemesterNo)).then((res) => {
+            if(res !== null)
+            {
+              ElMessage({
+                type: 'success',
+                message: res.data.msg,
+              })
+              location.reload()
+            }
+            else
+              this.isEditActive = 1 - this.isEditActive
+          })
+        }).catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete is cancelled',
+          })
+        })
+      }
+    },
+    changeIsCommentAvailableStatus(){
+      const action = (this.isCommentAvailable === false) ? 'Enable' : 'Disable'
+      ElMessageBox.confirm(
+          'You are going to ' + action.toLowerCase() + ' the comment feature?',
+          'Warning',
+          {
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+      ).then(() => {
+        adminAPI.changeIsCommentAvailableStatus(this.isCommentAvailable).then((res) => {
+          if(res !== null)
+          {
+            ElMessage({
+              type: 'success',
+              message: res.data.msg,
+            })
+          }
+        })
+      }).catch(() => {
+        ElMessage({
+          type: 'info',
+          message: action + ' is cancelled',
+        })
+        this.isCommentAvailable = (this.isCommentAvailable === false) ? true : false
+      })
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.main_header {
+  color: black;
+  font-weight: bold;
+  font-size: xx-large;
+}
+#container{
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+
+  text-align:right;
+}
+.semester-card {
+  width: 60%;
+  align-self: center;
+  height: 90%;
+  margin-bottom: 30px;
+  text-align:left;
+}
+.el-button {
+  width: 150px;
+  height: 50px;
+  font-size: 30px;
+  margin-right: 30px;
+}
+#content {
+  margin-left: 15%;
+  margin-top: 20px;
+  margin-bottom: 100px;
+}
+.el-select {
+  width: 80%;
+}
+#comment-function-label {
+  width: 50%;
+  margin-right: 20%;
+}
 </style>

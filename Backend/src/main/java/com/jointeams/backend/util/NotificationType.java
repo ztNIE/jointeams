@@ -3,22 +3,20 @@ package com.jointeams.backend.util;
 import java.util.Arrays;
 
 public enum NotificationType {
-    Invitation(0, "Invitation", new String[]{"xx", "xx"}),
-    JoinRequest(1, "Join Request", new String[]{"xx", "xx"}),
-    AcceptedJoinRequest(2, "Accepted Join Request", new String[]{"xx", "xx"}),
-    DeclinedJoinRequest(3, "Declined Join Request", new String[]{"xx", "xx"}),
-    AcceptedInvitation(4, "Accepted Invitation", new String[]{"xx", "xx"}),
-    DeclinedInvitation(5, "Declined Invitation", new String[]{"xx", "xx"});
+    Invitation(0, "Invitation"),
+    JoinRequest(1, "Join Request"),
+    AcceptedJoinRequest(2, "Accepted Join Request"),
+    DeclinedJoinRequest(3, "Declined Join Request"),
+    AcceptedInvitation(4, "Accepted Invitation"),
+    DeclinedInvitation(5, "Declined Invitation");
 
     private int code;
     private String content;
-    private String[] message;
 
-    NotificationType(int code, String content, String[] message)
+    NotificationType(int code, String content)
     {
         this.code = code;
         this.content = content;
-        this.message = message;
     }
 
     public static String getContentByCode(int code) {
@@ -40,22 +38,22 @@ public enum NotificationType {
                 switch(code)
                 {
                     case 0:
-                        messageResult = searchResult.message[0] + " " + userName + " " + searchResult.message[1] + groupName;
+                        messageResult = "The Group " + groupName + "  invites you to join there group. For more information, please go to their group page.";
                         break;
                     case 1:
-                        messageResult = searchResult.message[0] + " " + userName + " " + searchResult.message[1] + groupName;
+                        messageResult = userName + " applied to join the Group " + groupName + ".  For more information, please go to his profile.";
                         break;
                     case 2:
-                        messageResult = searchResult.message[0] + " " + userName + " " + searchResult.message[1] + groupName;
+                        messageResult = groupName + " has accepted your join request. For more information, please go to the group page.";
                         break;
                     case 3:
-                        messageResult = searchResult.message[0] + " " + userName + " " + searchResult.message[1] + groupName;
+                        messageResult = groupName + " has declined your join request.";
                         break;
                     case 4:
-                        messageResult = searchResult.message[0] + " " + userName + " " + searchResult.message[1] + groupName;
+                        messageResult = userName + " has accepted the invitation from Group " + groupName + ".For more information, please go to the group page.";
                         break;
                     case 5:
-                        messageResult = searchResult.message[0] + " " + userName + " " + searchResult.message[1] + groupName;
+                        messageResult = userName + " has declined the invitation from Group " + groupName + ".";
                         break;
                 }
             }

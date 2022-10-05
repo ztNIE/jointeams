@@ -474,7 +474,7 @@ public class CourseServiceImpl implements CourseService {
         if(courses.size() == 0)
         {
             jsonResult.setStatus(0);
-            jsonResult.setMsgAndData("No Course is found!", Optional.empty());
+            jsonResult.setMsgAndData("No course is found!", Optional.empty());
         }
         else {
             jsonResult.setStatus(1);

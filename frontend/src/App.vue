@@ -31,7 +31,7 @@
           <Header/>
         </el-header>
         <!-- main content -->
-        <el-main>
+        <el-main id="page-background">
           <router-view />
         </el-main>
       </el-container>
@@ -121,4 +121,10 @@ html, body, #app, .box{
   box-shadow: 3px 8px 10px #E8E8E8;
   min-height: 500px;
 }
+#page-background {
+  background-color: #CBF3F0;
+}
+//.el-button {
+//  box-shadow: 0px 1px 2px #605f5f;
+//}
 </style>

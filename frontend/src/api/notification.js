@@ -1,5 +1,5 @@
 import { get, post } from './http'
-import {ElMessage} from "element-plus";
+import catchError from "@/util/catchError";
 
 const findAllByUserId = async function(userId) {
     try {
@@ -9,11 +9,10 @@ const findAllByUserId = async function(userId) {
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        ElMessage({
-            type: 'error',
-            message: err,
-        })
-        return null
+        if(err.message === 'No notification is found!')
+            return catchError.outputInfo(err)
+        else
+            return catchError.outputError(err)
     }
 }
 
@@ -25,11 +24,7 @@ const actionOnNotification = async function(notificationId, action) {
         else
             throw new Error(res.data.data.msg)
     } catch(err) {
-        ElMessage({
-            type: 'error',
-            message: err,
-        })
-        return null
+        return catchError.outputError(err)
     }
 }
 export default {
