@@ -50,14 +50,14 @@ export default {
   data() {
     return {
       actionList: ["Accept","Decline","Delete"],
-      notifications: []
+      notifications: [],
     }
   },
   mounted() {
     let userId = store.getters.userId
-    // let userId = 3
     notificationAPI.findAllByUserId(userId).then((res) => {
-      this.notifications = res.data.data.NotificationResponseDataList
+      if(res !== null)
+        this.notifications = res.data.data.NotificationResponseDataList
     })
   },
   methods: {

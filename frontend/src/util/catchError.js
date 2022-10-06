@@ -7,10 +7,10 @@ const outputError = function(err) {
     })
     return null;
 }
-const outputInfo = function(err) {
+const outputInfo = function(errMsg) {
     ElMessage({
         type: 'info',
-        message: err.message,
+        message: errMsg,
     })
     return null;
 }

@@ -6,12 +6,14 @@ const getCurrentSemester = async function() {
         const res = await get(`/admin/findCurrentSemester`)
         if(res.request.status === 200)
             return res
+        else if (res.request.status === 202)
+        {
+            catchError.outputInfo(res.data.msg)
+            return null
+        }
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
-        if(err.message === 'No university is found!')
-            return catchError.outputInfo(err)
-        else
             return catchError.outputError(err)
     }
 }
@@ -20,12 +22,14 @@ const changeCurrentSemester = async function(year,semesterNumber) {
         const res = await post(`/admin/changeCurrentSemester?year=`+ year + `&semesterNumber=`+ semesterNumber)
         if(res.request.status === 200)
             return res
+        else if (res.request.status === 202)
+        {
+            catchError.outputInfo(res.data.msg)
+            return null
+        }
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
-        if(err.message === 'The current semester isn\'t changed, because it\'s the same to the one stored in the database!')
-            return catchError.outputInfo(err)
-        else
             return catchError.outputError(err)
     }
 }
@@ -34,12 +38,14 @@ const findAllComments = async function() {
         const res = await get(`/admin/findAllComments`, {})
         if(res.request.status === 200)
             return res
+        else if (res.request.status === 202)
+        {
+            catchError.outputInfo(res.data.msg)
+            return null
+        }
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
-        if(err.message === 'No comment is found!')
-            return catchError.outputInfo(err)
-        else
             return catchError.outputError(err)
     }
 }
@@ -50,7 +56,7 @@ const deleteAComment = async function(commentId) {
         if(res.request.status === 200)
             return res
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
         return catchError.outputError(err)
     }
@@ -61,7 +67,7 @@ const changeIsCommentAvailableStatus = async function(isAvailable) {
         if(res.request.status === 200)
             return res
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
         if(err.message === 'Change IsCommentAvailable status failed, because the new status is the same to the current one!')
             return catchError.outputInfo(err)
@@ -74,13 +80,15 @@ const findAllCourses = async function() {
         const res = await get(`/admin/findAllCourses`, {})
         if(res.request.status === 200)
             return res
+        else if (res.request.status === 202)
+        {
+            catchError.outputInfo(res.data.msg)
+            return null
+        }
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
-        if(err.message === 'No course is found!')
-            return catchError.outputInfo(err)
-        else
-            return catchError.outputError(err)
+        return catchError.outputError(err)
     }
 }
 const deleteACourse = async function(courseId) {
@@ -89,7 +97,7 @@ const deleteACourse = async function(courseId) {
         if(res.request.status === 200)
             return res
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
         return catchError.outputError(err)
     }
@@ -101,7 +109,7 @@ const addACourse = async function(code, name, universityId) {
         if(res.request.status === 200)
             return res
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
         return catchError.outputError(err)
     }
@@ -113,7 +121,7 @@ const changeACourseLockStatus = async function(courseId, isLocked) {
         if(res.request.status === 200)
             return res
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
         return catchError.outputError(err)
     }
@@ -124,13 +132,15 @@ const findAllUniversities = async function() {
         const res = await get(`/admin/findAllUniversities`)
         if(res.request.status === 200)
             return res
+        else if (res.request.status === 202)
+        {
+            catchError.outputInfo(res.data.msg)
+            return null
+        }
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
-        if(err.message === 'No university is found!')
-            return catchError.outputInfo(err)
-        else
-            return catchError.outputError(err)
+        return catchError.outputError(err)
     }
 }
 

@@ -6,12 +6,14 @@ const findAllByUserId = async function(userId) {
         const res = await get(`/notification/findAllByUserId`, {params: {userId: userId}})
         if(res.request.status === 200)
             return res
+        else if (res.request.status === 202)
+        {
+            catchError.outputInfo(res.data.msg)
+            return null
+        }
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
-        if(err.message === 'No notification is found!')
-            return catchError.outputInfo(err)
-        else
             return catchError.outputError(err)
     }
 }
@@ -22,7 +24,7 @@ const actionOnNotification = async function(notificationId, action) {
         if(res.request.status === 200)
             return res
         else
-            throw new Error(res.data.data.msg)
+            throw new Error(res.data.msg)
     } catch(err) {
         return catchError.outputError(err)
     }

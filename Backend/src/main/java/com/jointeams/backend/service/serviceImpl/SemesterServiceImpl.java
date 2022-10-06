@@ -26,7 +26,7 @@ public class SemesterServiceImpl implements SemesterService {
         if(currentSemester == null)
         {
             jsonResult.setStatus(0);
-            jsonResult.setMsgAndData("The current semester isn't set!", Optional.empty());
+            jsonResult.setMsgAndData("The current semester is not set!", Optional.empty());
         }
         else
         {

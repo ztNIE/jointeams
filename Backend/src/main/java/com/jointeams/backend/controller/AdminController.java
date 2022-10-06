@@ -37,7 +37,7 @@ public class AdminController {
         JsonResult jsonResult = semesterService.findCurrentSemesterFeedback();
 
         if(jsonResult.getStatus() == 0) {
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
         }
@@ -61,7 +61,7 @@ public class AdminController {
         JsonResult jsonResult = courseService.findAllFeedback();
 
         if(jsonResult.getStatus() == 0) {
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
         }
@@ -109,7 +109,7 @@ public class AdminController {
         JsonResult jsonResult = commentService.findAllFeedback();
 
         if(jsonResult.getStatus() == 0) {
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
         }
@@ -145,7 +145,7 @@ public class AdminController {
         JsonResult jsonResult = universityService.findAllFeedback();
 
         if(jsonResult.getStatus() == 0) {
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
         }
