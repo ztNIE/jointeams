@@ -8,7 +8,7 @@ const findAllByUserId = async function(userId) {
             return res
         else if (res.request.status === 202)
         {
-            catchError.outputInfo(res.data.msg)
+            // catchError.outputInfo(res.data.msg)
             return null
         }
         else
