@@ -15,7 +15,7 @@
           placement="left"
       >
         <el-badge v-if="this.$store.getters.isUser" :is-dot="showDot" class="item">
-          <BellFilled class="icon-bell"></BellFilled>
+          <BellFilled class="icon-bell" v-if="isUser"></BellFilled>
         </el-badge>
       </el-tooltip>
       <el-avatar shape="circle" :size="40" :src="avatar"/>
@@ -26,9 +26,13 @@
 </template>
 
 <script>
-import {ElMessage} from 'element-plus'
+// import {ElMessage} from 'element-plus'
+import {ElMessage, ElNotification} from 'element-plus'
+import { h } from 'vue'
 import userAPI from '@/api/user.js'
 import {mapActions} from "vuex";
+import notificationAPI from "@/api/notification";
+import authUtil from "@/util/authUtil";
 
 export default {
   name: 'Header',
@@ -37,7 +41,10 @@ export default {
       isCollapse: false,
       currentUserName: null,
       showDot: true,
-      avatar: null
+      avatar: null,
+      notifications: [],
+      isUser: true,
+      startPolling: false
     }
   },
   created() {
@@ -51,6 +58,16 @@ export default {
         ElMessage.error(err.data.msg)
       })
     }
+
+    if(this.$store.getters.role === "ROLE_ADMIN") {
+      this.isUser = false
+      this.showDot = false
+    }
+
+    this.handleInitNotification()
+  },
+  mounted() {
+    this.handlePolling()
   },
   methods: {
     ...mapActions(['logout']),
@@ -58,6 +75,7 @@ export default {
       this.isCollapse = !this.isCollapse
       this.$emitter.emit('handleSidebar')
       this.$emitter.emit('handleLogoName')
+      this.startPolling = false
     },
     handleLogOut() {
       this.$store.commit('setAddRoutes', false)
@@ -69,6 +87,51 @@ export default {
         type: 'success',
       })
     },
+    handleInitNotification() {
+      if(authUtil.isLogin()) {
+        if(localStorage.getItem("role") === "ROLE_USER") {
+          notificationAPI.findAllByUserId(this.$store.getters.userId).then((res) => {
+            if(res.data.Null === null) {
+              this.showDot = false
+            } else {
+              for(let i = 0; i < res.data.data.NotificationResponseDataList.length; i++) {
+                this.notifications.push(res.data.data.NotificationResponseDataList[i].id)
+              }
+              this.startPolling = true
+            }
+          })
+        }
+      }
+    },
+    handlePolling() {
+      window.setInterval(() => {
+        if(authUtil.isLogin()) {
+          if(localStorage.getItem("role") === "ROLE_USER") {
+            if(this.startPolling) {
+              notificationAPI.findAllByUserId(this.$store.getters.userId).then((res) => {
+                if(res.data.Null === null) {
+                  this.showDot = false
+                } else {
+                  this.showDot = true
+                  let currentNotifications = res.data.data.NotificationResponseDataList
+                  if(currentNotifications.length > this.notifications.length) {
+                    for(let i = 0; i < currentNotifications.length; i++) {
+                      if(!this.notifications.includes(currentNotifications[i].id)) {
+                        this.notifications.push(currentNotifications[i].id)
+                        ElNotification({
+                          title: currentNotifications.content,
+                          message: h('i', { style: 'color: black' }, currentNotifications[i].message),
+                        })
+                      }
+                    }
+                  }
+                }
+              })
+            }
+          }
+        }
+      }, 1000)
+    }
   }
 }
 </script>
