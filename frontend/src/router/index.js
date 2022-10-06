@@ -69,7 +69,7 @@ const userRoutes = [
       component: () => import('@/views/profile/MyProfile'),
   },
   {
-    path: '/userProfile',
+    path: '/userProfile/:id',
     name: 'userProfile',
     meta: {
       hidden: true,

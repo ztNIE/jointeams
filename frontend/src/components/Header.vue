@@ -14,7 +14,7 @@
           content="Notification"
           placement="left"
       >
-        <el-badge v-if="this.$store.getters.isUser" :is-dot="showDot" class="item">
+        <el-badge v-if="this.$store.getters.isUser" :is-dot="showDot" class="item" @click="handleClickBell">
           <BellFilled class="icon-bell"></BellFilled>
         </el-badge>
       </el-tooltip>
@@ -69,6 +69,9 @@ export default {
         type: 'success',
       })
     },
+    handleClickBell() {
+      this.$router.push('/notification')
+    }
   }
 }
 </script>

@@ -90,7 +90,7 @@
                   <p class="time-stamp">{{comment.timeStamp}}</p>
                 </div>
                 <p v-if="comment.tag != null">gives {{userName}} a&nbsp;
-                  <el-tag class="mx-1 info-tag" effect="dark" type="warning" size="mini">{{tagName[comment.tag - 1].label}}</el-tag>
+                  <el-tag class="mx-1 info-tag" type="warning" size="small">{{tagName[comment.tag - 1].label}}</el-tag>
                 </p>
                 <p class="comment-content">"{{comment.content}}"</p>
               </div>
@@ -246,18 +246,18 @@ export default {
     }
     & .personal-info {
       box-sizing: border-box;
-      height: 37%;
+      height: 40%;
       min-height: 105px;
       padding-left: 25px;
     }
     & .courses {
-      height: 63%;
+      height: 70%;
       display: flex;
       flex-direction: row;
       & .current-course, .past-course {
         box-sizing: border-box;
         width: 380px;
-        height: 100%;
+        height: 90%;
         padding-left: 25px;
 
         & ul {
