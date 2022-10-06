@@ -248,11 +248,14 @@ export default {
     color: white;
   }
 }
-
+.all-courses-box {
+  margin-top: 15px;
+}
 .past-courses-box, .interested-courses-box, .all-courses-box {
   box-sizing: border-box;
   overflow: auto;
   margin-bottom: 10px;
+  height: 87%;
 
   & li {
     padding: 15px 10px;
