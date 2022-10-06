@@ -7,7 +7,7 @@
     </el-col>
     <el-col :span="20">
       <div>
-        <header class="username">{{ firstName }} {{ lastName }}</header>
+        <header class="username">{{ fullName }}</header>
       </div>
       <div class="email">
         {{ email }}
@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "UserCard",
-  props: ['firstName', 'lastName', 'email', 'id']
+  props: ['fullName', 'email', 'id']
 }
 </script>
 

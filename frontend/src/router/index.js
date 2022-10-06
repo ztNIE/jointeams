@@ -77,7 +77,7 @@ const userRoutes = [
         component: () => import('@/views/profile/UserProfile'),
     },
     {
-        path: '/courseDetails/:courseId',
+        path: '/courseDetails/:course_id',
         name: 'courseDetails',
         meta: {
             hidden: true
