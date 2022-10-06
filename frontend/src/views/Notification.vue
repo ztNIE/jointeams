@@ -56,7 +56,7 @@ export default {
   mounted() {
     let userId = store.getters.userId
     notificationAPI.findAllByUserId(userId).then((res) => {
-      if(res !== null)
+      if(res.data.data.NotificationResponseDataList !== null)
         this.notifications = res.data.data.NotificationResponseDataList
     })
   },

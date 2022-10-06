@@ -8,8 +8,8 @@ const findAllByUserId = async function(userId) {
             return res
         else if (res.request.status === 202)
         {
-            catchError.outputInfo(res.data.msg)
-            return null
+            // catchError.outputInfo(res.data.msg)
+            return res
         }
         else
             throw new Error(res.data.msg)

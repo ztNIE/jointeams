@@ -26,9 +26,7 @@
 </template>
 
 <script>
-// import {ElMessage} from 'element-plus'
 import {ElMessage, ElNotification} from 'element-plus'
-import { h } from 'vue'
 import userAPI from '@/api/user.js'
 import {mapActions} from "vuex";
 import notificationAPI from "@/api/notification";
@@ -80,6 +78,9 @@ export default {
     handleLogOut() {
       this.$store.commit('setAddRoutes', false)
       localStorage.removeItem('routes')
+      localStorage.removeItem('email')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('role')
       this.logout()
       this.$router.push('/landing')
       ElMessage({
@@ -91,14 +92,14 @@ export default {
       if(authUtil.isLogin()) {
         if(localStorage.getItem("role") === "ROLE_USER") {
           notificationAPI.findAllByUserId(this.$store.getters.userId).then((res) => {
-            if(res.data.Null === null) {
+            if(res.data.data.Null === null) {
               this.showDot = false
             } else {
               for(let i = 0; i < res.data.data.NotificationResponseDataList.length; i++) {
                 this.notifications.push(res.data.data.NotificationResponseDataList[i].id)
               }
-              this.startPolling = true
             }
+            this.startPolling = true
           })
         }
       }
@@ -109,7 +110,7 @@ export default {
           if(localStorage.getItem("role") === "ROLE_USER") {
             if(this.startPolling) {
               notificationAPI.findAllByUserId(this.$store.getters.userId).then((res) => {
-                if(res.data.Null === null) {
+                if(res.data.data.Null === null) {
                   this.showDot = false
                 } else {
                   this.showDot = true
@@ -119,8 +120,9 @@ export default {
                       if(!this.notifications.includes(currentNotifications[i].id)) {
                         this.notifications.push(currentNotifications[i].id)
                         ElNotification({
-                          title: currentNotifications.content,
-                          message: h('i', { style: 'color: black' }, currentNotifications[i].message),
+                          title: "New Notification",
+                          message: currentNotifications[i].content + ": " + currentNotifications[i].message,
+                          type: 'success',
                         })
                       }
                     }
