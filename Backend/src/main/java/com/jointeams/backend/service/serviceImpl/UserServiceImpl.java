@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
             for (Comment comment : comments) {
                 JSONObject newComment = new JSONObject();
                 newComment.put("id", comment.getId());
+                newComment.put("courseCode", comment.getGroup().getCourse().getCode());
                 newComment.put("senderName", comment.getSender().getFirstName() + ' ' + comment.getSender().getLastName());
                 newComment.put("groupName", comment.getGroup().getCourse().getCode() + "_Group" + comment.getGroup().getNameId());
                 newComment.put("content", comment.getContent());
