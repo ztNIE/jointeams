@@ -111,6 +111,6 @@ values
 insert into `comment` (content, is_hide, tag,
                        timestamp, group_id, receiver_id, sender_id)
 values
-    ('Great collaboration experience! Hope to team up next time :) ', false, 3, '2022-09-23 09:23:27.000000', 1, 1, 2),
-    ('Good job!', true, 2, '2022-09-23 09:24:27.000000', 4, 1, 3);
+    ('Great collaboration experience! Hope to team up next time :) ', false, 3, '2022-09-23 09:23:27.000000', 1, 1, 3),
+    ('Good job!', true, 2, '2022-09-23 09:24:27.000000', 4, 1, 4);
 

@@ -26,7 +26,7 @@ public class NotificationController {
         }
         JsonResult jsonResult = notificationService.findAllByUserIdFeedback(userId);
         if(jsonResult.getStatus() == 0)
-            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.ACCEPTED);
         else
             return new ResponseEntity<>(jsonResult.getMsgAndData(), HttpStatus.OK);
     }

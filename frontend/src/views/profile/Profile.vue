@@ -23,23 +23,30 @@
             </el-col>
 
             <!-- basic info -->
-            <el-col :span="16" class="full-height">
+            <el-col :span="16" class="full-height relative-parent">
+              <el-button type="primary" link @click="handleEdit">edit</el-button>
               <!-- personal info -->
               <div class="personal-info">
-                <p class="name">{{this.userName}}</p>
-                <p class="info-list">Faculty: {{this.userInfo.faculty}}</p>
-                <p class="info-list">Degree: {{this.userInfo.degree}}</p>
-                <p class="info-list">Email: {{this.userInfo.email}}</p>
+                <p class="name userName">{{this.userName}}</p>
+                <p class="info-list"><span class="bold">Faculty:</span> {{this.userInfo.faculty}}</p>
+                <p class="info-list"><span class="bold">Degree:</span> {{this.userInfo.degree}}</p>
+                <p class="info-list"><span class="bold">Email:</span> {{this.userInfo.email}}</p>
               </div>
               <!-- courses -->
               <div class="courses">
                 <!-- current course -->
                 <div class="current-course">
                   <p class="name">Current Courses</p>
+                  <ul>
+                    <li v-for="course in currentCourse" :key="course.id"><span class="">{{course.code}}</span> <span class="course-name">{{course.name}}</span></li>
+                  </ul>
                 </div>
                 <!-- past course -->
                 <div class="past-course">
                   <p class="name">Past Courses</p>
+                  <ul>
+                    <li v-for="course in pastCourse" :key="course.id"><span class="">{{course.code}}</span> <span class="course-name">{{course.name}}</span></li>
+                  </ul>
                 </div>
               </div>
             </el-col>
@@ -56,7 +63,10 @@
               <span class="card-title">Description</span>
             </div>
           </template>
-          <div class="full-height"></div>
+          <div class="full-height">
+            <p v-if="description != null">{{description}}</p>
+            <span class="none" v-else>None</span>
+          </div>
         </el-card>
       </el-col>
       <!-- comments -->
@@ -67,7 +77,25 @@
               <span class="card-title">Comments</span>
             </div>
           </template>
-          <div class="full-height"></div>
+          <div class="comments">
+            <div class="comment-box" v-for="comment in comments" :key="comment.id">
+              <!-- avatar -->
+              <div class="avatar">
+                <el-avatar :size="60" :src="avatar" />
+              </div>
+              <!-- content -->
+              <div class="content">
+                <div class="first-line">
+                  <p class="sender-name"><span class="name">{{comment.senderName}}</span> from {{comment.courseCode}}</p>
+                  <p class="time-stamp">{{comment.timeStamp}}</p>
+                </div>
+                <p v-if="comment.tag != null">gives {{userName}} a&nbsp;
+                  <el-tag class="mx-1 info-tag" effect="dark" type="warning" size="mini">{{tagName[comment.tag - 1].label}}</el-tag>
+                </p>
+                <p class="comment-content">"{{comment.content}}"</p>
+              </div>
+            </div>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -90,7 +118,10 @@ export default {
       selfTag: null,
       giftTag: [],
       comments: [],
-      userInfo: {}
+      userInfo: {},
+      currentCourse: [],
+      pastCourse: [],
+      description: null
     }
   },
   created() {
@@ -103,11 +134,29 @@ export default {
         _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
         _this.selfTag = data.selfTag
         _this.comments = data.comment
+        _this.currentCourse = data.currentCourse
+        _this.pastCourse = data.previousCourse
+        _this.description = data.description
         _this.userInfo = data
 
+        _this.comments = _this.comments.filter((comment) => {
+          return !comment.isHide
+        })
+
+        for (let i = 0; i < _this.comments.length; i ++) {
+          let timeStamp = new Date(_this.comments[i].timeStamp)
+          let date = timeStamp.getDate() < 10 ? '0' + timeStamp.getDate() : timeStamp.getDate()
+          let month = timeStamp.getMonth() < 10 ? '0' + timeStamp.getMonth() : timeStamp.getMonth()
+          let year = timeStamp.getFullYear()
+          _this.comments[i].timeStamp = date + '/' + month + '/' + year
+        }
       }).catch((err) => {
         ElMessage.error(err.data.msg)
       })
+    }
+  },
+  methods: {
+    handleEdit() {
     }
   }
 }
@@ -124,8 +173,20 @@ export default {
 .half-height {
   height: 50%;
 }
+// .sixty-percent-height {
+//   height: 60%;
+// }
+// .forty-percent-height {
+//   height: 40%;
+// }
 :deep(.el-card__body) {
   height: 100%;
+}
+.none {
+  margin-left: 5px;
+  color: #B5B5B5;
+  font-weight: 700;
+  line-height: 35px;
 }
 .card-header {
   display: flex;
@@ -157,12 +218,103 @@ export default {
           margin-left: 5px;
           margin-top: 10px;
         }
-        & .none {
-          margin-left: 5px;
-          color: #B5B5B5;
-          font-weight: 700;
-          line-height: 35px;
+      }
+    }
+    & .name {
+      font-size: 18px;
+      font-weight: 500;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    & .userName {
+      color: #EE7600;
+      font-weight: 700;
+    }
+    & .bold {
+      font-weight: 500;
+    }
+    & .relative-parent {
+      position: relative;
+    }
+    & .el-button {
+      position: absolute;
+      right: 20px;
+      top: 5px;
+    }
+    & .el-button:hover {
+      text-decoration: underline;
+    }
+    & .personal-info {
+      box-sizing: border-box;
+      height: 37%;
+      min-height: 105px;
+      padding-left: 25px;
+    }
+    & .courses {
+      height: 63%;
+      display: flex;
+      flex-direction: row;
+      & .current-course, .past-course {
+        box-sizing: border-box;
+        width: 380px;
+        height: 100%;
+        padding-left: 25px;
+
+        & ul {
+          list-style: none;
+          height: 80%;
+          overflow: auto;
+          & li {
+            padding: 2px 0;
+            font-size: 15px;
+            & .course-name {
+              color: #828282;
+            }
+          }
         }
+      }
+    }
+  }
+}
+.comments {
+  height: 80%;
+  overflow: auto;
+
+  & .comment-box {
+    display: flex;
+    margin-bottom: 25px;
+
+    & .avatar {
+      width: 80px;
+      margin-left: 10px;
+    }
+    & .content {
+      width: 100%;
+
+      & .first-line {
+        content: '';
+        display: table;
+        clear: both;
+        width: 100%;
+
+        & .sender-name {
+          float: left;
+
+          & .name {
+            font-weight: 600;
+          }
+        }
+        & .time-stamp {
+          float: right;
+          font-size: 13px;
+          font-weight: 500;
+          color:#828282;
+        }
+      }
+
+      & .comment-content {
+        font-style: italic;
+        padding-top: 7px;
       }
     }
   }

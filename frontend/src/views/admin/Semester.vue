@@ -122,33 +122,34 @@ export default {
         })
       }
     },
-    changeIsCommentAvailableStatus(){
-      const action = (this.isCommentAvailable === false) ? 'Enable' : 'Disable'
-      ElMessageBox.confirm(
-          'You are going to ' + action.toLowerCase() + ' the comment feature?',
-          'Warning',
-          {
-            confirmButtonText: 'Confirm',
-            cancelButtonText: 'Cancel',
-            type: 'warning',
-          }
-      ).then(() => {
-        adminAPI.changeIsCommentAvailableStatus(this.isCommentAvailable).then((res) => {
-          if(res !== null)
-          {
-            ElMessage({
-              type: 'success',
-              message: res.data.msg,
-            })
-          }
+    changeIsCommentAvailableStatus() {
+      if (!this.isEditActive) {
+        const action = (this.isCommentAvailable === false) ? 'Enable' : 'Disable'
+        ElMessageBox.confirm(
+            'You are going to ' + action.toLowerCase() + ' the comment feature?',
+            'Warning',
+            {
+              confirmButtonText: 'Confirm',
+              cancelButtonText: 'Cancel',
+              type: 'warning',
+            }
+        ).then(() => {
+          adminAPI.changeIsCommentAvailableStatus(this.isCommentAvailable).then((res) => {
+            if (res !== null) {
+              ElMessage({
+                type: 'success',
+                message: res.data.msg,
+              })
+            }
+          })
+        }).catch(() => {
+          ElMessage({
+            type: 'info',
+            message: action + ' is cancelled',
+          })
+          this.isCommentAvailable = (this.isCommentAvailable === false) ? true : false
         })
-      }).catch(() => {
-        ElMessage({
-          type: 'info',
-          message: action + ' is cancelled',
-        })
-        this.isCommentAvailable = (this.isCommentAvailable === false) ? true : false
-      })
+      }
     }
   }
 }
