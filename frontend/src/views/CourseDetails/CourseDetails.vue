@@ -84,8 +84,7 @@
     </el-dialog>
     <el-row :gutter="20" class="full-height">
       <el-col :span="12" class="full-height">
-        <el-empty description="No previous student" v-if="isPreviousStudentEmpty"/>
-        <div v-else class="full-height">
+        <div class="full-height">
           <div class="student-header">Previous Students</div>
           <div class="search-bar">
             <el-row :gutter="20">
@@ -116,8 +115,7 @@
         </div>
       </el-col>
       <el-col :span="12" class="full-height">
-        <el-empty description="No current student" v-if="isCurrentStudentEmpty"/>
-        <el-row :gutter="20" v-else>
+        <el-row :gutter="20">
           <el-col :span="18">
             <div class="student-header">Current Students</div>
             <div v-if="!isPreviousTeammateEmpty" class="previous-teammate">You have worked with
@@ -135,7 +133,7 @@
             </el-button>
           </el-col>
         </el-row>
-        <div class="search-bar" v-if="!isCurrentStudentEmpty">
+        <div class="search-bar">
           <el-row :gutter="20">
             <el-col :span="14">
               <el-input
@@ -178,7 +176,8 @@
             </el-col>
           </el-row>
         </div>
-        <el-scrollbar height="100%" class="current-student">
+        <el-empty description="No current student" v-if="isSearchedCurrentStudentEmpty"/>
+        <el-scrollbar height="100%" class="current-student" v-else>
           <div v-for="student in searchedCurrentStudents" :key="student.id">
             <base-card v-if="isStudentHaveTag(student, selectTag) && isStudentInTutorial(student, selectLab)"
                        @click="jumpToStudentProfile(student.id)"
@@ -236,14 +235,11 @@ export default {
   },
   computed: {
     ...mapGetters(['userId']),
-    isPreviousStudentEmpty() {
-      return !this.previousStudents || this.previousStudents.length === 0;
-    },
     isSearchedPreviousStudentEmpty() {
       return !this.searchedPreviousStudents || this.searchedPreviousStudents.length === 0;
     },
-    isCurrentStudentEmpty() {
-      return !this.currentStudents || this.currentStudents.length === 0;
+    isSearchedCurrentStudentEmpty() {
+      return !this.searchedCurrentStudents || this.searchedCurrentStudents.length === 0;
     },
     isPreviousTeammateEmpty() {
       return !this.previousTeammates || this.previousTeammates.length === 0;
@@ -548,6 +544,7 @@ export default {
 
 .tutorial {
   font-size: 16px;
+  padding-top: 10px;
 }
 
 .previous-teammate {
@@ -581,7 +578,7 @@ export default {
 // TODO: fix scroll bar height
 :deep(.el-card__body) {
   box-sizing: border-box;
-  height: 60%;
+  height: 100%;
   padding-top: 15px;
   padding-bottom: 15px;
 }
