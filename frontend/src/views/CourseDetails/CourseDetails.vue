@@ -578,7 +578,7 @@ export default {
 // TODO: fix scroll bar height
 :deep(.el-card__body) {
   box-sizing: border-box;
-  height: 100%;
+  height: 60%;
   padding-top: 15px;
   padding-bottom: 15px;
 }
