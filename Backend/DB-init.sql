@@ -26,6 +26,21 @@ values
      'Faculty of Engineering and IT', null, 'John',
      true, false, 'Davis',
      '$2a$10$XmrZEyt/WDR5uz0fC8Y7l.T1o/VSCiO1GNcI1ME67.RPeXWLA4B1S',
+     null, 1),
+    ('Bachelor of Advanced Computing', 'Hi, I am John Adam :)', 'devu0012@uni.sydney.edu.au',
+     'Faculty of Engineering and IT', null, 'John',
+     true, false, 'Adam',
+     '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
+     null, 1),
+    ('Bachelor of Advanced Computing', 'Hi, I am Harry Potter :)', 'devu0022@uni.sydney.edu.au',
+     'Faculty of Engineering and IT', null, 'Harry',
+     true, false, 'Potter',
+     '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
+     null, 1),
+    ('Bachelor of Advanced Computing', 'Hi, I am Samuel Watson :)', 'devu0032@uni.sydney.edu.au',
+     'Faculty of Engineering and IT', null, 'Samuel',
+     true, false, 'Watson',
+     '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
      null, 1);
 
 insert into semester (year, semester_number, is_current)
@@ -70,8 +85,14 @@ values (null, 1, 2, 1),
        ('RE04', 12, 1, 1),
        (null, 1, 1, 4),
        ('RE04', 1, 2, 3),
+       ('RE02', 1, 2, 4),
        ('CC01', 2, 2, 3),
-       ('RE02', 1, 2, 4);
+       ('CC02', 1, 2, 5),
+       ('CC02', 1, 2, 6),
+       ('CC02', 1, 2, 7),
+       ('CC02', 1, 1, 5),
+       ('CC02', 1, 1, 6),
+       ('CC02', 1, 1, 7);
 
 insert into interested_course (course_id, user_id)
 values (13, 1),
