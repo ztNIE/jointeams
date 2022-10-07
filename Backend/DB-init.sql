@@ -57,20 +57,21 @@ values
 
 insert into enrollment (tutorial, course_id, semester_id, user_id)
 values (null, 1, 2, 1),
-       (null, 2, 2, 1),
-       (null, 3, 2, 1),
-       (null, 4, 2, 1),
-       (null, 5, 1, 1),
-       (null, 6, 1, 1),
-       (null, 7, 1, 1),
-       (null, 8, 1, 1),
-       (null, 9, 1, 1),
-       (null, 10, 1, 1),
-       (null, 11, 1, 1),
-       (null, 12, 1, 1),
-       (null, 1, 2, 3),
-       (null, 2, 2, 3),
-       (null, 1, 2, 4);
+       ('RE05', 2, 2, 1),
+       ('RE02', 3, 2, 1),
+       ('CC02', 4, 2, 1),
+       ('CC02', 5, 1, 1),
+       ('CC03', 6, 1, 1),
+       ('RE01', 7, 1, 1),
+       ('CC02', 8, 1, 1),
+       ('RE01', 9, 1, 1),
+       ('RE03', 10, 1, 1),
+       ('RE02', 11, 1, 1),
+       ('RE04', 12, 1, 1),
+       (null, 1, 1, 4),
+       ('RE04', 1, 2, 3),
+       ('CC01', 2, 2, 3),
+       ('RE02', 1, 2, 4);
 
 insert into interested_course (course_id, user_id)
 values (13, 1),

@@ -13,24 +13,36 @@
               <div>
                 My Tutorial/Lab:
                 <el-input v-model="tutorialNumber"
-                          style="width: 150px"
+                          style="width: 110px"
                           size="small"
                           :maxlength="2"
+                          :disabled="isTutorialSelected && !isEditing"
                 >
                   <template #prepend>
                     <el-select v-model="tutorialType"
                                placeholder="Select"
                                style="width: 60px; font: inherit"
                                size="small"
+                               :disabled="isTutorialSelected && !isEditing"
                     >
-                      <el-option label="RE" value="RE" />
-                      <el-option label="CC" value="CC" />
+                      <el-option label="RE" value="RE"/>
+                      <el-option label="CC" value="CC"/>
                     </el-select>
                   </template>
-                  <template #append>
-                    <el-button size="small">Edit</el-button>
-                  </template>
                 </el-input>
+
+                <el-button type="warning"
+                           size="small"
+                           v-if="isTutorialSelected && !isEditing"
+                           @click="toggleIsEditing"
+                >Edit
+                </el-button>
+                <el-button type="primary"
+                           size="small"
+                           v-else
+                           @click="editTutorial"
+                >OK
+                </el-button>
               </div>
             </el-col>
           </el-row>
@@ -100,9 +112,10 @@ export default {
       error: null,
       isEnrolled: false,
       isMarked: false,
-      tutorial: null,
       tutorialType: null,
-      tutorialNumber: null
+      tutorialNumber: null,
+      isTutorialSelected: false,
+      isEditing: false
     }
   },
   computed: {
@@ -125,8 +138,35 @@ export default {
     markButtonType() {
       return this.isMarked ? "warning" : "primary";
     },
+    tutorial() {
+      return this.tutorialType + this.tutorialNumber;
+    }
   },
   methods: {
+    async editTutorial() {
+      try {
+        if (this.tutorialNumber.length === 0) {
+          throw new Error("Empty tutorial number")
+        }
+        if (this.tutorialNumber.length === 1) {
+          this.tutorialNumber = "0" + this.tutorialNumber
+        }
+        await courseDetailAPI.putSetTutorial(this.courseId, this.userId, this.tutorial)
+        this.isEditing = false
+        ElMessage({
+          type: "success",
+          message: `Set tutorial successfully`
+        })
+      } catch (error) {
+        ElMessage({
+          type: "info",
+          message: error.message
+        })
+      }
+    },
+    toggleIsEditing() {
+      this.isEditing = !this.isEditing
+    },
     async toggleMark() {
       let func = this.isMarked ? courseDetailAPI.delUnmarkCourse : courseDetailAPI.postMarkCourse
       let response = await func(this.courseId, this.userId)
@@ -187,7 +227,7 @@ export default {
       } else {
         ElMessage("Please try again later")
       }
-    }
+    },
   },
   created() {
     let _this = this
@@ -256,8 +296,6 @@ export default {
         .catch((err) => {
           _this.error = err
         })
-    console.log("after get course")
-    console.log(this.courseDetail)
     courseDetailAPI.getCheckEnrollment(this.courseId, this.userId)
         .then((response) => {
           if (response.status !== 200) {
@@ -285,8 +323,12 @@ export default {
           if (response.status !== 200) {
             throw new Error(response.msg)
           }
-          let data = response.data
-          _this.tutorial = data.tutorial
+          let tutorial = response.data.tutorial
+          if (tutorial) {
+            _this.tutorialType = tutorial.substring(0, 2)
+            _this.tutorialNumber = tutorial.substring(2)
+            _this.isTutorialSelected = true
+          }
         })
   },
 }
@@ -327,21 +369,4 @@ export default {
   }
 }
 
-
-//.icon-expand {
-//  width: 30px;
-//  color: #B5B5B5;
-//  cursor: pointer;
-//  margin-top: 7px;
-//}
-
-//.star {
-//  width: 100%;
-//  height: auto;
-//}
-//
-//.star:hover {
-//  //cursor: pointer;
-//  //color: #2EC4B6;
-//}
 </style>
