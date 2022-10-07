@@ -147,7 +147,8 @@ export default {
   },
   methods: {
     handleClickCourse(courseId) {
-      console.log(courseId)
+      // console.log(courseId)
+      this.$router.push(`/courseDetails/${courseId}`)
     },
     handleSearch() {
       let _this = this

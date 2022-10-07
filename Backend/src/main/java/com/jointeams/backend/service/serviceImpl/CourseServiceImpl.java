@@ -1,5 +1,6 @@
 package com.jointeams.backend.service.serviceImpl;
 
+import com.jointeams.backend.model.response.CourseDetailResponse;
 import com.jointeams.backend.model.response.responseData.CourseResponseData;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
@@ -104,8 +105,7 @@ public class CourseServiceImpl implements CourseService {
             for (User student : previousStudents) {
                 JSONObject newStudent = new JSONObject();
                 newStudent.put("id", student.getId());
-                newStudent.put("firstName", student.getFirstName());
-                newStudent.put("lastName", student.getLastName());
+                newStudent.put("fullName", student.getFirstName()+ " " + student.getLastName());
                 newStudent.put("email", student.getEmail());
                 previousStudent.add(newStudent);
             }
@@ -125,8 +125,8 @@ public class CourseServiceImpl implements CourseService {
         for (User student : currentStudents) {
             JSONObject newStudent = new JSONObject();
             newStudent.put("id", student.getId());
-            newStudent.put("firstName", student.getFirstName());
-            newStudent.put("lastName", student.getLastName());
+            newStudent.put("fullName", student.getFirstName() + " " + student.getLastName());
+//            newStudent.put("lastName", student.getLastName());
             newStudent.put("email", student.getEmail());
 
             JSONArray tags = new JSONArray();
@@ -211,8 +211,8 @@ public class CourseServiceImpl implements CourseService {
                     if (currentStudent.get("id").toString().equals(teammateId.toString())) {
                         JSONObject teammate = new JSONObject();
                         teammate.put("id", currentStudent.get("id"));
-                        teammate.put("firstName", currentStudent.get("firstName"));
-                        teammate.put("lastName", currentStudent.get("lastName"));
+                        teammate.put("fullName", currentStudent.get("fullName"));
+//                        teammate.put("lastName", currentStudent.get("lastName"));
                         teammates.add(teammate);
                         break;
                     }
@@ -625,5 +625,14 @@ public class CourseServiceImpl implements CourseService {
                 break;
         }
         return jsonResult;
+    }
+
+    @Override
+    public CourseDetailResponse getCourseById(Long id) {
+        Course course = courseRepository.findById(id).orElse(null);
+        if (course == null) {
+            return null;
+        }
+        return new CourseDetailResponse(course);
     }
 }

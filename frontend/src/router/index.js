@@ -1,133 +1,142 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import {createWebHistory, createRouter} from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-NProgress.configure({ showSpinner: false })
+NProgress.configure({showSpinner: false})
 
 const staticRoutes = [
-  {
-    path: '/',
-    name: 'root',
-    redirect: 'landing',
+    {
+        path: '/',
+        name: 'root',
+        redirect: 'landing',
 
-    children: [
-        {
-            path: '/landing',
-            name: 'landing',
-            component: () => import('@/views/Landing'),
-        },
-        {
-            path: '/sign-in',
-            name: 'login',
-            component: () => import('@/views/Login'),
-        },
-        {
-            path: '/sign-up',
-            name: 'register',
-            component: () => import('@/views/Register'),
-        },
-        {
-            path: '/verify/register/:token',
-            name: 'verifyRegisterToken',
-            component: () => import('@/views/VerifyRegisterToken')
-        },
-        {
-            path: '/reset-password/:token',
-            name: 'resetPassword',
-            component: () => import('@/views/ResetPassword')
-        }
-    ]
-  },
-  {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/404/404'),
-  },
+        children: [
+            {
+                path: '/landing',
+                name: 'landing',
+                component: () => import('@/views/Landing'),
+            },
+            {
+                path: '/sign-in',
+                name: 'login',
+                component: () => import('@/views/Login'),
+            },
+            {
+                path: '/sign-up',
+                name: 'register',
+                component: () => import('@/views/Register'),
+            },
+            {
+                path: '/verify/register/:token',
+                name: 'verifyRegisterToken',
+                component: () => import('@/views/VerifyRegisterToken')
+            },
+            {
+                path: '/reset-password/:token',
+                name: 'resetPassword',
+                component: () => import('@/views/ResetPassword')
+            }
+        ]
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: () => import('@/views/404/404'),
+    },
 ]
 
 const userRoutes = [
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    meta: {
-      icon: 'Odometer',
-      capitalName: 'Dashboard',
-      highlight: 'dashboard',
-      hidden: false,
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        meta: {
+            icon: 'Odometer',
+            capitalName: 'Dashboard',
+            highlight: 'dashboard',
+            hidden: false,
+        },
+        component: () => import('@/views/Dashboard'),
     },
-    component: () => import('@/views/Dashboard'),
-  },
-  {
-      path: '/myProfile',
-      name: 'myProfile',
-      meta: {
-        icon: 'Memo',
-        capitalName: 'My Profile',
-        highlight: 'myProfile',
-        hidden: false,
-      },
-      component: () => import('@/views/profile/MyProfile'),
-  },
-  {
-    path: '/userProfile',
-    name: 'userProfile',
-    meta: {
-      hidden: true,
+    {
+        path: '/myProfile',
+        name: 'myProfile',
+        meta: {
+            icon: 'Memo',
+            capitalName: 'My Profile',
+            highlight: 'myProfile',
+            hidden: false,
+        },
+        component: () => import('@/views/profile/MyProfile'),
     },
-    component: () => import('@/views/profile/UserProfile'),
-  },
-  {
-      path: '/notification',
-      name: 'notification',
-      meta: {
-        icon: 'Notification',
-        capitalName: 'Notifications',
-        highlight: 'notification',
-        hidden: false,
-      },
-      component: () => import('@/views/Notification'),
-  },
-  {
-      path: '/myGroups',
-      name: 'myGroups',
-      meta: {
-        icon: 'User',
-        capitalName: 'My Groups',
-        highlight: 'myGroups',
-        hidden: false,
-      },
-      component: () => import('@/views/MyGroups'),
-  },
-  {
-      path: '/groupDetails/:group_id',
-      name: 'groupDetails',
-      meta: {
-        hidden: true,
-      },
-      component: () => import('@/views/GroupDetails'),
-  },
-  {
-      path: '/courseGroups/:course_id',
-      name: 'courseGroups',
-      meta: {
-        hidden: true,
-      },
-      component: () => import('@/views/CourseGroups'),
-  }
+    {
+        path: '/userProfile',
+        name: 'userProfile',
+        meta: {
+            hidden: true,
+        },
+        component: () => import('@/views/profile/UserProfile'),
+    },
+    {
+        path: '/courseDetails/:course_id',
+        name: 'courseDetails',
+        meta: {
+            hidden: true
+        },
+        props: true,
+        component: () => import('@/views/CourseDetails/CourseDetails')
+    },
+    {
+        path: '/notification',
+        name: 'notification',
+        meta: {
+            icon: 'Notification',
+            capitalName: 'Notifications',
+            highlight: 'notification',
+            hidden: false,
+        },
+        component: () => import('@/views/Notification'),
+    },
+    {
+        path: '/myGroups',
+        name: 'myGroups',
+        meta: {
+            icon: 'User',
+            capitalName: 'My Groups',
+            highlight: 'myGroups',
+            hidden: false,
+        },
+        component: () => import('@/views/MyGroups'),
+    },
+    {
+        path: '/groupDetails/:group_id',
+        name: 'groupDetails',
+        meta: {
+            hidden: true,
+        },
+        component: () => import('@/views/GroupDetails'),
+    },
+    {
+        path: '/courseGroups/:course_id',
+        name: 'courseGroups',
+        meta: {
+            hidden: true,
+        },
+        component: () => import('@/views/CourseGroups'),
+    }
 ]
 
 const adminRoutes = [
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    meta: {
-      icon: 'Odometer',
-      capitalName: 'Dashboard',
-      highlight: 'dashboard',
-      hidden: false,
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        meta: {
+            icon: 'Odometer',
+            capitalName: 'Dashboard',
+            highlight: 'dashboard',
+            hidden: false,
+        },
+        component: () => import('@/views/admin/Dashboard'),
     },
-    component: () => import('@/views/admin/Dashboard'),
-  },
     {
         path: '/comment',
         name: 'comment_admin',
@@ -173,99 +182,100 @@ const router = createRouter({
 // handle dynamic routes
 // execute every time loading a new page
 import store from '@/store'
-import { ElMessage } from 'element-plus'
+import {ElMessage} from 'element-plus'
+
 router.beforeEach((to, from, next) => {
-  NProgress.start()
+    NProgress.start()
 
-  // handle not logged in
-  const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/:token', '/reset-password/:token', '/404'] 
-  if (whiteList.indexOf(to.path) === -1 && localStorage.getItem("userId") == null) {
-    ElMessage.info('Please log in first!')
-    next('/sign-in')
-    NProgress.done()
-  }
-
-  let dynamicRoutes = []
-
-  if (!store.getters.addRoutes) {
-    if (localStorage.getItem("userId") != null) {
-      if (store.getters.isUser) {
-        dynamicRoutes = userRoutes
-      } else {
-        dynamicRoutes = adminRoutes
-      }
-
-      // deep copy
-      let temp = [
-        {
-          path: '/',
-          name: 'root',
-          redirect: 'landing',
-      
-          children: [
-              {
-                  path: '/landing',
-                  name: 'landing',
-                  component: () => import('@/views/Landing'),
-              },
-              {
-                  path: '/sign-in',
-                  name: 'login',
-                  component: () => import('@/views/Login'),
-              },
-              {
-                  path: '/sign-up',
-                  name: 'register',
-                  component: () => import('@/views/Register'),
-              },
-              {
-                  path: '/verify/register/:token',
-                  name: 'verifyRegisterToken',
-                  component: () => import('@/views/VerifyRegisterToken')
-              },
-              {
-                  path: '/reset-password/:token',
-                  name: 'resetPassword',
-                  component: () => import('@/views/ResetPassword')
-              }
-          ]
-        },
-        {
-          path: '/404',
-          name: '404',
-          component: () => import('@/views/404/404'),
-        },
-      ]
-      
-      dynamicRoutes.forEach((route) => {
-        router.addRoute('root', route)
-        temp[0].children.unshift(route)
-      })
-
-      // dynamically add in the 404 not found route
-      const notFound = { 
-          path: '/:catchAll(.*)', 
-          redirect: '/404',
-      }
-      router.addRoute(notFound)
-      temp.push(notFound)
-
-      localStorage.setItem('routes', JSON.stringify(temp))
-      store.commit('setAddRoutes', true)
-      // console.log(router.getRoutes(), '查看现有路由')
-      next({ ...to, replace: true })     //路由进行重定向放行
-
-    } else {
-      next()
+    // handle not logged in
+    const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/:token', '/reset-password/:token', '/404']
+    if (whiteList.indexOf(to.path) === -1 && localStorage.getItem("userId") == null) {
+        ElMessage.info('Please log in first!')
+        next('/sign-in')
+        NProgress.done()
     }
 
-  } else {
-    next()
-  }
+    let dynamicRoutes = []
+
+    if (!store.getters.addRoutes) {
+        if (localStorage.getItem("userId") != null) {
+            if (store.getters.isUser) {
+                dynamicRoutes = userRoutes
+            } else {
+                dynamicRoutes = adminRoutes
+            }
+
+            // deep copy
+            let temp = [
+                {
+                    path: '/',
+                    name: 'root',
+                    redirect: 'landing',
+
+                    children: [
+                        {
+                            path: '/landing',
+                            name: 'landing',
+                            component: () => import('@/views/Landing'),
+                        },
+                        {
+                            path: '/sign-in',
+                            name: 'login',
+                            component: () => import('@/views/Login'),
+                        },
+                        {
+                            path: '/sign-up',
+                            name: 'register',
+                            component: () => import('@/views/Register'),
+                        },
+                        {
+                            path: '/verify/register/:token',
+                            name: 'verifyRegisterToken',
+                            component: () => import('@/views/VerifyRegisterToken')
+                        },
+                        {
+                            path: '/reset-password/:token',
+                            name: 'resetPassword',
+                            component: () => import('@/views/ResetPassword')
+                        }
+                    ]
+                },
+                {
+                    path: '/404',
+                    name: '404',
+                    component: () => import('@/views/404/404'),
+                },
+            ]
+
+            dynamicRoutes.forEach((route) => {
+                router.addRoute('root', route)
+                temp[0].children.unshift(route)
+            })
+
+            // dynamically add in the 404 not found route
+            const notFound = {
+                path: '/:catchAll(.*)',
+                redirect: '/404',
+            }
+            router.addRoute(notFound)
+            temp.push(notFound)
+
+            localStorage.setItem('routes', JSON.stringify(temp))
+            store.commit('setAddRoutes', true)
+            // console.log(router.getRoutes(), '查看现有路由')
+            next({...to, replace: true})     //路由进行重定向放行
+
+        } else {
+            next()
+        }
+
+    } else {
+        next()
+    }
 })
 
 router.afterEach(() => {
-  NProgress.done()
+    NProgress.done()
 })
 
 export default router

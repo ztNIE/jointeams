@@ -1,5 +1,7 @@
 package com.jointeams.backend.controller;
 
+import com.jointeams.backend.model.response.CourseDetailResponse;
+import com.jointeams.backend.model.response.StandardResponse;
 import com.jointeams.backend.service.CourseService;
 import com.jointeams.backend.service.SemesterService;
 import com.jointeams.backend.util.JsonResult;
@@ -10,14 +12,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping(path="/course")
 @PreAuthorize("hasRole('USER')")
 public class CourseController {
     @Autowired
     private CourseService courseService;
-    @Autowired
-    private SemesterService semesterService;
+
+    @GetMapping("getCourseById")
+    public ResponseEntity<?> getCourseById(@NotNull @RequestParam("id") Long id) {
+        CourseDetailResponse response = courseService.getCourseById(id);
+        if (response == null) {
+            return ResponseEntity.status(202).body(new StandardResponse<>("course not found", null));
+        }
+        return ResponseEntity.ok().body(new StandardResponse<>("success", response));
+    }
 
     @GetMapping(path = "getAllCourse")
     public ResponseEntity<JSONObject> getAllCourse(@RequestParam("id") Long id) {
@@ -43,7 +54,7 @@ public class CourseController {
         JSONObject previousStudents = courseService.getAllPreviousStudent(id);
 
         if(previousStudents.get("data") == null) {
-            return new ResponseEntity<>(previousStudents, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(previousStudents, HttpStatus.valueOf(202));
         } else {
             return new ResponseEntity<JSONObject>(previousStudents, HttpStatus.OK);
         }
@@ -58,7 +69,7 @@ public class CourseController {
         JSONObject currentStudents = courseService.getAllCurrentStudent(id);
 
         if(currentStudents.get("data") == null) {
-            return new ResponseEntity<>(currentStudents, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(currentStudents, HttpStatus.valueOf(202));
         } else {
             return new ResponseEntity<JSONObject>(currentStudents, HttpStatus.OK);
         }
@@ -73,7 +84,7 @@ public class CourseController {
         JSONObject previousTeammates = courseService.getAllPreviousTeammates(userId, courseId);
 
         if(previousTeammates.get("data") == null) {
-            return new ResponseEntity<>(previousTeammates, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(previousTeammates, HttpStatus.valueOf(202));
         } else {
             return new ResponseEntity<JSONObject>(previousTeammates, HttpStatus.OK);
         }

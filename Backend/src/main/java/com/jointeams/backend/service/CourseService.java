@@ -1,5 +1,6 @@
 package com.jointeams.backend.service;
 
+import com.jointeams.backend.model.response.CourseDetailResponse;
 import com.jointeams.backend.util.JsonResult;
 import org.json.simple.JSONObject;
 
@@ -26,4 +27,6 @@ public interface CourseService {
     public JsonResult deleteACourseFeedback(Long courseId);
 
     public JsonResult changeCourseLockStatusFeedback(Long courseId, boolean isLocked);
+
+    public CourseDetailResponse getCourseById(Long id);
 }
