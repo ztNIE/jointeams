@@ -106,15 +106,17 @@
 import CourseGroupAPI from '../api/courseGroup.js'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import authUtil from "@/util/authUtil";
+import courseDetailAPI from "@/api/courseDetail";
 
 export default {
   name: 'CourseGroups',
+  props: ['course_id'],
   data() {
     return {
       course: {
-        "code": "ELEC5619",
-        "name": "Spring Boot Framework",
-        "id": 1
+        code: null,
+        name: null,
+        id: null
       },
       groups: [],
       tutorial: "",
@@ -129,8 +131,9 @@ export default {
   beforeCreate() {
     authUtil.authenticateIdentity("ROLE_USER")
   },
-  mounted() {
+  created() {
     this.user_id = this.$store.getters.userId
+    this.course.id = this.$route.params.course_id
 
     CourseGroupAPI.getTutorial(this.user_id, this.course.id).then((res) => {
       if (res !== null) {
@@ -146,6 +149,14 @@ export default {
       }
 
       this.searchResult = this.groups
+    })
+
+    courseDetailAPI.getCourseById(this.course.id).then((res) => {
+      if (res.status !== 200) {
+        throw new Error(res.msg)
+      }
+      this.course.code = res.data.code
+      this.course.name = res.data.name
     })
   },
   methods: {
