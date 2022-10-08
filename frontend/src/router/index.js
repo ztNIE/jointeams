@@ -183,8 +183,14 @@ import store from '@/store'
 import { ElMessage } from 'element-plus'
 import Cookies from "js-cookie";
 
-router.beforeEach((to, from, next) => {
+let remove_not_found_route;
+
+router.beforeEach(async (to, from, next) => {
     NProgress.start()
+
+    if (remove_not_found_route) {
+        remove_not_found_route()
+    }
 
   // handle not logged in
     const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/', '/reset-password/', '/404']
@@ -254,7 +260,7 @@ router.beforeEach((to, from, next) => {
                 path: '/:catchAll(.*)',
                 redirect: '/404',
             }
-            router.addRoute(notFound)
+            remove_not_found_route = router.addRoute(notFound)
             temp.push(notFound)
 
             localStorage.setItem('routes', JSON.stringify(temp))
