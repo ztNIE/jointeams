@@ -187,8 +187,8 @@ router.beforeEach((to, from, next) => {
     NProgress.start()
 
   // handle not logged in
-  const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/:token', '/reset-password/:token', '/404'] 
-  if (whiteList.indexOf(to.path) === -1 && !Cookies.get('jointeams')) {
+    const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/', '/reset-password/', '/404']
+    if (whiteList.indexOf(to.path) === -1 && to.path.indexOf('/verify/register/') === -1 && to.path.indexOf('/reset-password/') === -1 && !Cookies.get('jointeams')) {
     ElMessage.info('Please log in first!')
     next('/sign-in')
     NProgress.done()
@@ -209,7 +209,6 @@ router.beforeEach((to, from, next) => {
                     path: '/',
                     name: 'root',
                     redirect: 'landing',
-
                     children: [
                         {
                             path: '/landing',
@@ -251,16 +250,16 @@ router.beforeEach((to, from, next) => {
             })
 
             // dynamically add in the 404 not found route
-            // const notFound = {
-            //     path: '/:catchAll(.*)',
-            //     redirect: '/404',
-            // }
-            // router.addRoute(notFound)
-            // temp.push(notFound)
+            const notFound = {
+                path: '/:catchAll(.*)',
+                redirect: '/404',
+            }
+            router.addRoute(notFound)
+            temp.push(notFound)
 
             localStorage.setItem('routes', JSON.stringify(temp))
             store.commit('setAddRoutes', true)
-            // console.log(router.getRoutes(), '查看现有路由')
+            console.log(router.getRoutes(), '查看现有路由')
             next({...to, replace: true})     //路由进行重定向放行
 
         } else {
