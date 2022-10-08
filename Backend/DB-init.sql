@@ -71,7 +71,7 @@ values
     ('COMP3308', 'Introduction to Artificial Intelligence', 1, 1, false);
 
 insert into enrollment (tutorial, course_id, semester_id, user_id)
-values (null, 1, 2, 1),
+values ('CC01', 1, 2, 1),
        ('RE05', 2, 2, 1),
        ('RE02', 3, 2, 1),
        ('CC02', 4, 2, 1),
@@ -83,7 +83,7 @@ values (null, 1, 2, 1),
        ('RE03', 10, 1, 1),
        ('RE02', 11, 1, 1),
        ('RE04', 12, 1, 1),
-       (null, 1, 1, 4),
+       ('RE11', 1, 1, 4),
        ('RE04', 1, 2, 3),
        ('RE02', 1, 2, 4),
        ('CC01', 2, 2, 3),

@@ -260,6 +260,7 @@ export default {
   methods: {
     jumpToStudentProfile(id) {
       // TODO jump to id
+      this.$router.push(`/userProfile/${id}`)
       console.log(id)
     },
     handlePreviousStudentSearch() {

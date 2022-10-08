@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 export default {
     async login(context, loginRequest) {
         const response = await postLogin(loginRequest)
-        console.log(response)
         const email = response.data.data.email
         const role = response.data.data.roles[0] 
         const userId = response.data.data.userId
@@ -16,7 +15,7 @@ export default {
             role: role,
             userId: userId
         })
-        return response;
+        return role;
     },
     tryAutoLogin(context) {
         if (!Cookies.get('jointeams')) {
@@ -42,7 +41,4 @@ export default {
             userId: null
         })
     },
-    // setRoutes(context, routes) {
-    //     context.commit('setRoutes', routes)
-    // }
 }
