@@ -166,7 +166,7 @@ export default {
         return;
       }
       try {
-        let response = await this.login({
+        let role = await this.login({
           email: this.formModel.email,
           password: this.formModel.password
         })
@@ -175,7 +175,8 @@ export default {
           type: 'success'
         })
 
-        if (response.role === 'ROLE_USER'){
+        console.log(role)
+        if (role === 'ROLE_USER'){
           this.$router.replace('/dashboard')
         } else {
           this.$router.replace('/comment')

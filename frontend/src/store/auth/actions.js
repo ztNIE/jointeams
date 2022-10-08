@@ -15,7 +15,7 @@ export default {
             role: role,
             userId: userId
         })
-        return response;
+        return role;
     },
     tryAutoLogin(context) {
         if (!Cookies.get('jointeams')) {
