@@ -266,7 +266,8 @@ export default {
   min-width: 1200px;
 }
 .full-height {
-  height: 100%;
+  //height: 100%;
+  overflow: auto;
 }
 :deep(.el-card__body) {
   height: 100%;
