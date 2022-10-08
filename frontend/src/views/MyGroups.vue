@@ -7,22 +7,16 @@
       <el-main>
         <el-scrollbar max-height="450px" v-if="groups.length !== 0">
           <div v-for="group in groups" :key="group.group_id" class="text item">
-            <el-card class="group-card">
+            <el-card class="group-card" @click="handleToDetail(group.group_id)">
               <div class="card-header">
                 <span id="name">{{group.group_name}}</span>
                 <span id="capacity">(Capacity: {{group.capacity}})</span>
-                <el-button @click="handleToDetail(group.group_id)" text>
-                  <el-icon id="detailBtn-icon"><Right /></el-icon>
-                </el-button>
+                <el-icon id="detailBtn-icon"><Right /></el-icon>
               </div>
               <div class="divider_space"></div>
               <div class="card-content">
                 <span v-for="member in group.members" :key="member.name" class="member">
-                  <el-avatar class="member_avatar" src={{member.avatar}} @error="errorHandler">
-                    <img
-                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                    />
-                  </el-avatar>
+                  <el-avatar class="member_avatar" :src="member.avatar" />
                   <span class="member_name"> {{ member.name }} </span>
                 </span>
               </div>
@@ -37,9 +31,10 @@
 </template>
 
 <script>
-// import cookieUtils from '../utils/cookie.js'
 import GroupAPI from '../api/group.js'
 import authUtil from "@/util/authUtil";
+import userAPI from '../api/user.js';
+import {ElMessage} from "element-plus";
 
 export default {
   name: 'MyGroups',
@@ -49,17 +44,16 @@ export default {
       user_id: null
     }
   },
-  mounted() {
+  async created() {
     this.user_id = this.$store.getters.userId
-    console.log(this.user_id)
-    GroupAPI.findAllCurrentGroupsOfAUser(this.user_id).then((res) => {
-      this.groups = res.data.data
+    GroupAPI.findAllCurrentGroupsOfAUser(this.user_id).then(async (res) => {
+      await this.handleGetAvatar(res)
     })
   },
   watch: {
     'groups': function() {
-      GroupAPI.findAllCurrentGroupsOfAUser(this.user_id).then((res) => {
-        this.groups = res.data.data
+      GroupAPI.findAllCurrentGroupsOfAUser(this.user_id).then(async (res) => {
+        await this.handleGetAvatar(res)
       })
     }
   },
@@ -67,13 +61,26 @@ export default {
     authUtil.authenticateIdentity("ROLE_USER")
   },
   methods: {
-    errorHandler() {
-      return true
-    },
     handleToDetail(group_id) {
-      // console.log(group_id)
       this.$router.push({name: "groupDetails", params: {group_id: group_id}});
     },
+    async handleGetAvatar(res) {
+      let data = res.data.data
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].members.length; j++) {
+          if(data[i].members[j].avatar == null) {
+            data[i].members[j].avatar = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          } else {
+            await userAPI.getAvatar(data[i].members[j].avatar).then((res) => {
+              data[i].members[j].avatar = 'data:image/jpeg;base64,' + res.data.data.image
+            }).catch(() => {
+              ElMessage.error('Fail to load the avatar')
+            })
+          }
+        }
+      }
+      this.groups = data
+    }
   }
 }
 </script>

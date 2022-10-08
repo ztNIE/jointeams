@@ -38,13 +38,9 @@
           <el-main>
             <el-scrollbar height="300px">
               <div v-for="member in members" :key="member.id">
-                <el-card class="member_card">
+                <el-card class="member_card" @click="handleToProfile(member.id)">
                   <div class="member_div left">
-                    <el-avatar class="member_avatar" src={{member.filename}} @error="errorHandler">
-                      <img
-                          src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
-                      />
-                    </el-avatar>
+                    <el-avatar class="member_avatar" :src="member.filename" />
                   </div>
                   <div class="member_div middle">
                     <div>
@@ -153,6 +149,7 @@ import GroupAPI from '../api/group.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import json from '../tags.json'
 import authUtil from "@/util/authUtil";
+import userAPI from "../api/user";
 
 export default {
   name: 'GroupDetails',
@@ -212,13 +209,22 @@ export default {
           break
         }
       }
+
+      for (let i = 0; i < this.members.length; i++) {
+        if(this.members[i].filename == null) {
+          this.members[i].filename = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+        } else {
+          userAPI.getAvatar(this.members[i].filename).then((res) => {
+            this.members[i].filename = 'data:image/jpeg;base64,' + res.data.data.image
+          }).catch(() => {
+            ElMessage.error('Fail to load the avatar')
+          })
+        }
+      }
     })
 
     GroupAPI.isCommentFunctionOpen().then((res) => {
       this.is_comment_available = res.data.data.isCommentFunctionAvailable
-
-      // Only for testing TODO (delete later)
-      this.is_comment_available = true
     })
 
     this.comment_form.groupId = this.$route.params.group_id
@@ -230,6 +236,9 @@ export default {
   methods: {
     errorHandler() {
       return true
+    },
+    handleToProfile(user_id) {
+      this.$router.push({name: "userProfile", params: {id: user_id}});
     },
     handleLeave() {
       ElMessageBox.confirm(
@@ -247,9 +256,6 @@ export default {
             message: res.data.msg,
           })
         })
-        // this.$router.push(this.$router.options.history.state.back)
-        // window.history.back()
-        // this.$router.go(-1)
         this.$router.push({name: 'myGroups'})
       }).catch(() => {
         ElMessage({
@@ -260,7 +266,6 @@ export default {
     },
     handleEditDescription() {
       GroupAPI.updateDescription(this.$route.params.group_id, this.group.description).then(() => {
-        // console.log(res)
         ElMessage({
           message: 'Edit description successfully!',
           type: 'success',
@@ -299,7 +304,6 @@ export default {
             type: 'warning',
           }
       ).then(() => {
-        // console.log(parseInt(this.comment_form.tag_id))
         var request_data = {
           "groupId": this.comment_form.groupId,
           "receiverId": this.comment_form.receiverId,
@@ -419,6 +423,23 @@ export default {
           message: 'Cancel Request',
         })
       })
+    },
+    handleGetAvatar(res) {
+      let data = res.data.data
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].members.length; j++) {
+          if(data[i].members[j].avatar == null) {
+            data[i].members[j].avatar = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          } else {
+            userAPI.getAvatar(data[i].members[j].avatar).then((res) => {
+              data[i].members[j].avatar = 'data:image/jpeg;base64,' + res.data.data.image
+            }).catch(() => {
+              ElMessage.error('Fail to load the avatar')
+            })
+          }
+        }
+      }
+      this.groups = data
     }
   }
 }

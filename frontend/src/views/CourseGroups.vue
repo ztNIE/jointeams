@@ -46,24 +46,18 @@
         </div>
         <el-scrollbar max-height="300px" v-if="searchResult.length !== 0">
           <div v-for="group in searchResult" :key="group.group_id" class="text item">
-            <el-card class="group-card">
+            <el-card class="group-card" @click="handleToDetail(group.group_id)">
               <div class="card-header">
                 <span id="name">{{ group.group_name }}</span>
                 <span id="capacity">(Capacity: {{ group.capacity }})</span>
-                <el-button @click="handleToDetail(group.group_id)" text>
-                  <el-icon id="detailBtn-icon">
-                    <Right/>
-                  </el-icon>
-                </el-button>
+                <el-icon id="detailBtn-icon">
+                  <Right/>
+                </el-icon>
               </div>
               <div class="divider_space"></div>
               <div class="card-content">
                 <span v-for="member in group.members" :key="member.name" class="member">
-                  <el-avatar class="member_avatar" src={{member.avatar}} @error="errorHandler">
-                    <img
-                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                    />
-                  </el-avatar>
+                  <el-avatar class="member_avatar" :src="getAvatar(member.id)" />
                   <span class="member_name"> {{ member.name }} </span>
                 </span>
               </div>
@@ -105,6 +99,7 @@ import CourseGroupAPI from '../api/courseGroup.js'
 import {ElMessage, ElMessageBox} from 'element-plus'
 import authUtil from "@/util/authUtil";
 import courseDetailAPI from "@/api/courseDetail";
+import userAPI from "../api/user";
 
 export default {
   name: 'CourseGroups',
@@ -117,19 +112,20 @@ export default {
         id: null
       },
       groups: [],
+      members: [],
       tutorial: "",
       search_term: "",
       search_tut: "",
       user_id: null,
       searchResult: [],
       dialogFormVisible: false,
-      group_capacity: 1
+      group_capacity: 1,
     }
   },
   beforeCreate() {
     authUtil.authenticateIdentity("ROLE_USER")
   },
-  created() {
+  async created() {
     this.user_id = this.$store.getters.userId
     this.course.id = this.$route.params.course_id
 
@@ -139,11 +135,11 @@ export default {
       }
     })
 
-    CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then((res) => {
+    CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then(async (res) => {
       if (res.data.data === null) {
         this.groups = []
       } else {
-        this.groups = res.data.data
+        await this.handleGetAvatar(res)
       }
 
       this.searchResult = this.groups
@@ -158,9 +154,6 @@ export default {
     })
   },
   methods: {
-    errorHandler() {
-      return true
-    },
     handleSearch() {
       this.searchResult = []
       if (this.search_term !== "") {
@@ -270,6 +263,31 @@ export default {
     },
     handleCreateGroupCancel() {
       this.dialogFormVisible = false
+    },
+    async handleGetAvatar(res) {
+      let data = res.data.data
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].members.length; j++) {
+          if(data[i].members[j].avatar == null) {
+            data[i].members[j].avatar = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          } else {
+            await userAPI.getAvatar(data[i].members[j].avatar).then((res) => {
+              data[i].members[j].avatar = 'data:image/jpeg;base64,' + res.data.data.image
+            }).catch(() => {
+              ElMessage.error('Fail to load the avatar')
+            })
+          }
+          this.members.push(data[i].members[j])
+        }
+      }
+      this.groups = data
+    },
+    getAvatar(id) {
+      for(let i = 0; i < this.members.length; i++) {
+        if(this.members[i].id == id) {
+          return this.members[i].avatar
+        }
+      }
     }
   }
 }
