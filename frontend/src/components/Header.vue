@@ -16,10 +16,10 @@
           v-if="this.$store.getters.isUser"
       >
         <el-badge v-if="this.$store.getters.isUser" :is-dot="showDot" class="item">
-          <BellFilled class="icon-bell" v-if="isUser"></BellFilled>
+          <BellFilled class="icon-bell" v-if="isUser" @click="handleClickBell"></BellFilled>
         </el-badge>
       </el-tooltip>
-      <el-avatar shape="circle" :size="40" :src="avatar"/>
+      <el-avatar @click="handleClickAvatar" shape="circle" :size="40" :src="avatar"/>
       <p>{{ this.currentUserName }}</p>
       <el-button type="primary" size="small" @click="handleLogOut">Log Out</el-button>
     </div>
@@ -146,6 +146,9 @@ export default {
     },
     handleClickBell() {
       this.$router.push('/notification')
+    },
+    handleClickAvatar() {
+      this.$router.push('/myProfile')
     }
   }
 }
@@ -214,6 +217,10 @@ export default {
   & .el-avatar {
     margin-right: 10px;
     margin-left: 30px;
+  }
+
+  & .el-avatar:hover {
+    cursor: pointer;
   }
 
   & .el-button {
