@@ -11,7 +11,7 @@ export default {
         localStorage.setItem('email', email)
         localStorage.setItem('role', role)
         localStorage.setItem('userId', userId)
-        context.commit('setUserLogin', {
+        await context.commit('setUserLogin', {
             email: email,
             role: role,
             userId: userId
