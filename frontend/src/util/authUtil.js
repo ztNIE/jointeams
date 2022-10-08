@@ -10,8 +10,8 @@ const authenticateIdentity = function (role) {
         ElMessage("Please log in first")
         return
     }
-    if (store.getters.isUser && role === 'ROLE_ADMIN') {
-        console.log("Should jump to admin page")
+    if (!store.getters.isUser && role === 'ROLE_ADMIN') {
+        router.replace('/comment')
         return
     }
     if (!store.getters.isUser && role === 'ROLE_USER') {
@@ -30,7 +30,8 @@ const skipLogin = function () {
             router.push('/dashboard')
             ElMessage("You've already logged in")
         } else {
-            console.log('should jump to admin page')
+            router.push('/comment')
+            ElMessage("You've already logged in")
         }
     }
 }

@@ -259,15 +259,32 @@ export default {
   },
   methods: {
     jumpToStudentProfile(id) {
-      // TODO jump to id
       this.$router.push(`/userProfile/${id}`)
       console.log(id)
     },
     handlePreviousStudentSearch() {
       let _this = this
+      if (!this.previousStudentSearchName) {
+        this.searchedPreviousStudents = this.previousStudents
+        return
+      }
       this.searchedPreviousStudents = this.previousStudents.filter((item) => {
         if (_this.previousStudentSearchName.toLowerCase().trim() !== '') {
           return item.fullName.toLowerCase().indexOf(_this.previousStudentSearchName.toLowerCase().trim()) !== -1
+        } else {
+          return true
+        }
+      })
+    },
+    handleCurrentStudentSearch() {
+      let _this = this
+      if (!this.currentStudentSearchName) {
+        this.searchedCurrentStudents = this.currentStudents
+        return
+      }
+      this.searchedCurrentStudents = this.currentStudents.filter((item) => {
+        if (_this.currentStudentSearchName.toLowerCase().trim() !== '') {
+          return item.fullName.toLowerCase().indexOf(_this.currentStudentSearchName.toLowerCase().trim()) !== -1
         } else {
           return true
         }
@@ -284,16 +301,6 @@ export default {
         return true
       }
       return student.tutorial === tutorial
-    },
-    handleCurrentStudentSearch() {
-      let _this = this
-      this.searchedCurrentStudents = this.currentStudents.filter((item) => {
-        if (_this.currentStudentSearchName.toLowerCase().trim() !== '') {
-          return item.fullName.toLowerCase().indexOf(_this.currentStudentSearchName.toLowerCase().trim()) !== -1
-        } else {
-          return true
-        }
-      })
     },
     async editTutorial(external = false) {
       try {
