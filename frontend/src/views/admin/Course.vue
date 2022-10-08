@@ -97,12 +97,16 @@ export default {
   },
   mounted() {
     adminAPI.findAllCourses().then((res) => {
-      this.courses = res.data.data.CourseResponseDataList
-      this.coursesAfterSearch = this.courses
+      if(res.data.data['Null'] !== null)
+      {
+        this.courses = res.data.data.CourseResponseDataList
+        this.coursesAfterSearch = this.courses
+      }
     })
     adminAPI.findAllUniversities().then((res) => {
-      this.universities = res.data.data.UniversityList
-      console.log(this.universities)
+      if(res.data.data['Null'] !== null) {
+        this.universities = res.data.data.UniversityList
+      }
     })
   },
   methods: {

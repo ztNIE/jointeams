@@ -78,9 +78,12 @@ export default {
   },
   mounted() {
     adminAPI.getCurrentSemester().then((res) => {
-      this.currentYear = res.data.data.Semester.year
-      this.currentSemesterNo = this.semesterNoList[res.data.data.Semester.semesterNumber - 1]
-      this.isCommentAvailable = res.data.data.isCommentAvailable
+      if(res.data.data['Null'] !== null)
+      {
+        this.currentYear = res.data.data.Semester.year
+        this.currentSemesterNo = this.semesterNoList[res.data.data.Semester.semesterNumber - 1]
+        this.isCommentAvailable = res.data.data.isCommentAvailable
+      }
     })
     for(let year = 2000; year < 2055; year++)
     {

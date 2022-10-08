@@ -70,9 +70,10 @@ export default {
   },
   mounted() {
     adminAPI.findAllComments().then((res) => {
-      console.log(res.data.data)
-      this.comments = res.data.data.CommentResponseDataList
-      this.commentsAfterSearch = this.comments
+      if(res.data.data['Null'] !== null) {
+        this.comments = res.data.data.CommentResponseDataList
+        this.commentsAfterSearch = this.comments
+      }
     })
   },
   methods: {

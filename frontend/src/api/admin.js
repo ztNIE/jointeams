@@ -9,7 +9,7 @@ const getCurrentSemester = async function() {
         else if (res.request.status === 202)
         {
             catchError.outputInfo(res.data.msg)
-            return null
+            return res
         }
         else
             throw new Error(res.data.msg)
@@ -25,7 +25,7 @@ const changeCurrentSemester = async function(year,semesterNumber) {
         else if (res.request.status === 202)
         {
             catchError.outputInfo(res.data.msg)
-            return null
+            return res
         }
         else
             throw new Error(res.data.msg)
@@ -41,7 +41,7 @@ const findAllComments = async function() {
         else if (res.request.status === 202)
         {
             catchError.outputInfo(res.data.msg)
-            return null
+            return res
         }
         else
             throw new Error(res.data.msg)
@@ -83,7 +83,7 @@ const findAllCourses = async function() {
         else if (res.request.status === 202)
         {
             catchError.outputInfo(res.data.msg)
-            return null
+            return res
         }
         else
             throw new Error(res.data.msg)
@@ -135,7 +135,7 @@ const findAllUniversities = async function() {
         else if (res.request.status === 202)
         {
             catchError.outputInfo(res.data.msg)
-            return null
+            return res
         }
         else
             throw new Error(res.data.msg)
