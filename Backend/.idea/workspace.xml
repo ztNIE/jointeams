@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="257cbee7-074a-4afd-8136-3941b30e3870" name="Changes" comment="API getIsAdmin &amp; getUserInfoById done." />
+    <list default="true" id="257cbee7-074a-4afd-8136-3941b30e3870" name="Changes" comment="API getIsAdmin &amp; getUserInfoById done.">
+      <change beforePath="$PROJECT_DIR$/../frontend/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/store/auth/actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/store/auth/actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/admin/Dashboard.vue" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

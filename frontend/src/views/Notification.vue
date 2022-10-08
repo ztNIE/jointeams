@@ -5,7 +5,7 @@
         <div class="main_header">Notification</div>
       </template>
       <el-main>
-        <el-scrollbar max-height="450px" v-if="notifications.length !== 0">
+        <el-scrollbar max-height="450px" v-if="notifications && notifications.length !== 0">
           <div v-for="notification in notifications" :key="notification.id" class="text item">
             <el-card class="notification-card">
               <div class="card-header">

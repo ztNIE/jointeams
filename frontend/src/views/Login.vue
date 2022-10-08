@@ -174,7 +174,13 @@ export default {
           message: 'You have successfully logged in!',
           type: 'success'
         })
-        this.$router.replace('/dashboard')
+
+        if (this.$store.getters.isUser){
+          this.$router.replace('/dashboard')
+        } else {
+          this.$router.replace('/comment')
+        }
+        
       } catch (error) {
         this.error = {message: "Invalid password"}
       }

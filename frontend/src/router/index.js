@@ -67,24 +67,24 @@ const userRoutes = [
         hidden: false,
       },
       component: () => import('@/views/profile/MyProfile'),
+  },
+  {
+    path: '/editProfile',
+    name: 'editProfile',
+    meta: {
+      highlight: 'myProfile',
+      hidden: true,
     },
-    {
-      path: '/editProfile',
-      name: 'editProfile',
-      meta: {
-        highlight: 'myProfile',
-        hidden: true,
-      },
-      component: () => import('@/views/profile/EditProfile'),
+    component: () => import('@/views/profile/EditProfile'),
+  },
+  {
+    path: '/userProfile/:id',
+    name: 'userProfile',
+    meta: {
+      hidden: true,
     },
-    {
-      path: '/userProfile/:id',
-      name: 'userProfile',
-      meta: {
-        hidden: true,
-      },
-      component: () => import('@/views/profile/UserProfile'),
-    },
+    component: () => import('@/views/profile/UserProfile'),
+  },
     {
         path: '/courseDetails/:course_id',
         name: 'courseDetails',
@@ -135,17 +135,6 @@ const userRoutes = [
 ]
 
 const adminRoutes = [
-    {
-        path: '/dashboard',
-        name: 'dashboard',
-        meta: {
-            icon: 'Odometer',
-            capitalName: 'Dashboard',
-            highlight: 'dashboard',
-            hidden: false,
-        },
-        component: () => import('@/views/admin/Dashboard'),
-    },
     {
         path: '/comment',
         name: 'comment_admin',
