@@ -8,7 +8,7 @@ insert into user (degree, description, email,
                   password, self_tag, university_id)
 values
     ('Bachelor of Engineering Honors (Software)', 'Hi, I am Emma Kwan :)', 'devu0001@uni.sydney.edu.au',
-     'Faculty of Engineering and IT', null, 'Emma',
+     'Engineering', null, 'Emma',
      true, false, 'Kwan',
      '$2a$10$4Y.YYVx0K2zVYGsMXiw2E.7lhEzuUmegm6/tcC8uNXIlfqoNnwyhy',
      1, 1),
@@ -18,12 +18,12 @@ values
      '$2a$10$krU.5/cHT0Zzi.o3dYgM6.yELqTPG6FKrhOuYEyNhglosd67GCRNG',
      null, 2),
     ('Bachelor of Advanced Computing', 'Hi, I am Sarah Lee :)', 'devu0002@uni.sydney.edu.au',
-     'Faculty of Engineering and IT', null, 'Sarah',
+     'Engineering', null, 'Sarah',
      true, false, 'Lee',
      '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
      null, 1),
     ('Master of Information Technology', 'Hi, I am John Davis :)', 'devu0003@uni.sydney.edu.au',
-     'Faculty of Engineering and IT', null, 'John',
+     'Engineering', null, 'John',
      true, false, 'Davis',
      '$2a$10$XmrZEyt/WDR5uz0fC8Y7l.T1o/VSCiO1GNcI1ME67.RPeXWLA4B1S',
      null, 1);

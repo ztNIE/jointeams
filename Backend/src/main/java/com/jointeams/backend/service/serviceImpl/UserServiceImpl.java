@@ -3,15 +3,20 @@ package com.jointeams.backend.service.serviceImpl;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.UserService;
+import com.jointeams.backend.util.UpPhotoNameUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -134,7 +139,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JSONObject updateUserInfoById(Long id, JSONObject newInfo) {
+    public JSONObject updateUserInfoById(Long id, JSONObject newInfo) throws FileNotFoundException {
         User user = userRepository.findById(id).orElse(null);
         JSONObject jsonResult = new JSONObject();
 
@@ -142,6 +147,12 @@ public class UserServiceImpl implements UserService {
             jsonResult.put("msg", "Unable to find the user!");
             jsonResult.put("data", null);
         } else {
+            System.out.println(newInfo);
+            if ((Boolean) newInfo.get("updateAvatar") && newInfo.get("oldAvatar") != null) {
+                String UPLOAD_PATH = ResourceUtils.getURL("").getPath() + "src/main/resources/images/";
+                FileSystemUtils.deleteRecursively(new File(UPLOAD_PATH + newInfo.get("oldAvatar")));
+            }
+
             user.setFilename((String) newInfo.get("avatar"));
             user.setSelfTag((Integer) newInfo.get("selfTag"));
             user.setFirstName((String) newInfo.get("firstName"));
@@ -176,6 +187,61 @@ public class UserServiceImpl implements UserService {
     public User findById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         return user;
+    }
+
+    @Override
+    public JSONObject uploadAvatar(MultipartFile file) {
+        JSONObject jsonResult = new JSONObject();
+        try {
+            String UPLOAD_PATH = ResourceUtils.getURL("").getPath() + "src/main/resources/images/";
+            byte[] bytes = file.getBytes();
+            String imageFileName = file.getOriginalFilename();
+            String fileName = UpPhotoNameUtils.getPhotoName("img",imageFileName);
+            Path path = Paths.get(UPLOAD_PATH + fileName);
+            Files.write(path, bytes);
+
+            JSONObject filePath = new JSONObject();
+            filePath.put("path", fileName);
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Failed to upload the avatar!");
+            jsonResult.put("data", null);
+        }
+
+        return jsonResult;
+    }
+
+    @Override
+    public JSONObject getAvatar(String fileName) throws FileNotFoundException {
+        JSONObject jsonResult = new JSONObject();
+
+        String path = ResourceUtils.getURL("").getPath() + "src/main/resources/images/" + fileName;
+        File file = new File(path);
+        InputStream in;
+        byte[] data = null;
+        try {
+            in = new FileInputStream(file);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+
+            //进行Base64编码
+            String encodedString = Base64.getEncoder().encodeToString(data);
+            JSONObject encoded = new JSONObject();
+            encoded.put("image", encodedString);
+            jsonResult.put("msg", "success");
+            jsonResult.put("data", encoded);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            jsonResult.put("msg", "Failed to get the avatar!");
+            jsonResult.put("data", null);
+        }
+
+        return jsonResult;
+
     }
 
 //    @Override

@@ -37,13 +37,13 @@ axios.interceptors.response.use(response => {
 })
 
 //get
-export function get(url, data) {
-    return axios.get(url, data)
+export function get(url, params) {
+    return axios.get(url, params)
 }
 
 // post
-export function post(url, data, params) {
-    return axios.post(url, data, params)
+export function post(url, data) {
+    return axios.post(url, data)
 }
 
 // put
@@ -52,6 +52,6 @@ export function put(url, data) {
 }
 
 // delete
-export function del(url, data) {
-    return axios.delete(url, data)
+export function del(url, params) {
+    return axios.delete(url, params)
 }

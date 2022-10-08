@@ -117,7 +117,6 @@ export default {
     let _this = this
 
     // get current, past and interested courses
-    console.log(this.$store.getters.userId)
     userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
       let data = res.data.data
       _this.currentCourse = data.currentCourse

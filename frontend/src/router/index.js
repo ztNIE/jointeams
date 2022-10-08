@@ -69,6 +69,15 @@ const userRoutes = [
       component: () => import('@/views/profile/MyProfile'),
   },
   {
+    path: '/editProfile',
+    name: 'editProfile',
+    meta: {
+      highlight: 'myProfile',
+      hidden: true,
+    },
+    component: () => import('@/views/profile/EditProfile'),
+  },
+  {
     path: '/userProfile/:id',
     name: 'userProfile',
     meta: {
@@ -174,16 +183,18 @@ const router = createRouter({
 // execute every time loading a new page
 import store from '@/store'
 import { ElMessage } from 'element-plus'
+import Cookies from "js-cookie";
+
 router.beforeEach((to, from, next) => {
   NProgress.start()
 
   // handle not logged in
   const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/:token', '/reset-password/:token', '/404'] 
-  if (whiteList.indexOf(to.path) === -1 && localStorage.getItem("userId") == null) {
+  if (whiteList.indexOf(to.path) === -1 && !Cookies.get('jointeams')) {
     ElMessage.info('Please log in first!')
     next('/sign-in')
     NProgress.done()
-  }
+  } else {
 
   let dynamicRoutes = []
 
@@ -261,7 +272,7 @@ router.beforeEach((to, from, next) => {
 
   } else {
     next()
-  }
+  }}
 })
 
 router.afterEach(() => {
