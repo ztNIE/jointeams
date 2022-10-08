@@ -214,7 +214,6 @@ router.beforeEach((to, from, next) => {
             } else {
                 dynamicRoutes = adminRoutes
             }
-
             // deep copy
             let temp = [
                 {

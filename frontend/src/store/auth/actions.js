@@ -4,14 +4,13 @@ import Cookies from "js-cookie";
 export default {
     async login(context, loginRequest) {
         const response = await postLogin(loginRequest)
-        console.log(response)
         const email = response.data.data.email
         const role = response.data.data.roles[0] 
         const userId = response.data.data.userId
         localStorage.setItem('email', email)
         localStorage.setItem('role', role)
         localStorage.setItem('userId', userId)
-        context.commit('setUserLogin', {
+        await context.commit('setUserLogin', {
             email: email,
             role: role,
             userId: userId
@@ -42,7 +41,4 @@ export default {
             userId: null
         })
     },
-    // setRoutes(context, routes) {
-    //     context.commit('setRoutes', routes)
-    // }
 }
