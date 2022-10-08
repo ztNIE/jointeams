@@ -226,6 +226,7 @@ export default {
 
               userAPI.updateUserInfoById(this.$store.getters.userId, this.userInfo).then(() => {
                 ElMessage.success('Updated successfully!')
+                this.$router.push('/myProfile')
               }).catch(() => {
                 ElMessage.error('Failed to modify the profile.')
               })
