@@ -149,7 +149,11 @@ public class UserServiceImpl implements UserService {
         } else {
             System.out.println(newInfo);
             if ((Boolean) newInfo.get("updateAvatar") && newInfo.get("oldAvatar") != null) {
-                String UPLOAD_PATH = ResourceUtils.getURL("").getPath() + "src/main/resources/images/";
+                String projectPath = ResourceUtils.getURL("").getPath();
+                if(!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
+                    projectPath += "Backend/";
+                }
+                String UPLOAD_PATH = projectPath + "src/main/resources/images/";
                 FileSystemUtils.deleteRecursively(new File(UPLOAD_PATH + newInfo.get("oldAvatar")));
             }
 
@@ -193,7 +197,11 @@ public class UserServiceImpl implements UserService {
     public JSONObject uploadAvatar(MultipartFile file) {
         JSONObject jsonResult = new JSONObject();
         try {
-            String UPLOAD_PATH = ResourceUtils.getURL("").getPath() + "src/main/resources/images/";
+            String projectPath = ResourceUtils.getURL("").getPath();
+            if(!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
+                projectPath += "Backend/";
+            }
+            String UPLOAD_PATH = projectPath + "src/main/resources/images/";
             byte[] bytes = file.getBytes();
             String imageFileName = file.getOriginalFilename();
             String fileName = UpPhotoNameUtils.getPhotoName("img",imageFileName);
@@ -217,7 +225,11 @@ public class UserServiceImpl implements UserService {
     public JSONObject getAvatar(String fileName) throws FileNotFoundException {
         JSONObject jsonResult = new JSONObject();
 
-        String path = ResourceUtils.getURL("").getPath() + "src/main/resources/images/" + fileName;
+        String projectPath = ResourceUtils.getURL("").getPath();
+        if(!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
+            projectPath += "Backend/";
+        }
+        String path = projectPath + "src/main/resources/images/" + fileName;
         File file = new File(path);
         InputStream in;
         byte[] data = null;
