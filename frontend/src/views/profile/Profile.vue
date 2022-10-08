@@ -24,11 +24,11 @@
 
             <!-- basic info -->
             <el-col :span="16" class="full-height relative-parent">
-              <el-button type="primary" link @click="handleEdit">edit</el-button>
+              <el-button type="primary" link @click="handleEdit" v-if="this.userId === this.$store.getters.userId">edit</el-button>
               <!-- personal info -->
               <div class="personal-info">
                 <p class="name userName">{{this.userName}}</p>
-                <p class="info-list"><span class="bold">Faculty:</span> {{this.userInfo.faculty}}</p>
+                <p class="info-list"><span class="bold">Faculty:</span> Faculty of {{this.userInfo.faculty}}</p>
                 <p class="info-list"><span class="bold">Degree:</span> {{this.userInfo.degree}}</p>
                 <p class="info-list"><span class="bold">Email:</span> {{this.userInfo.email}}</p>
               </div>
@@ -37,14 +37,16 @@
                 <!-- current course -->
                 <div class="current-course">
                   <p class="name">Current Courses</p>
-                  <ul>
+                  <span class="none" v-if="currentCourse.length === 0">None</span>
+                  <ul v-else>
                     <li v-for="course in currentCourse" :key="course.id"><span class="">{{course.code}}</span> <span class="course-name">{{course.name}}</span></li>
                   </ul>
                 </div>
                 <!-- past course -->
                 <div class="past-course">
                   <p class="name">Past Courses</p>
-                  <ul>
+                  <span class="none" v-if="pastCourse.length === 0">None</span>
+                  <ul v-else>
                     <li v-for="course in pastCourse" :key="course.id"><span class="">{{course.code}}</span> <span class="course-name">{{course.name}}</span></li>
                   </ul>
                 </div>
@@ -64,7 +66,7 @@
             </div>
           </template>
           <div class="full-height">
-            <p v-if="description != null">{{description}}</p>
+            <p v-if="description != null || description === ''">{{description}}</p>
             <span class="none" v-else>None</span>
           </div>
         </el-card>
@@ -78,10 +80,11 @@
             </div>
           </template>
           <div class="comments">
+            <span class="none" v-if="comments.length === 0">None</span>
             <div class="comment-box" v-for="comment in comments" :key="comment.id">
               <!-- avatar -->
               <div class="avatar">
-                <el-avatar :size="60" :src="avatar" />
+                <el-avatar :size="60" :src="comment.image" />
               </div>
               <!-- content -->
               <div class="content">
@@ -90,7 +93,7 @@
                   <p class="time-stamp">{{comment.timeStamp}}</p>
                 </div>
                 <p v-if="comment.tag != null">gives {{userName}} a&nbsp;
-                  <el-tag class="mx-1 info-tag" effect="dark" type="warning" size="mini">{{tagName[comment.tag - 1].label}}</el-tag>
+                  <el-tag class="mx-1 info-tag" type="warning" size="small">{{tagName[comment.tag - 1].label}}</el-tag>
                 </p>
                 <p class="comment-content">"{{comment.content}}"</p>
               </div>
@@ -109,7 +112,7 @@ import tagName from '@/tags.json'
 
 export default {
   name: 'Profile',
-  props: { userId: String },
+  props: { userId: [String, Number] },
   data() {
     return {
       avatar: null,
@@ -129,15 +132,24 @@ export default {
     if (this.$props.userId != null) {
       userAPI.getUserInfo(this.$props.userId).then((res) => {
         let data = res.data.data
-        console.log(data)
         _this.userName = data.firstName + ' ' + data.lastName
-        _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
         _this.selfTag = data.selfTag
         _this.comments = data.comment
         _this.currentCourse = data.currentCourse
         _this.pastCourse = data.previousCourse
         _this.description = data.description
         _this.userInfo = data
+
+        // get avatar
+        if (data.avatar == null) {
+          _this.avatar = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+        } else {
+          userAPI.getAvatar(data.avatar).then((res) => {
+            _this.avatar = 'data:image/jpeg;base64,' + res.data.data.image
+          }).catch(() => {
+            ElMessage.error('Failed to load the avatar')
+          })
+        }
 
         _this.comments = _this.comments.filter((comment) => {
           return !comment.isHide
@@ -149,6 +161,17 @@ export default {
           let month = timeStamp.getMonth() < 10 ? '0' + timeStamp.getMonth() : timeStamp.getMonth()
           let year = timeStamp.getFullYear()
           _this.comments[i].timeStamp = date + '/' + month + '/' + year
+          
+          // get avatar
+          if (_this.comments[i].avatar == null) {
+            _this.comments[i].image = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+          } else {
+            userAPI.getAvatar(_this.comments[i].avatar).then((res) => {
+              _this.comments[i].image = 'data:image/jpeg;base64,' + res.data.data.image
+            }).catch(() => {
+              ElMessage.error('Failed to load the avatar')
+            })
+          }
         }
       }).catch((err) => {
         ElMessage.error(err.data.msg)
@@ -157,6 +180,7 @@ export default {
   },
   methods: {
     handleEdit() {
+      this.$router.push('/editProfile')
     }
   }
 }
@@ -173,12 +197,6 @@ export default {
 .half-height {
   height: 50%;
 }
-// .sixty-percent-height {
-//   height: 60%;
-// }
-// .forty-percent-height {
-//   height: 40%;
-// }
 :deep(.el-card__body) {
   height: 100%;
 }
@@ -246,18 +264,21 @@ export default {
     }
     & .personal-info {
       box-sizing: border-box;
-      height: 37%;
+      height: 40%;
       min-height: 105px;
       padding-left: 25px;
     }
     & .courses {
-      height: 63%;
+      height: 70%;
       display: flex;
       flex-direction: row;
+      & .past-course {
+        margin-left: 2%;
+      }
       & .current-course, .past-course {
         box-sizing: border-box;
         width: 380px;
-        height: 100%;
+        height: 90%;
         padding-left: 25px;
 
         & ul {

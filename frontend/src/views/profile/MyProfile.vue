@@ -3,7 +3,6 @@
 </template>
 
 <script>
-// import { ElMessage } from 'element-plus'
 import Profile from './Profile.vue'
 
 export default {

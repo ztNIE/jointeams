@@ -16,7 +16,7 @@
   <PageNotFound v-else-if="route.name === '404'" />
 
   <!-- other pages -->
-  <div class="box" v-else>
+  <div v-else class="box">
     <!-- container -->
     <el-container>
       <!-- sidebar -->

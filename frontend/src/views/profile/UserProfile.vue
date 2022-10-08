@@ -1,21 +1,23 @@
 <template>
-    <Profile/>
+    <Profile :userId="userId"/>
 </template>
 
 <script>
-// import { ElMessage } from 'element-plus'
 import Profile from './Profile.vue'
-
+import { useRoute } from 'vue-router'
 export default {
   name: 'UserProfile',
+  data() {
+    return {
+      userId: null
+    }
+  },
   components: {
     Profile
   },
   created() {
-    // if (!this.$store.getters.isLogIn) {
-    //   ElMessage.info('Please log in first.')
-    //   this.$router.push('/sign-in')
-    // }
+    const route = useRoute()
+    this.userId = route.params.id
   }
 }
 </script>

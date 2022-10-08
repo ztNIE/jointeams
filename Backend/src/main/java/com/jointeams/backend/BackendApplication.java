@@ -5,14 +5,19 @@ import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.InterestedCourseKey;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.util.IsCommentAvailable;
+import com.jointeams.backend.util.UploadConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration.class)
+@Import(UploadConfig.class)
 public class BackendApplication {
 
     @Autowired

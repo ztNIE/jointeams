@@ -13,6 +13,7 @@
           effect="light"
           content="Notification"
           placement="left"
+          v-if="this.$store.getters.isUser"
       >
         <el-badge v-if="this.$store.getters.isUser" :is-dot="showDot" class="item">
           <BellFilled class="icon-bell" v-if="isUser"></BellFilled>
@@ -51,7 +52,16 @@ export default {
       userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
         let data = res.data.data
         _this.currentUserName = data.firstName + ' ' + data.lastName
-        _this.avatar = data.avatar == null ? 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' : data.avatar
+
+        if (data.avatar == null) {
+          _this.avatar = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+        } else {
+          userAPI.getAvatar(data.avatar).then((res) => {
+            _this.avatar = 'data:image/jpeg;base64,' + res.data.data.image
+          }).catch(() => {
+            ElMessage.error('Failed to load the avatar')
+          })
+        }
       }).catch((err) => {
         ElMessage.error(err.data.msg)
       })
@@ -133,6 +143,9 @@ export default {
           }
         }
       }, 1000)
+    },
+    handleClickBell() {
+      this.$router.push('/notification')
     }
   }
 }

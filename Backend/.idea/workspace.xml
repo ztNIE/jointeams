@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="257cbee7-074a-4afd-8136-3941b30e3870" name="Changes" comment="API getIsAdmin &amp; getUserInfoById done.">
+      <change afterPath="$PROJECT_DIR$/../frontend/src/views/profile/EditProfile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/api/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/api/http.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/api/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/components/Header.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/components/Header.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/Dashboard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/Dashboard.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/profile/MyProfile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/profile/MyProfile.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/views/profile/Profile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/profile/Profile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/views/profile/UserProfile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/views/profile/UserProfile.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -73,7 +82,7 @@
       <workItem from="1663391074063" duration="1949000" />
       <workItem from="1664464475082" duration="540000" />
       <workItem from="1664511245633" duration="10658000" />
-      <workItem from="1664951310496" duration="2703000" />
+      <workItem from="1664951310496" duration="32261000" />
     </task>
     <servers />
   </component>

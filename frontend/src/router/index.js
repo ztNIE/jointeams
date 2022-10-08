@@ -58,23 +58,32 @@ const userRoutes = [
         component: () => import('@/views/Dashboard'),
     },
     {
-        path: '/myProfile',
-        name: 'myProfile',
-        meta: {
-            icon: 'Memo',
-            capitalName: 'My Profile',
-            highlight: 'myProfile',
-            hidden: false,
-        },
-        component: () => import('@/views/profile/MyProfile'),
+      path: '/myProfile',
+      name: 'myProfile',
+      meta: {
+        icon: 'Memo',
+        capitalName: 'My Profile',
+        highlight: 'myProfile',
+        hidden: false,
+      },
+      component: () => import('@/views/profile/MyProfile'),
     },
     {
-        path: '/userProfile',
-        name: 'userProfile',
-        meta: {
-            hidden: true,
-        },
-        component: () => import('@/views/profile/UserProfile'),
+      path: '/editProfile',
+      name: 'editProfile',
+      meta: {
+        highlight: 'myProfile',
+        hidden: true,
+      },
+      component: () => import('@/views/profile/EditProfile'),
+    },
+    {
+      path: '/userProfile/:id',
+      name: 'userProfile',
+      meta: {
+        hidden: true,
+      },
+      component: () => import('@/views/profile/UserProfile'),
     },
     {
         path: '/courseDetails/:course_id',
@@ -182,18 +191,19 @@ const router = createRouter({
 // handle dynamic routes
 // execute every time loading a new page
 import store from '@/store'
-import {ElMessage} from 'element-plus'
+import { ElMessage } from 'element-plus'
+import Cookies from "js-cookie";
 
 router.beforeEach((to, from, next) => {
     NProgress.start()
 
-    // handle not logged in
-    const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/:token', '/reset-password/:token', '/404']
-    if (whiteList.indexOf(to.path) === -1 && localStorage.getItem("userId") == null) {
-        ElMessage.info('Please log in first!')
-        next('/sign-in')
-        NProgress.done()
-    }
+  // handle not logged in
+  const whiteList = ['/landing', '/sign-in', '/sign-up', '/verify/register/:token', '/reset-password/:token', '/404'] 
+  if (whiteList.indexOf(to.path) === -1 && !Cookies.get('jointeams')) {
+    ElMessage.info('Please log in first!')
+    next('/sign-in')
+    NProgress.done()
+  } else {
 
     let dynamicRoutes = []
 
@@ -272,6 +282,7 @@ router.beforeEach((to, from, next) => {
     } else {
         next()
     }
+  }
 })
 
 router.afterEach(() => {
