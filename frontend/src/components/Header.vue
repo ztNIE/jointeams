@@ -86,11 +86,11 @@ export default {
       this.startPolling = false
     },
     handleLogOut() {
-      this.$store.commit('setAddRoutes', false)
-      localStorage.removeItem('routes')
-      localStorage.removeItem('email')
-      localStorage.removeItem('userId')
-      localStorage.removeItem('role')
+      // this.$store.commit('setAddRoutes', false)
+      // localStorage.removeItem('routes')
+      // localStorage.removeItem('email')
+      // localStorage.removeItem('userId')
+      // localStorage.removeItem('role')
       this.logout()
       this.$router.push('/landing')
       ElMessage({
