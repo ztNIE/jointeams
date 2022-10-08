@@ -208,7 +208,7 @@ router.beforeEach((to, from, next) => {
     let dynamicRoutes = []
 
     if (!store.getters.addRoutes) {
-        if (localStorage.getItem("userId") != null) {
+        if (Cookies.get('jointeams')) {
             if (store.getters.isUser) {
                 dynamicRoutes = userRoutes
             } else {
