@@ -251,12 +251,12 @@ router.beforeEach((to, from, next) => {
             })
 
             // dynamically add in the 404 not found route
-            const notFound = {
-                path: '/:catchAll(.*)',
-                redirect: '/404',
-            }
-            router.addRoute(notFound)
-            temp.push(notFound)
+            // const notFound = {
+            //     path: '/:catchAll(.*)',
+            //     redirect: '/404',
+            // }
+            // router.addRoute(notFound)
+            // temp.push(notFound)
 
             localStorage.setItem('routes', JSON.stringify(temp))
             store.commit('setAddRoutes', true)

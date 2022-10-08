@@ -1,28 +1,30 @@
 <template>
-	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
 
-    <div id="notfound">
-		<div class="notfound">
-			<div class="notfound-404">
-				<h1>4<span></span>4</h1>
-			</div>
-			<h2>Oops! Page Not Be Found</h2>
-			<p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
-            <div style="height: 25px"></div>
-			<a @click="handleBack">Back to previous page</a>
-		</div>
-	</div>
+  <div id="notfound">
+    <div class="notfound">
+      <div class="notfound-404">
+        <h1>4<span></span>4</h1>
+      </div>
+      <h2>Oops! Page Not Be Found</h2>
+      <p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily
+        unavailable</p>
+      <div style="height: 25px"></div>
+      <a @click="handleBack">Back to previous page</a>
+    </div>
+  </div>
 </template>
 
 <script>
 import './css/style.css'
+
 export default {
   name: 'pageNotFound',
   methods: {
-	handleBack() {
-		this.$router.back()
-	}
+    handleBack() {
+      this.$router.back()
+    }
   }
 }
 </script>
