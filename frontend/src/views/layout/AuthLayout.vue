@@ -51,9 +51,9 @@
     <div class="content">
       <el-col type="flex" justify="center" :span="12" :offset="6">
         <el-row type="flex" justify="center" align="middle">
-          <div class="slogan">
+          <!-- <div class="slogan">
             <p>JoinTeams</p>
-          </div>
+          </div> -->
           <div>
             <slot></slot>
           </div>
@@ -167,10 +167,6 @@ export default {
   & .el-row {
     height: 100%
   }
-
-  //display: flex;
-  //align-items: center;
-  //text-align: center;
 }
 
 .clear-fix::after {

@@ -197,10 +197,12 @@ export default {
 <style lang="scss" scoped>
 .box-card {
   width: 480px;
+  padding: 15px 10px;
 }
 
 .btn {
   text-align: center;
+  padding-left: 205px;
 }
 //.login-btn {
 //  position: absolute;

@@ -94,7 +94,7 @@
                     placeholder="Data Science"
           ></el-input>
         </el-form-item>
-        <el-button type="primary"
+        <el-button class="register-btn" type="primary"
                    @click="submitForm('registerForm')">Register
         </el-button>
       </el-form>
@@ -264,6 +264,9 @@ export default {
 .box-card {
   width: 500px;
   text-align: center;
+  padding: 15px 20px;
 }
-
+.register-btn {
+  margin-top: 10px;
+}
 </style>
