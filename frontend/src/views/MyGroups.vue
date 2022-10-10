@@ -32,7 +32,6 @@
 
 <script>
 import GroupAPI from '../api/group.js'
-import authUtil from "@/util/authUtil";
 import userAPI from '../api/user.js';
 import {ElMessage} from "element-plus";
 
@@ -56,9 +55,6 @@ export default {
         await this.handleGetAvatar(res)
       })
     }
-  },
-  beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_USER")
   },
   methods: {
     handleToDetail(group_id) {
