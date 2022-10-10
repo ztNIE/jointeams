@@ -40,20 +40,16 @@
                 @click="changeIsCommentAvailableStatus()"
             />
           </div>
+          <div class="footer">
+            <el-button type="primary" @click="changeEditActiveStatus()">{{ buttonContext[isEditActive] }}</el-button>
+          </div>
         </el-card>
-        <div>
-          <el-button type="primary" @click="changeEditActiveStatus()">{{ buttonContext[isEditActive] }}</el-button>
-        </div>
       </el-main>
     </el-card>
   </div>
 </template>
 
 <script>
-
-
-
-
 // import authUtil from "@/util/authUtil";
 import adminAPI from "@/api/admin";
 import {ElMessage, ElMessageBox} from "element-plus";
@@ -174,27 +170,18 @@ export default {
 #container{
   display: flex;
   flex-direction: column;
-  height: 600px;
-
   text-align:right;
 }
 .semester-card {
   width: 60%;
   align-self: center;
-  height: 90%;
   margin-bottom: 30px;
   text-align:left;
-}
-.el-button {
-  width: 150px;
-  height: 50px;
-  font-size: 30px;
-  margin-right: 30px;
 }
 #content {
   margin-left: 15%;
   margin-top: 20px;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 .el-select {
   width: 80%;
@@ -202,5 +189,8 @@ export default {
 #comment-function-label {
   width: 50%;
   margin-right: 20%;
+}
+.footer {
+  text-align: right;
 }
 </style>
