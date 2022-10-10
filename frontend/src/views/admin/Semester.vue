@@ -155,7 +155,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.common-layout {
+  height: 100%;
+}
+.box-card {
+  height: 100%;
+}
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -166,6 +171,8 @@ export default {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 #container{
   display: flex;

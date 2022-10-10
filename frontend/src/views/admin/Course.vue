@@ -227,6 +227,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
 }
 
 #name {
@@ -236,18 +237,21 @@ export default {
 }
 
 .divider_space {
-  height: 3px;
+  height: 6px;
 }
 
 .main_header {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 
 .box-card {
   min-height: 580px;
   overflow: auto;
+  height: 100%;
 }
 
 .comment-card:hover {
