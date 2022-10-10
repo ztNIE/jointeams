@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "UserCard",
-  props: ['fullName', 'email', 'id']
+  props: ['fullName', 'email', 'id', 'filename']
 }
 </script>
 

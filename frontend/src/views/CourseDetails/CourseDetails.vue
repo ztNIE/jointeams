@@ -109,7 +109,9 @@
             >
               <user-card :full-name="student.fullName"
                          :email="student.email"
-                         :id="student.id"></user-card>
+                         :id="student.id"
+                         :filename="student.fileName"
+              ></user-card>
             </base-card>
           </el-scrollbar>
         </div>
@@ -185,6 +187,7 @@
               <user-card :full-name="student.fullName"
                          :email="student.email"
                          :id="student.id"
+                         :filename="student.fileName"
               ></user-card>
             </base-card>
           </div>
