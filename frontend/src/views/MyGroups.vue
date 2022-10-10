@@ -11,12 +11,12 @@
               <div class="card-header">
                 <span id="name">{{group.group_name}}</span>
                 <span id="capacity">(Capacity: {{group.capacity}})</span>
-                <el-icon id="detailBtn-icon"><Right /></el-icon>
+                <!-- <el-icon id="detailBtn-icon"><Right /></el-icon> -->
               </div>
               <div class="divider_space"></div>
               <div class="card-content">
                 <span v-for="member in group.members" :key="member.name" class="member">
-                  <el-avatar class="member_avatar" :src="member.avatar" />
+                  <el-avatar :size="40" class="member_avatar" :src="member.avatar" />
                   <span class="member_name"> {{ member.name }} </span>
                 </span>
               </div>
@@ -89,10 +89,15 @@ export default {
   .common-layout {
     background-color: #CBF3F0;
   }
+  // .el-card__body {
+  //   padding-top: 10px;
+  // }
   .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 15px;
+    padding-top: 5px;
   }
   .card-content {
     display: inline-flex;
@@ -102,6 +107,8 @@ export default {
   .member {
     display:inline-block;
     margin-right:20px;
+    align-items: center;
+    display: flex;
     align-items: center;
   }
   #detailBtn-icon {
@@ -118,14 +125,19 @@ export default {
     color: #787878;
   }
   .member_avatar {
-    height: 25px;
-    width: 25px;
+    // height: 25px;
+    // width: 25px;
     vertical-align: middle;
     margin-right: 10px;
   }
   .member_name {
-    font-size: small;
-    vertical-align: center;
+    display: block;
+    font-size: 16px;
+    // vertical-align: center;
+    position: relative;
+    top: 4px;
+    margin-left: 2px;
+    margin-right: 13px;
   }
   .divider_space {
     height: 3px;

@@ -14,7 +14,7 @@
               </template>
               <el-scrollbar>
                 <div class="current-courses-box">
-                  <el-card v-for="item in currentCourse" :key="item.id" class="current-course-card" shadow="hover"
+                  <el-card v-for="item in currentCourse" :key="item.id" :v-if="item.is_lock === false" class="current-course-card" shadow="hover"
                            @click="handleClickCourse(item.id)">
                     <p class="current-code">{{ item.code }}</p>
                     <p class="current-name">{{ item.name }}</p>
@@ -34,7 +34,7 @@
                 </div>
               </template>
               <ul class="past-courses-box full-height">
-                <li class="past-li" v-for="item in pastCourse" :key="item.id" @click="handleClickCourse(item.id)">
+                <li class="past-li" v-for="item in pastCourse" :key="item.id" :v-if="item.is_lock === false" @click="handleClickCourse(item.id)">
                   <el-icon class="icon-book">
                     <Notebook/>
                   </el-icon>
@@ -52,7 +52,7 @@
                 </div>
               </template>
               <ul class="interested-courses-box full-height">
-                <li class="interested-li" v-for="item in interestedCourse" :key="item.id"
+                <li class="interested-li" v-for="item in interestedCourse" :v-if="item.is_lock === false" :key="item.id"
                     @click="handleClickCourse(item.id)">
                   <el-icon class="icon-tag">
                     <CollectionTag/>

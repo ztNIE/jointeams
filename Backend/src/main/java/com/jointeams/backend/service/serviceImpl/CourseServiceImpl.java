@@ -76,6 +76,7 @@ public class CourseServiceImpl implements CourseService {
                     JSONObject newCourse = new JSONObject();
                     newCourse.put("id", course.getId());
                     newCourse.put("code", course.getCode());
+                    newCourse.put("is_lock", course.getIsLocked());
                     newCourse.put("name", course.getName());
                     allCourse.add(newCourse);
                 }
@@ -107,6 +108,7 @@ public class CourseServiceImpl implements CourseService {
                 newStudent.put("id", student.getId());
                 newStudent.put("fullName", student.getFirstName()+ " " + student.getLastName());
                 newStudent.put("email", student.getEmail());
+                newStudent.put("fileName", student.getFilename());
                 previousStudent.add(newStudent);
             }
             data.put("previousStudent", previousStudent);
@@ -128,6 +130,7 @@ public class CourseServiceImpl implements CourseService {
             newStudent.put("fullName", student.getFirstName() + " " + student.getLastName());
 //            newStudent.put("lastName", student.getLastName());
             newStudent.put("email", student.getEmail());
+            newStudent.put("fileName", student.getFilename());
 
             JSONArray tags = new JSONArray();
             if (student.getSelfTag() != null) {
