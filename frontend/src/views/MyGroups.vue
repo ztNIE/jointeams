@@ -8,10 +8,10 @@
         <el-scrollbar max-height="450px" v-if="groups.length !== 0">
           <div v-for="group in groups" :key="group.group_id" class="text item">
             <el-card class="group-card" @click="handleToDetail(group.group_id)">
+              <el-icon id="detailBtn-icon"><Right /></el-icon>
               <div class="card-header">
                 <span id="name">{{group.group_name}}</span>
                 <span id="capacity">(Capacity: {{group.capacity}})</span>
-                <!-- <el-icon id="detailBtn-icon"><Right /></el-icon> -->
               </div>
               <div class="divider_space"></div>
               <div class="card-content">
@@ -32,7 +32,6 @@
 
 <script>
 import GroupAPI from '../api/group.js'
-import authUtil from "@/util/authUtil";
 import userAPI from '../api/user.js';
 import {ElMessage} from "element-plus";
 
@@ -56,9 +55,6 @@ export default {
         await this.handleGetAvatar(res)
       })
     }
-  },
-  beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_USER")
   },
   methods: {
     handleToDetail(group_id) {
@@ -114,6 +110,8 @@ export default {
   #detailBtn-icon {
     color: #2EC4B6;
     font-size: 3em;
+    position: aboslute;
+
   }
   #name {
     font-size: large;

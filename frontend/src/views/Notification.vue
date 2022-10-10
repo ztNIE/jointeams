@@ -39,14 +39,10 @@
 import { parseTime } from '@/util/ParseTime'
 import notificationAPI from '../api/notification.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import authUtil from "@/util/authUtil";
 import store from "@/store";
 
 export default {
   name: 'Notification',
-  beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_USER")
-  },
   data() {
     return {
       actionList: ["Accept","Decline","Delete"],

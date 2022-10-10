@@ -97,7 +97,6 @@
 <script>
 import CourseGroupAPI from '../api/courseGroup.js'
 import {ElMessage, ElMessageBox} from 'element-plus'
-import authUtil from "@/util/authUtil";
 import courseDetailAPI from "@/api/courseDetail";
 import userAPI from "../api/user";
 
@@ -121,9 +120,6 @@ export default {
       dialogFormVisible: false,
       group_capacity: 1,
     }
-  },
-  beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_USER")
   },
   async created() {
     this.user_id = this.$store.getters.userId
@@ -369,7 +365,7 @@ export default {
 }
 
 .el-form-item.asterisk-left.tutorial_form {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .createGroupBtn {

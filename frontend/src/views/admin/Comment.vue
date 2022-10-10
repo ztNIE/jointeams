@@ -51,14 +51,14 @@
 import { parseTime } from '@/util/ParseTime'
 import adminAPI from '../../api/admin.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import authUtil from "@/util/authUtil";
+// import authUtil from "@/util/authUtil";
 import json from '../../tags.json'
 
 
 export default {
   name: 'Comment',
   beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_ADMIN")
+    // authUtil.authenticateIdentity("ROLE_ADMIN")
   },
   data() {
     return {

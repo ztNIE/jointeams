@@ -54,14 +54,14 @@
 
 
 
-import authUtil from "@/util/authUtil";
+// import authUtil from "@/util/authUtil";
 import adminAPI from "@/api/admin";
 import {ElMessage, ElMessageBox} from "element-plus";
 
 export default {
   name: 'Semester',
   beforeCreate() {
-    authUtil.authenticateIdentity("ROLE_ADMIN")
+    // authUtil.authenticateIdentity("ROLE_ADMIN")
   },
   data() {
     return {
