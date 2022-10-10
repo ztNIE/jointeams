@@ -109,7 +109,9 @@
             >
               <user-card :full-name="student.fullName"
                          :email="student.email"
-                         :id="student.id"></user-card>
+                         :id="student.id"
+                         :avatar="student.avatar"
+              ></user-card>
             </base-card>
           </el-scrollbar>
         </div>
@@ -185,6 +187,7 @@
               <user-card :full-name="student.fullName"
                          :email="student.email"
                          :id="student.id"
+                         :avatar="student.avatar"
               ></user-card>
             </base-card>
           </div>
@@ -201,6 +204,7 @@ import BaseCard from "@/views/CourseDetails/components/BaseCard";
 import UserCard from "@/views/CourseDetails/components/UserCard";
 import {ElMessage, ElMessageBox} from "element-plus";
 import tags from "@/tags.json"
+import userAPI from "@/api/user";
 
 export default {
   name: "CourseDetails",
@@ -261,6 +265,18 @@ export default {
     jumpToStudentProfile(id) {
       this.$router.push(`/userProfile/${id}`)
       console.log(id)
+    },
+    processAvatar(fileName) {
+      let result = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+      if (!fileName) {
+        return result
+      }
+      userAPI.getAvatar(fileName)
+          .then((res) => {
+            result = 'data:image/jpeg;base64,' + res.data.data.image
+            console.log(result)
+          })
+      return result
     },
     handlePreviousStudentSearch() {
       let _this = this
@@ -422,6 +438,17 @@ export default {
             return
           }
           _this.previousStudents = previousStudent.map(student => ({...student}))
+          for (let student of _this.previousStudents) {
+            if (student.fileName == null) {
+              student.avatar = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+            } else {
+              userAPI.getAvatar(student.fileName).then((res) => {
+                student.avatar = 'data:image/jpeg;base64,' + res.data.data.image
+              }).catch(() => {
+                ElMessage.error('Failed to load the avatar')
+              })
+            }
+          }
           _this.searchedPreviousStudents = _this.previousStudents
         })
         .catch((err) => {
@@ -440,6 +467,15 @@ export default {
           }
           _this.currentStudents = currentStudent.map(student => ({...student}))
           for (let student of _this.currentStudents) {
+            if (student.fileName == null) {
+              student.avatar = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+            } else {
+              userAPI.getAvatar(student.fileName).then((res) => {
+                student.avatar = 'data:image/jpeg;base64,' + res.data.data.image
+              }).catch(() => {
+                ElMessage.error('Failed to load the avatar')
+              })
+            }
             if (!student.tutorial || _this.givenLabs.includes(student.tutorial)) {
               continue
             }

@@ -2,7 +2,7 @@
   <el-row :gutter="20">
     <el-col :span="4">
       <el-avatar
-          src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          :src="avatar"
       />
     </el-col>
     <el-col :span="20">
@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "UserCard",
-  props: ['fullName', 'email', 'id']
+  props: ['fullName', 'email', 'id', 'avatar']
 }
 </script>
 
