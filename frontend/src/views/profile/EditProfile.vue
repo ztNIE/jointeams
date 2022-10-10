@@ -251,6 +251,7 @@ export default {
           return false;
         }
       });
+      location.reload()
     },
     handleCancel() {
       ElMessage.info('Modification cancelled.')
