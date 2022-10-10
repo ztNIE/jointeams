@@ -14,7 +14,7 @@
               </template>
               <el-scrollbar>
                 <div class="current-courses-box">
-                  <el-card v-for="item in currentCourse" :key="item.id" :v-if="item.is_lock === false" class="current-course-card" shadow="hover"
+                  <el-card v-for="item in currentCourse" :key="item.id" class="current-course-card" shadow="hover"
                            @click="handleClickCourse(item.id)">
                     <p class="current-code">{{ item.code }}</p>
                     <p class="current-name">{{ item.name }}</p>
@@ -34,7 +34,7 @@
                 </div>
               </template>
               <ul class="past-courses-box full-height">
-                <li class="past-li" v-for="item in pastCourse" :key="item.id" :v-if="item.is_lock === false" @click="handleClickCourse(item.id)">
+                <li class="past-li" v-for="item in pastCourse" :key="item.id" @click="handleClickCourse(item.id)">
                   <el-icon class="icon-book">
                     <Notebook/>
                   </el-icon>
@@ -52,7 +52,7 @@
                 </div>
               </template>
               <ul class="interested-courses-box full-height">
-                <li class="interested-li" v-for="item in interestedCourse" :v-if="item.is_lock === false" :key="item.id"
+                <li class="interested-li" v-for="item in interestedCourse" :key="item.id"
                     @click="handleClickCourse(item.id)">
                   <el-icon class="icon-tag">
                     <CollectionTag/>
@@ -119,9 +119,17 @@ export default {
     // get current, past and interested courses
     userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
       let data = res.data.data
-      _this.currentCourse = data.currentCourse
-      _this.pastCourse = data.previousCourse
-      _this.interestedCourse = data.interestedCourse
+      _this.currentCourse = data.currentCourse.filter((course) => {
+        return !course.is_lock
+      })
+      _this.pastCourse = data.previousCourse.filter((course) => {
+        return !course.is_lock
+      })
+      _this.interestedCourse = data.interestedCourse.filter((course) => {
+        return !course.is_lock
+      })
+
+      console.log(_this.currentCourse, _this.pastCourse, _this.interestedCourse)
     }).catch((err) => {
       ElMessage.error(err.data.msg)
     })
@@ -129,7 +137,9 @@ export default {
     // get all courses
     courseAPI.getAllCourse(this.$store.getters.userId).then((res) => {
       let data = res.data.data
-      _this.allCourse = data.allCourse
+      _this.allCourse = data.allCourse.filter((course) => {
+        return !course.is_lock
+      })
       _this.searchedAllCourse = this.allCourse
     }).catch((err) => {
       ElMessage.error(err.data.msg)

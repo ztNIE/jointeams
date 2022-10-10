@@ -8,7 +8,6 @@
         <el-scrollbar max-height="450px" v-if="groups.length !== 0">
           <div v-for="group in groups" :key="group.group_id" class="text item">
             <el-card class="group-card" @click="handleToDetail(group.group_id)">
-              <el-icon id="detailBtn-icon"><Right /></el-icon>
               <div class="card-header">
                 <span id="name">{{group.group_name}}</span>
                 <span id="capacity">(Capacity: {{group.capacity}})</span>
@@ -19,6 +18,7 @@
                   <el-avatar :size="40" class="member_avatar" :src="member.avatar" />
                   <span class="member_name"> {{ member.name }} </span>
                 </span>
+                <el-icon id="detailBtn-icon"><Right /></el-icon>
               </div>
             </el-card>
             <div class="divider_space"></div>
@@ -111,7 +111,8 @@ export default {
     color: #2EC4B6;
     font-size: 3em;
     position: aboslute;
-
+    right: 0;
+    bottom: 0;
   }
   #name {
     font-size: large;
