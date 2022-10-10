@@ -15,11 +15,11 @@
       <el-main>
         <el-scrollbar max-height="400px" v-if="commentsAfterSearch.length !== 0">
           <div v-for="comment in commentsAfterSearch" :key="comment.id" class="text item">
-            <el-card class="comment-card">
+            <el-card class="comment-card" shadow="hover">
+              <p class="time-stamp">{{parseTime(comment)}}</p>
               <div class="content">
                 <div class="first-line">
                   <p class="sender-name"><span class="name">{{comment.senderName}}</span></p>
-                  <p class="time-stamp">{{parseTime(comment)}}</p>
                 </div>
                 <p v-if="comment.tag != null">gives {{comment.receiverName}} a&nbsp;
                   <el-tag class="mx-1 info-tag" type="warning" size="small">{{findTagByTagType(comment)}}</el-tag>
@@ -158,14 +158,15 @@ export default {
   height: 100%;
 }
 
-.comment-card:hover {
-  background-color: #CBF3F0;
-}
+// .comment-card:hover {
+//   background-color: #CBF3F0;
+// }
 
 .comment-card{
   min-height: 120px;
   display: flex;
   position: relative;
+  margin-bottom: 3px;
 }
 
 .el-input{
@@ -199,7 +200,7 @@ export default {
 .delete {
   position: absolute;
   right: 26px;
-  bottom: 49px;
+  bottom: 40px;
 }
 
 .content {
@@ -209,7 +210,7 @@ export default {
     content: '';
     display: table;
     clear: both;
-    width: 100%;
+    // width: 100%;
 
     & .sender-name {
       float: left;
@@ -218,17 +219,20 @@ export default {
         font-weight: 600;
       }
     }
-    & .time-stamp {
-      float: right;
-      font-size: 13px;
-      font-weight: 500;
-      color:#828282;
-    }
   }
 
   & .comment-content {
     font-style: italic;
     padding-top: 7px;
   }
+}
+
+.time-stamp {
+  // float: right;
+  font-size: 13px;
+  font-weight: 500;
+  color:#828282;
+  position: absolute;
+  right: 26px;
 }
 </style>

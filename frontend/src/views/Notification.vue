@@ -8,20 +8,19 @@
         <el-scrollbar max-height="450px" v-if="notifications && notifications.length !== 0">
           <div v-for="notification in notifications" :key="notification.id" class="text item">
             <el-card class="notification-card" shadow="hover">
+              <div class="action-button">
+                <el-button v-if="notification.type === 0 || notification.type === 1" type="primary"
+                            @click="actionOnNotification(notification,0)">{{ actionList[0] }}</el-button>
+                <el-button v-if="notification.type === 0 || notification.type === 1" type="warning"
+                            @click="actionOnNotification(notification,1)">{{actionList[1]}}</el-button>
+                <el-button type="info" plain @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
+              </div>
+              <span id="time">{{parseTime(notification)}}</span>
               <div class="card-header">
-                <span id="type">{{notification.content}}</span>
-                <span id="from">From: {{from(notification.type, notification)}}</span>
-                <div class="action-button">
-                  <el-button v-if="notification.type === 0 || notification.type === 1" type="primary"
-                             @click="actionOnNotification(notification,0)">{{ actionList[0] }}</el-button>
-                  <el-button v-if="notification.type === 0 || notification.type === 1" type="warning"
-                             @click="actionOnNotification(notification,1)">{{actionList[1]}}</el-button>
-                  <el-button type="info" plain @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
-                </div>
+                <p id="type">{{notification.content}}</p>
+                <p id="from">From: {{from(notification.type, notification)}}</p>
               </div>
               <div class="card-content">
-                <span id="time">Time: {{parseTime(notification)}}</span>
-                <br>
                 <span id="message">{{notification.message}}</span>
               </div>
             </el-card>
@@ -103,9 +102,9 @@ export default {
 <style lang="scss" scoped>
 
 .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
   margin-bottom: 10px;
 }
 .card-content {
@@ -124,8 +123,6 @@ export default {
 
 .main_header {
   color: black;
-  font-weight: bold;
-  font-size: xx-large;
   font-weight: 500;
   font-size: 23px;
 }
@@ -138,33 +135,46 @@ export default {
 }
 .notification-card{
   min-height: 120px;
+  min-width: 800px;
+  position: relative;
 }
 
 #type{
   font-size: 20px;
   min-width: 400px;
   color: #f99827;
+  font-weight: 500;
 }
 
 #from{
-  min-width: 300px;
+  // min-width: 300px;
+  color: gray;
 }
 .action-button {
   text-align:right;
   min-width: 300px;
+  position: absolute;
+  right: 30px;
+  bottom: 35px;
 }
 .action-button > .el-button {
   width: 80px;
 }
 #time{
-  font-size: 16px;
-  min-width: 1000px;
+  font-size: 14px;
   color: gray;
+  font-weight: 500;
+  position: absolute;
+  right: 30px;
+  top: 20px;
 }
 #message{
+  display: block;
+  padding-top: 4px;
   font-size: 16px;
-  min-width: 1000px;
+  // min-width: 1000px;
   color: black;
+  font-style: italic;
 }
 .common-layout {
   height: 100%;

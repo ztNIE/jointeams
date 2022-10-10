@@ -5,7 +5,7 @@
         <div class="header">
           <div>
             <span class="main_header">{{group.course}}_Group{{group.name}}</span>&nbsp;
-            <el-tag class="ml-2" type="warning" round>{{group.course}}</el-tag>&nbsp;
+            <el-tag class="ml-2 tag" type="warning" round>{{group.course}}</el-tag>&nbsp;
             <span class="grey_tag">{{group.tutorial}}</span>
           </div>
           <span class="grey_tag">Capacity: {{group["number of students"]}}/{{group.capacity}}</span>
@@ -38,14 +38,14 @@
           <el-main>
             <el-scrollbar height="300px">
               <div v-for="member in members" :key="member.id">
-                <el-card class="member_card" @click="handleToProfile(member.id)">
+                <el-card class="member_card" @click="handleToProfile(member.id)" shadow="hover">
                   <div class="member_div left">
-                    <el-avatar class="member_avatar" :src="member.filename" />
+                    <el-avatar class="member_avatar" :src="member.filename" :size="45" />
                   </div>
                   <div class="member_div middle">
                     <div>
                       <span class="student_name_bold">{{member.name}}</span> &nbsp;
-                      <el-tag class="ml-2" type="danger" effect="dark" round v-if="member.is_leader">LEADER</el-tag>
+                      <el-tag class="ml-2 leader" type="danger" effect="dark" round v-if="member.is_leader">LEADER</el-tag>
                     </div>
                     <p class="student_email">{{member.email}}</p>
                     <p class="student_degree">{{member.degree}}</p>
@@ -461,10 +461,16 @@ export default {
   .middle {
     width: 75%;
   }
-  .member_card:after {
+  :deep(.el-card__body)::after {
     content: "";
     display: table;
     clear: both;
+  }
+  .member_card:hover {
+    cursor: pointer;
+  }
+  .member_card {
+    margin-bottom: 5px;
   }
   .student_card {
     height: 60px;
@@ -523,19 +529,32 @@ export default {
   }
   .main_header {
     color: black;
-    font-weight: bold;
-    font-size: xx-large;
+    font-weight: 500;
+    font-size: 23px;
   }
   .box-card {
     min-height: 550px;
+    height: 100%;
   }
-  .member_card:hover {
-    background-color: #CBF3F0;
+  :deep(.el-card__body) {
+    height: 90%;
   }
   .el-aside {
     box-shadow: none;
     border-right-style: solid;
     border-color: #e4e7ed;
     border-right-width: 1px;
+  }
+  .tag {
+    position: relative;
+    top: -3px;
+  }
+  .leader {
+    position: relative;
+    top: -3px;
+    left: -3px;
+  }
+  .common-layout {
+    height: 100%;
   }
 </style>

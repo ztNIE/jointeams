@@ -43,9 +43,10 @@
       </div>
       </div>
       <el-main>
-        <el-scrollbar max-height="360px" v-if="coursesAfterSearch.length !== 0">
+        <div class="box" v-if="coursesAfterSearch.length !== 0">
+        <!-- <el-scrollbar v-if="coursesAfterSearch.length !== 0"> -->
           <div v-for="course in coursesAfterSearch" :key="course.id" class="text item">
-            <el-card class="course-card">
+            <el-card class="course-card" shadow="hover">
               <div class="card-content">
                 <div>
                   <label class="label">Course Code </label>
@@ -65,7 +66,8 @@
             </el-card>
             <div class="divider_space"></div>
           </div>
-        </el-scrollbar>
+        </div>
+        <!-- </el-scrollbar> -->
         <el-empty description="No course" v-else />
       </el-main>
     </el-card>
@@ -250,7 +252,13 @@ export default {
 
 .box-card {
   min-height: 580px;
-  overflow: auto;
+  // overflow: auto;
+  height: 100%;
+}
+
+:deep(.el-card__body) {
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -288,5 +296,16 @@ export default {
 }
 .form-box {
   margin-left: 20px;
+}
+.common-layout {
+  height: 100%;
+  min-width: 1200px;
+}
+:deep(.el-main) {
+  flex: 1;
+}
+.box {
+  height: 90%;
+  overflow: auto;
 }
 </style>
