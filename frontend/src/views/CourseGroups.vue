@@ -365,7 +365,7 @@ export default {
 }
 
 .el-form-item.asterisk-left.tutorial_form {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .createGroupBtn {

@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
                 newCourse.put("id", course.getId());
                 newCourse.put("code", course.getCode());
                 newCourse.put("name", course.getName());
+                newCourse.put("is_lock", course.getIsLocked());
                 currentCourse.add(newCourse);
             }
             data.put("currentCourse", currentCourse);
@@ -98,6 +99,7 @@ public class UserServiceImpl implements UserService {
                 newCourse.put("id", course.getId());
                 newCourse.put("code", course.getCode());
                 newCourse.put("name", course.getName());
+                newCourse.put("is_lock", course.getIsLocked());
                 previousCourse.add(newCourse);
             }
             data.put("previousCourse", previousCourse);
@@ -110,6 +112,7 @@ public class UserServiceImpl implements UserService {
                 newCourse.put("id", course.get().getId());
                 newCourse.put("code", course.get().getCode());
                 newCourse.put("name", course.get().getName());
+                newCourse.put("is_lock", course.get().getIsLocked());
                 interestedCourse.add(newCourse);
             }
             data.put("interestedCourse", interestedCourse);
