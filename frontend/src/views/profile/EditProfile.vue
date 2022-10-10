@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <el-card shadow="always" class="full-height">
+    <el-card shadow="always" class="full-height card-box">
       <el-row class="full-height">
           <el-col :span="10" class="full-height info-box">
             <!-- avatar -->
@@ -269,6 +269,9 @@ export default {
 .full-height {
   //height: 100%;
   overflow: auto;
+}
+.card-box {
+  height: 100%;
 }
 :deep(.el-card__body) {
   height: 100%;

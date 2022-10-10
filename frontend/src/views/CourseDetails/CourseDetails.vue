@@ -17,6 +17,7 @@
                           size="small"
                           :maxlength="2"
                           :disabled="isTutorialSelected && !isEditing"
+                          class="tut-input"
                 >
                   <template #prepend>
                     <el-select v-model="tutorialType"
@@ -34,6 +35,7 @@
                            size="small"
                            v-if="isTutorialSelected && !isEditing"
                            @click="toggleIsEditing"
+                           class="edit-btn"
                 >Edit
                 </el-button>
                 <el-button type="primary"
@@ -629,5 +631,14 @@ export default {
   height: 60%;
   padding-top: 15px;
   padding-bottom: 15px;
+}
+
+.edit-btn {
+  margin-left: 5px;
+}
+
+.right {
+  padding-top: 5px;
+  text-align: right;
 }
 </style>
