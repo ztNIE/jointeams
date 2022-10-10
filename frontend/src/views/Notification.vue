@@ -7,7 +7,7 @@
       <el-main>
         <el-scrollbar max-height="450px" v-if="notifications && notifications.length !== 0">
           <div v-for="notification in notifications" :key="notification.id" class="text item">
-            <el-card class="notification-card">
+            <el-card class="notification-card" shadow="hover">
               <div class="card-header">
                 <span id="type">{{notification.content}}</span>
                 <span id="from">From: {{from(notification.type, notification)}}</span>
@@ -16,7 +16,7 @@
                              @click="actionOnNotification(notification,0)">{{ actionList[0] }}</el-button>
                   <el-button v-if="notification.type === 0 || notification.type === 1" type="warning"
                              @click="actionOnNotification(notification,1)">{{actionList[1]}}</el-button>
-                  <el-button type="info" @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
+                  <el-button type="info" plain @click="actionOnNotification(notification,2)" >{{actionList[2]}}</el-button>
                 </div>
               </div>
               <div class="card-content">
@@ -126,6 +126,8 @@ export default {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 .box-card {
   min-height: 580px;
