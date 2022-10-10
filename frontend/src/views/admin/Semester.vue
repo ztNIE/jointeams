@@ -123,7 +123,7 @@ export default {
     },
     changeIsCommentAvailableStatus() {
       if (!this.isEditActive) {
-        const action = (this.isCommentAvailable === false) ? 'Enable' : 'Disable'
+        const action = (this.isCommentAvailable === true) ? 'Enable' : 'Disable'
         ElMessageBox.confirm(
             'You are going to ' + action.toLowerCase() + ' the comment feature?',
             'Warning',
