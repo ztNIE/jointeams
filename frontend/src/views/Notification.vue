@@ -131,6 +131,7 @@ export default {
 }
 .box-card {
   min-height: 580px;
+  height: 100%;
 }
 .notification-card:hover {
   background-color: #CBF3F0;
@@ -164,5 +165,8 @@ export default {
   font-size: 16px;
   min-width: 1000px;
   color: black;
+}
+.common-layout {
+  height: 100%;
 }
 </style>

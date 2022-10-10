@@ -84,6 +84,7 @@ export default {
 <style lang="scss" scoped>
   .common-layout {
     background-color: #CBF3F0;
+    height: 100%;
   }
   // .el-card__body {
   //   padding-top: 10px;
@@ -150,6 +151,7 @@ export default {
   }
   .box-card {
     min-height: 580px;
+    height: 100%;
   }
   .group-card:hover {
     background-color: #CBF3F0;
