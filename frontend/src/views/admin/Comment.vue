@@ -13,28 +13,21 @@
       />
       <el-button type="primary" @click="searchComments()" >Search</el-button>
       <el-main>
-        <el-scrollbar max-height="450px" v-if="commentsAfterSearch.length !== 0">
+        <el-scrollbar max-height="400px" v-if="commentsAfterSearch.length !== 0">
           <div v-for="comment in commentsAfterSearch" :key="comment.id" class="text item">
             <el-card class="comment-card">
-              <div class="card-header">
-                <div class="from-to">
-                  <label id="label">{{labels[0]}}</label>
-                  <span id="name">{{comment.senderName}}</span>
-                  <br/>
-                  <label id="label">{{labels[1]}}</label>
-                  <span id="name">{{comment.receiverName}}</span>
+              <div class="content">
+                <div class="first-line">
+                  <p class="sender-name"><span class="name">{{comment.senderName}}</span></p>
+                  <p class="time-stamp">{{parseTime(comment)}}</p>
                 </div>
-                <el-button type="info" @click="deleteAComment(comment)" >Delete</el-button>
+                <p v-if="comment.tag != null">gives {{comment.receiverName}} a&nbsp;
+                  <el-tag class="mx-1 info-tag" type="warning" size="small">{{findTagByTagType(comment)}}</el-tag>
+                </p>
+                <p class="comment-content">"{{comment.content}}"</p>
               </div>
-              <div class="card-content">
-                <span id="time">Time: {{parseTime(comment)}}</span>
-                <br>
-                <span id="is-hidden">Is hidden: {{comment.isHidden}}</span>
-                <br>
-                <label id="label">Tag: </label>
-                <span id="tag">{{findTagByTagType(comment)}}</span>
-                <br>
-                <span id="content">{{comment.content}}</span>
+              <div>
+                <el-button type="info" class="delete" @click="deleteAComment(comment)">Delete</el-button>
               </div>
             </el-card>
             <div class="divider_space"></div>
@@ -127,13 +120,13 @@ export default {
 <style lang="scss" scoped>
 .common-layout {
   background-color: #CBF3F0;
+  height: 100%;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .card-content {
@@ -149,17 +142,20 @@ export default {
 }
 
 .divider_space {
-  height: 3px;
+  height: 6px;
 }
 
 .main_header {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 
 .box-card {
   min-height: 580px;
+  height: 100%;
 }
 
 .comment-card:hover {
@@ -168,6 +164,8 @@ export default {
 
 .comment-card{
   min-height: 120px;
+  display: flex;
+  position: relative;
 }
 
 .el-input{
@@ -196,5 +194,41 @@ export default {
   font-size: 20px;
   min-width: 1000px;
   color: black;
+}
+
+.delete {
+  position: absolute;
+  right: 26px;
+  bottom: 49px;
+}
+
+.content {
+  width: 800px;
+
+  & .first-line {
+    content: '';
+    display: table;
+    clear: both;
+    width: 100%;
+
+    & .sender-name {
+      float: left;
+
+      & .name {
+        font-weight: 600;
+      }
+    }
+    & .time-stamp {
+      float: right;
+      font-size: 13px;
+      font-weight: 500;
+      color:#828282;
+    }
+  }
+
+  & .comment-content {
+    font-style: italic;
+    padding-top: 7px;
+  }
 }
 </style>

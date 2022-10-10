@@ -78,7 +78,7 @@ export default {
       {
         this.currentYear = res.data.data.Semester.year
         this.currentSemesterNo = this.semesterNoList[res.data.data.Semester.semesterNumber - 1]
-        this.isCommentAvailable = res.data.data.isCommentAvailable
+        this.isCommentAvailable = res.data.data.IsCommentAvailable
       }
     })
     for(let year = 2000; year < 2055; year++)
@@ -123,7 +123,7 @@ export default {
     },
     changeIsCommentAvailableStatus() {
       if (!this.isEditActive) {
-        const action = (this.isCommentAvailable === false) ? 'Enable' : 'Disable'
+        const action = (this.isCommentAvailable === true) ? 'Enable' : 'Disable'
         ElMessageBox.confirm(
             'You are going to ' + action.toLowerCase() + ' the comment feature?',
             'Warning',
@@ -155,7 +155,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.common-layout {
+  height: 100%;
+}
+.box-card {
+  height: 100%;
+}
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -166,6 +171,8 @@ export default {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 #container{
   display: flex;

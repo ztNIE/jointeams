@@ -4,6 +4,7 @@
       <template #header>
         <div class="main_header">Course</div>
       </template>
+      <div class="form-box">
       <div class="search-course">
         <el-input
             style=""
@@ -40,19 +41,20 @@
         />
         <el-button type="primary" @click="addACourse()" >Add Course</el-button>
       </div>
+      </div>
       <el-main>
-        <el-scrollbar max-height="450px" v-if="coursesAfterSearch.length !== 0">
+        <el-scrollbar max-height="360px" v-if="coursesAfterSearch.length !== 0">
           <div v-for="course in coursesAfterSearch" :key="course.id" class="text item">
             <el-card class="course-card">
               <div class="card-content">
                 <div>
-                  <label class="label">Course Code: </label>
+                  <label class="label">Course Code </label>
                   <span class="content">{{course.code}}</span>
                   <br>
-                  <label class="label">Course Name: </label>
+                  <label class="label">Course Name </label>
                   <span class="content">{{course.name}}</span>
                   <br>
-                  <label class="label">University: </label>
+                  <label class="label">University </label>
                   <span class="content">{{course.universityName}}</span>
                 </div>
                 <div class="actionButtons">
@@ -75,7 +77,6 @@
 import { parseTime } from '@/util/ParseTime'
 import adminAPI from '../../api/admin.js'
 import { ElMessage, ElMessageBox } from 'element-plus'
-
 
 export default {
   name: 'Comment',
@@ -226,7 +227,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  height: 100%;
 }
 
 #name {
@@ -236,17 +237,21 @@ export default {
 }
 
 .divider_space {
-  height: 3px;
+  height: 6px;
 }
 
 .main_header {
   color: black;
   font-weight: bold;
   font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 
 .box-card {
   min-height: 580px;
+  overflow: auto;
+  height: 100%;
 }
 
 .comment-card:hover {
@@ -268,19 +273,20 @@ export default {
 }
 
 .label{
-  font-size: 22px;
   min-width: 180px;
   color: #f99827;
   display:inline-block;
+  font-weight: bold;
 }
 
 .content{
-  font-size: 22px;
   min-width: 180px;
 }
 
 .actionButtons > .el-button{
-  font-size: 16px;
   min-width: 100px;
+}
+.form-box {
+  margin-left: 20px;
 }
 </style>
