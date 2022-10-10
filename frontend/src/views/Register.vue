@@ -50,7 +50,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="Faculty">
+            <el-form-item label="Faculty" prop="faculty">
               <el-select v-model="formModel.faculty">
                 <el-option v-for="faculty in faculties"
                            :key="faculty.name"
@@ -79,7 +79,7 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="Degree">
+        <el-form-item label="Degree" prop="degree">
           <el-input v-model="formModel.degree"
                     maxlength="45"
                     show-word-limit
@@ -235,6 +235,12 @@ export default {
         confirmPassword: [
           {required: true, message: 'Please confirm your password', trigger: 'blur'},
           {validator: validateConfirmPassword, trigger: 'blur'}
+        ],
+        degree: [
+          {required: true, message: 'Please enter your degree', trigger: 'blur'}
+        ],
+        faculty: [
+            {required: true, message: 'Please choose your faculty'}
         ]
       },
       formModel: {

@@ -7,7 +7,7 @@
       <el-main>
         <el-scrollbar max-height="450px" v-if="groups.length !== 0">
           <div v-for="group in groups" :key="group.group_id" class="text item">
-            <el-card class="group-card" @click="handleToDetail(group.group_id)">
+            <el-card class="group-card" @click="handleToDetail(group.group_id)" shadow="hover">
               <el-icon id="detailBtn-icon"><Right /></el-icon>
               <div class="card-header">
                 <span id="name">{{group.group_name}}</span>
@@ -84,6 +84,7 @@ export default {
 <style lang="scss" scoped>
   .common-layout {
     background-color: #CBF3F0;
+    height: 100%;
   }
   // .el-card__body {
   //   padding-top: 10px;
@@ -99,6 +100,7 @@ export default {
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
+    position: relative
   }
   .member {
     display:inline-block;
@@ -110,8 +112,9 @@ export default {
   #detailBtn-icon {
     color: #2EC4B6;
     font-size: 3em;
-    position: aboslute;
-
+    position: absolute;
+    right: 28px;
+    bottom: 36px;
   }
   #name {
     font-size: large;
@@ -121,6 +124,7 @@ export default {
   #capacity {
     font-size: small;
     color: #787878;
+    padding-right: 5px;
   }
   .member_avatar {
     // height: 25px;
@@ -142,13 +146,15 @@ export default {
   }
   .main_header {
     color: black;
-    font-weight: bold;
-    font-size: xx-large;
+    font-weight: 500;
+    font-size: 23px;
   }
   .box-card {
     min-height: 580px;
+    height: 100%;
   }
   .group-card:hover {
     background-color: #CBF3F0;
+    cursor: pointer;
   }
 </style>
