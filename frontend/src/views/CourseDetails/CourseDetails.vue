@@ -476,10 +476,14 @@ export default {
             throw new Error(response.msg)
           }
           let course = response.data
+          if (course.isLocked) {
+            ElMessage("Course is locked")
+            this.$router.replace('/dashboard')
+            this.forceUpdate()
+          }
           _this.courseDetail = {
             code: course.code,
             id: course.id,
-            isLocked: course.isLocked,
             name: course.name,
             nextGroupNameId: course.nextGroupNameId
           }
