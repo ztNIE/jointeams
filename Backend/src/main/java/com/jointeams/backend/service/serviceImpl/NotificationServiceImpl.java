@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public JsonResult findAllByUserIdFeedback(Long userId) {
         JsonResult jsonResult = new JsonResult();
-        if (!userToolService.checkIfUserExisted(userId))
+        if (userToolService.checkIfUserExisted(userId))
         {
             List<Notification> notifications = findAllByUserId(userId);
             List<NotificationResponseData> notificationResponseDataList = new ArrayList<>();

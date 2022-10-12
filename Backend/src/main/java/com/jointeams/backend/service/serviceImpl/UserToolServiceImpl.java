@@ -16,7 +16,7 @@ public class UserToolServiceImpl implements UserToolService {
     public boolean checkIfUserExisted(Long id)
     {
         User user = userRepository.findById(id).orElse(null);
-        if(user == null)
+        if(user != null)
             return true;
         else
             return false;
