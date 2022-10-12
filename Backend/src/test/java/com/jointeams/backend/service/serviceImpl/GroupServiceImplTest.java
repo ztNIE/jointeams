@@ -24,10 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@SpringBootTest(classes = BackendApplication.class)
-//@ActiveProfiles("test")
-//@AutoConfigureTestDatabase
-//@TestPropertySource(locations = "classpath:application-test.properties")
 public class GroupServiceImplTest {
 
     @Autowired
