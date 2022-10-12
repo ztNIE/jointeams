@@ -26,4 +26,7 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Transactional
     @Query("delete from Comment c where c.group.id = ?1")
     void deleteAllByGroupId(Long groupId);
+
+    @Query(value="alter table `comment` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }

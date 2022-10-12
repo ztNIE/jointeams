@@ -13,4 +13,7 @@ public interface InterestedCourseRepository extends CrudRepository<InterestedCou
 
     @Query("select i from InterestedCourse i where i.id.userId = :userId and i.id.courseId = :courseId")
     public InterestedCourse findByUserIdAndCourseId(Long userId, Long courseId);
+
+    @Query(value="alter table `InterestedCourse` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }

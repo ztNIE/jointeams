@@ -16,6 +16,9 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
 
     <T> Optional<T> findCourseByCodeAndUniversity(String code, University universityId);
     <T> Optional<T> findCourseByNameAndUniversity(String code, University universityId);
+
+    @Query(value="alter table `course` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
 
 

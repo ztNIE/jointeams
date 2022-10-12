@@ -16,6 +16,7 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
     public<T> List<T> findALLAsLeaderByUserId(Long userId);
 
     @Query(value = "select * from group_user where group_id = ?1", nativeQuery = true)
+    @Transactional
     public Optional<List<GroupUser>> getGroupUserByGroupId(Long groupId);
 
     @Query(value = "select id, is_leader, first_name, last_name, filename, email, degree from group_user inner join user on group_user.user_id = user.id where group_id = ?1", nativeQuery = true)
@@ -96,6 +97,9 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
     @Transactional
     @Query("delete from GroupUser gu where gu.groupUserId.groupId = ?1")
     void deleteAllByGroupId(Long groupId);
+
+    @Query(value="alter table `GroupUser` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
 
 

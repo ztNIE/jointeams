@@ -35,6 +35,9 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
             "and g.semester_id = ?2\n" +
             "and g.course_id = ?1", nativeQuery = true)
     public Optional<List<Object[]>> isStudentAlreadyInAGroup(Long courseId, Long semesterId, Long userId);
+
+    @Query(value="alter table `group` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
 
 

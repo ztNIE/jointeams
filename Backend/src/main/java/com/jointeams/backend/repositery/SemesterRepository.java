@@ -12,5 +12,8 @@ public interface SemesterRepository extends CrudRepository<Semester, Long> {
     Semester findCurrentSemester();
     public Optional<Semester> findSemesterByYearAndSemesterNumber(int year, int semesterNumber);
     public Optional<Semester> findSemestersByIsCurrent(boolean isCurrent);
+
+    @Query(value="alter table `semester` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
 
