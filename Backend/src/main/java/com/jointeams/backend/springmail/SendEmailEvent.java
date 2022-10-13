@@ -1,6 +1,7 @@
 package com.jointeams.backend.springmail;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
@@ -8,6 +9,7 @@ import org.springframework.context.ApplicationEvent;
 public class SendEmailEvent extends ApplicationEvent {
 
     private String email;
+
     private final String applicationUrl = "http://localhost:8888/";
     private EmailType emailType;
     private String path;

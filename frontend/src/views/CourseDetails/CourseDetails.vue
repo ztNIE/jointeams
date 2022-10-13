@@ -88,7 +88,7 @@
       <el-col :span="12" class="full-height">
         <div class="full-height">
           <div class="student-header">Previous Students</div>
-          <div class="search-bar">
+          <div class="search-bar add-padding">
             <el-row :gutter="20">
               <el-col :span="14">
                 <el-input
@@ -640,5 +640,9 @@ export default {
 .right {
   padding-top: 5px;
   text-align: right;
+}
+
+.add-padding {
+  padding-bottom: 69px;
 }
 </style>

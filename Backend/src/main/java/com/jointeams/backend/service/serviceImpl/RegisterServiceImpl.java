@@ -41,6 +41,11 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     public String isUserModelValid(RegisterUserRequest registerUserRequest) {
 
+        if (registerUserRequest.getUniversityId() == null) {
+            log.error("RegisterUserRequest get Null university id");
+            return "University Not Found";
+        }
+
         University university = universityRepository
                 .findById(registerUserRequest.getUniversityId())
                 .orElse(null);

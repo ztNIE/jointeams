@@ -12,7 +12,7 @@
     <el-dialog v-model="resetPasswordVisible" title="Reset Password">
       <el-form :model="resetPasswordForm"
                ref="resetPassword"
-               :rules="rules">
+               :rules="resetRules">
         <el-form-item label="Email" prop="email">
           <el-input v-model="resetPasswordForm.email"/>
         </el-form-item>
@@ -124,13 +124,15 @@ export default {
       rules: {
         email: [{validator: emailValidator, trigger: 'blur'}],
         password: [{validator: validatePassword, trigger: 'blur'}]
+      },
+      resetRules: {
+        email: [{validator: emailValidator, trigger: 'blur'}]
       }
     };
   },
   methods: {
     ...mapActions(['login']),
     async submitResetPassword() {
-      this.resetPasswordVisible = false
       let isValid = false
       await this.$refs['resetPassword'].validate((valid) => {
         if (valid) {
@@ -148,10 +150,11 @@ export default {
           message: `Reset password link sent to ${this.resetPasswordForm.email}`,
           type: 'success'
         })
+        this.resetPasswordVisible = false
       } catch (error) {
         console.log(error)
+        this.resetPasswordVisible = false
       }
-      this.resetPasswordVisible = false
     },
     async submitForm(formName) {
       let isValid = false;
