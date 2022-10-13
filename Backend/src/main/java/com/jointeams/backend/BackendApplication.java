@@ -1,17 +1,13 @@
 package com.jointeams.backend;
 
 
-import com.jointeams.backend.pojo.*;
-import com.jointeams.backend.pojo.id.InterestedCourseKey;
-import com.jointeams.backend.repositery.*;
-import com.jointeams.backend.util.IsCommentAvailable;
+import com.jointeams.backend.repositery.UniversityRepository;
+import com.jointeams.backend.repositery.UserRepository;
 import com.jointeams.backend.util.UploadConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,27 +24,6 @@ public class BackendApplication {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-//    @Autowired
-//    private CourseRepository courseRepository;
-//
-//    @Autowired
-//    private GroupRepository groupRepository;
-//
-//    @Autowired
-//    private CommentRepository commentRepository;
-//
-//    @Autowired
-//    private EnrollmentRepository enrollmentRepository;
-//
-//    @Autowired
-//    private NotificationRepository notificationRepository;
-//
-//    @Autowired
-//    private SemesterRepository semesterRepository;
-//
-//    @Autowired
-//    private InterestedCourseRepository interestedCourseRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
