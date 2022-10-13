@@ -5,25 +5,38 @@ import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.repositery.*;
 import com.jointeams.backend.service.GroupService;
 import org.json.simple.JSONObject;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.*;
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.BeforeAll;
+//import org.junit.jupiter.api.AfterEach;
+
+import org.junit.Test;
+import org.junit.BeforeClass;
+import org.junit.Before;
+import static org.junit.Assert.*;
+
+//@Profile("test")
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@ExtendWith(SpringExtension.class)
+//@TestPropertySource(locations="classpath:application-test.properties")
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = BackendApplication.class)
+@TestPropertySource(locations="classpath:application-test.properties")
 public class GroupServiceImplTest {
 
     @Autowired
@@ -55,6 +68,9 @@ public class GroupServiceImplTest {
 
     @Autowired
     private GroupService groupService;
+
+//    @Autowired
+//    private EntityManagerFactory entityManagerFactory;
 
     private static Semester semester;
     private static University university;
@@ -111,8 +127,8 @@ public class GroupServiceImplTest {
         group1.setNameId(1);
     }
 
-    @BeforeEach
-    private void setup() {
+    @Before
+    public void setup() {
         this.semesterRepository.save(semester);
         this.universityRepository.save(university);
         this.courseRepository.save(course1);
@@ -121,15 +137,37 @@ public class GroupServiceImplTest {
         this.groupRepository.save(group1);
     }
 
-    @AfterEach
-    private void destroy() {
+    @After
+    @Transactional
+    public void destroy() {
         // Delete
+        this.groupRepository.deleteAll();
+        this.enrollmentRepository.deleteAll();
+        this.userRepository.deleteAll();
+        this.courseRepository.deleteAll();
+        this.universityRepository.deleteAll();
+        this.semesterRepository.deleteAll();
         // Reset index
+//        this.groupRepository.resetIncrement();
+//        this.enrollmentRepository.resetIncrement();
+//        this.userRepository.resetIncrement();
+//        this.courseRepository.resetIncrement();
+//        this.universityRepository.resetIncrement();
+//        this.semesterRepository.resetIncrement();
+//        EntityManager em = entityManagerFactory.createEntityManager();
+
+//        EntityManager entityManager = this.entityManagerFactory.createEntityManager();
+//        entityManager.getTransaction().begin();
+//        entityManager
+//                .createNativeQuery("ALTER TABLE group AUTO_INCREMENT = 1")
+//                .executeUpdate();
+//        entityManager.createNativeQuery("truncate table Group;").executeUpdate();
+//        entityManager.getTransaction().commit();
     }
 
     @Test
     @Transactional
-    public void getGroupByIdTest() {
+    public void getGroupByIdValidTest() {
         JSONObject result = this.groupService.getGroupById(1L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "success");
@@ -138,8 +176,20 @@ public class GroupServiceImplTest {
 
     @Test
     @Transactional
+    public void getGroupByIdInvalidTest() {
+        JSONObject result = this.groupService.getGroupById(2L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "Unable to find this group!");
+        assertNull(result.get("data"));
+    }
+
+    @Test
+    @Transactional
     public void getAllMembersTest() {
-        assertEquals(1, 1);
+        JSONObject result = this.groupService.getAllMembers(1L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "success");
+        assertNotNull(result.get("data"));
     }
 //
 //    @Test
