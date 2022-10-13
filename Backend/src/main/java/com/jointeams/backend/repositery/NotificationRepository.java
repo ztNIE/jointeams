@@ -16,7 +16,7 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
     @Query("select n from Notification n where n.type in (1, 4, 5) and n.group.id = ?1")
     <E> List<E> findAllByGroupId(Long groupId);
 
-    @Query(value = "select count(id) from notification where group_id = ?1 and user_id = ?2", nativeQuery = true)
+    @Query("select count(n.id) from Notification n where n.group.id = ?1 and n.user.id = ?2")
     public Optional<Integer> countNotificationsByIds(Long groupId, Long userId);
 
     @Modifying
