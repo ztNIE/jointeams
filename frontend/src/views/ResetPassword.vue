@@ -53,7 +53,10 @@ export default {
             this.errorMsg = response.data.msg
             return;
           }
-          ElMessage("Password reset successful")
+          ElMessage({
+            type: "success",
+            message: "Password reset successful"
+          })
           this.$router.replace("/sign-in")
         } catch (error) {
           console.error(error)
@@ -107,6 +110,10 @@ export default {
         ElMessage("Invalid password token")
         this.$router.replace("/landing")
       }
+      ElMessage({
+        type: "success",
+        message: "Validate reset link successfully"
+      })
     })
   },
   created() {
@@ -124,9 +131,11 @@ export default {
 .require-padding {
   padding-top: 20px;
 }
+
 .el-form {
   text-align: center;
 }
+
 .el-card {
   width: 400px;
   margin-top: 40px;
