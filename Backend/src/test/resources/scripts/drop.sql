@@ -33,7 +33,6 @@
 -- DROP SCHEMA jointeams;
 --
 -- select u from  notification;
-drop table `unknown`;
 drop table interested_course;
 drop table notification;
 drop table comment;

@@ -5,4 +5,4 @@ CREATE database jointeamstest;
 USE jointeamstest;
 
 CREATE User 'test'@'localhost' IDENTIFIED BY '12345678';
-GRANT ALL privileges jointeamstest.* TO 'test'@'localhost';
+GRANT ALL privileges ON jointeamstest.* TO 'test'@'localhost';
