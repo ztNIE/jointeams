@@ -49,8 +49,8 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.com.jointeams.backend.service.serviceImpl in Backend">
-    <configuration name="UserServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CourseServiceImplTest.getAllCurrentStudentInvalidTest">
+    <configuration name="CourseServiceImplTest.getAllCourseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
         <pattern>
@@ -59,29 +59,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.jointeams.backend.service.serviceImpl" />
-      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.UserServiceImplTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserServiceImplTest.findByIdInvalidTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="Backend" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.jointeams.backend.service.serviceImpl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.jointeams.backend.service.serviceImpl" />
-      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.UserServiceImplTest" />
-      <option name="METHOD_NAME" value="findByIdInvalidTest" />
+      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.CourseServiceImplTest" />
+      <option name="METHOD_NAME" value="getAllCourseTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceImplTest.findByIdTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CourseServiceImplTest.getAllCurrentStudentInvalidTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
         <pattern>
@@ -90,14 +75,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.jointeams.backend.service.serviceImpl" />
-      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.UserServiceImplTest" />
-      <option name="METHOD_NAME" value="findByIdTest" />
+      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.CourseServiceImplTest" />
+      <option name="METHOD_NAME" value="getAllCurrentStudentInvalidTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceImplTest.updateUserInfoByIdInvalidTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CourseServiceImplTest.getAllCurrentStudentTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
         <pattern>
@@ -106,14 +91,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.jointeams.backend.service.serviceImpl" />
-      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.UserServiceImplTest" />
-      <option name="METHOD_NAME" value="updateUserInfoByIdInvalidTest" />
+      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.CourseServiceImplTest" />
+      <option name="METHOD_NAME" value="getAllCurrentStudentTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="com.jointeams.backend.service.serviceImpl in Backend" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CourseServiceImplTest.getAllPreviousStudentInvalidTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
         <pattern>
@@ -122,7 +107,25 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.jointeams.backend.service.serviceImpl" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.CourseServiceImplTest" />
+      <option name="METHOD_NAME" value="getAllPreviousStudentInvalidTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CourseServiceImplTest.getAllPreviousStudentTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.jointeams.backend.service.serviceImpl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.jointeams.backend.service.serviceImpl" />
+      <option name="MAIN_CLASS_NAME" value="com.jointeams.backend.service.serviceImpl.CourseServiceImplTest" />
+      <option name="METHOD_NAME" value="getAllPreviousStudentTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -136,11 +139,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.com.jointeams.backend.service.serviceImpl in Backend" />
-        <item itemvalue="JUnit.UserServiceImplTest" />
-        <item itemvalue="JUnit.UserServiceImplTest.findByIdInvalidTest" />
-        <item itemvalue="JUnit.UserServiceImplTest.findByIdTest" />
-        <item itemvalue="JUnit.UserServiceImplTest.updateUserInfoByIdInvalidTest" />
+        <item itemvalue="JUnit.CourseServiceImplTest.getAllCurrentStudentInvalidTest" />
+        <item itemvalue="JUnit.CourseServiceImplTest.getAllCurrentStudentTest" />
+        <item itemvalue="JUnit.CourseServiceImplTest.getAllPreviousStudentInvalidTest" />
+        <item itemvalue="JUnit.CourseServiceImplTest.getAllPreviousStudentTest" />
+        <item itemvalue="JUnit.CourseServiceImplTest.getAllCourseTest" />
       </list>
     </recent_temporary>
   </component>

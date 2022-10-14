@@ -128,7 +128,6 @@ public class CourseServiceImpl implements CourseService {
             JSONObject newStudent = new JSONObject();
             newStudent.put("id", student.getId());
             newStudent.put("fullName", student.getFirstName() + " " + student.getLastName());
-//            newStudent.put("lastName", student.getLastName());
             newStudent.put("email", student.getEmail());
             newStudent.put("fileName", student.getFilename());
 

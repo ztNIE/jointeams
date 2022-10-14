@@ -63,7 +63,7 @@ export default {
           })
         }
       }).catch((err) => {
-        ElMessage.error(err.data.msg)
+        ElMessage.error(err)
       })
     }
 
