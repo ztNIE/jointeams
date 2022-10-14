@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElse(null);
         JSONObject jsonResult = new JSONObject();
 
-        if(user == null) {
+        if (user == null) {
             jsonResult.put("msg", "Unable to find the user!");
             jsonResult.put("data", null);
         } else {
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElse(null);
         JSONObject jsonResult = new JSONObject();
 
-        if(user == null) {
+        if (user == null) {
             jsonResult.put("msg", "Unable to find the user!");
             jsonResult.put("data", null);
         } else {
@@ -146,14 +146,13 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id).orElse(null);
         JSONObject jsonResult = new JSONObject();
 
-        if(user == null) {
+        if (user == null) {
             jsonResult.put("msg", "Unable to find the user!");
             jsonResult.put("data", null);
         } else {
-            System.out.println(newInfo);
             if ((Boolean) newInfo.get("updateAvatar") && newInfo.get("oldAvatar") != null) {
                 String projectPath = ResourceUtils.getURL("").getPath();
-                if(!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
+                if (!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
                     projectPath += "Backend/";
                 }
                 String UPLOAD_PATH = projectPath + "src/main/resources/images/";
@@ -170,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
             List<Comment> comments = commentRepository.findAllCommentsByUserId(user.getId());
             List<LinkedHashMap> updatedComments = (ArrayList<LinkedHashMap>) newInfo.get("comment");
-            for (int i = 0; i < updatedComments.size(); i ++) {
+            for (int i = 0; i < updatedComments.size(); i++) {
                 LinkedHashMap updatedComment = updatedComments.get(i);
                 for (Comment comment : comments) {
                     if (comment.getId().toString().equals(updatedComment.get("id").toString())) {
@@ -201,13 +200,13 @@ public class UserServiceImpl implements UserService {
         JSONObject jsonResult = new JSONObject();
         try {
             String projectPath = ResourceUtils.getURL("").getPath();
-            if(!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
+            if (!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
                 projectPath += "Backend/";
             }
             String UPLOAD_PATH = projectPath + "src/main/resources/images/";
             byte[] bytes = file.getBytes();
             String imageFileName = file.getOriginalFilename();
-            String fileName = UpPhotoNameUtils.getPhotoName("img",imageFileName);
+            String fileName = UpPhotoNameUtils.getPhotoName("img", imageFileName);
             Path path = Paths.get(UPLOAD_PATH + fileName);
             Files.write(path, bytes);
 
@@ -229,7 +228,7 @@ public class UserServiceImpl implements UserService {
         JSONObject jsonResult = new JSONObject();
 
         String projectPath = ResourceUtils.getURL("").getPath();
-        if(!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
+        if (!projectPath.split("/")[projectPath.split("/").length - 1].equals("Backend")) {
             projectPath += "Backend/";
         }
         String path = projectPath + "src/main/resources/images/" + fileName;
@@ -242,7 +241,6 @@ public class UserServiceImpl implements UserService {
             in.read(data);
             in.close();
 
-            //进行Base64编码
             String encodedString = Base64.getEncoder().encodeToString(data);
             JSONObject encoded = new JSONObject();
             encoded.put("image", encodedString);
@@ -258,58 +256,5 @@ public class UserServiceImpl implements UserService {
         return jsonResult;
 
     }
-
-//    @Override
-//    public User findByLastName(String lastName) {
-//        User user = userRepository.findByLastName(lastName).orElse(null);
-//        return user;
-//
-//    }
-//    @Override
-//    public User findByFullName(String firstName, String lastName)
-//    {
-//        User user = userRepository.findByFirstNameAndLastName(firstName, lastName).orElse(null);
-//        return user;
-//    }
-//
-//    @Override
-//    public User findByFullName2(String firstName, String lastName)
-//    {
-//        User user = userRepository.findByFullName(firstName, lastName).orElse(null);
-//        return user;
-//    }
-//
-//    @Override
-//    public User findByIncompleteFullName(String firstName, String lastName)
-//    {
-//        User user = userRepository.findByIncompleteFullName(firstName, lastName).orElse(null);
-//        return user;
-//    }
-
-//    @Override
-//    public User verifyUserIdentityByEncryptedPassword(Long userId, String encryptedPassword) {
-//        User user = findById(userId);
-//        if(user != null)
-//        {
-//            try {
-//                String passwordSHA1 = SHAUtils.sha1(user.getPassword());
-//                if(passwordSHA1.equals(encryptedPassword))
-//                    return user;// userId and encryptedPassword are matched
-//                else
-//                    return null;// userId and encryptedPassword are NOT matched
-//            } catch (NoSuchAlgorithmException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//        else
-//            return null; // 1: no user is found
-//    }
-
-
-
-//    @Override
-//    public User addNewUser(User user) {
-//        return userRepository.save(user);
-//    }
 }
 
