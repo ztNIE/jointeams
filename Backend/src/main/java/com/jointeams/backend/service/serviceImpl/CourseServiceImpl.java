@@ -214,7 +214,6 @@ public class CourseServiceImpl implements CourseService {
                         JSONObject teammate = new JSONObject();
                         teammate.put("id", currentStudent.get("id"));
                         teammate.put("fullName", currentStudent.get("fullName"));
-//                        teammate.put("lastName", currentStudent.get("lastName"));
                         teammates.add(teammate);
                         break;
                     }
