@@ -96,7 +96,8 @@ public class WebSecurityConfig {
             "/register/**",
             "/",
             "/hello",
-            "/auth/**"
+            "/auth/**",
+            "/h2-console/**",
     };
 
     private static final String[] API_URLS = {
@@ -105,7 +106,7 @@ public class WebSecurityConfig {
             "/group/**",
             "/user/**",
             "/university/**",
-            "notification/**"
+            "/notification/**",
     };
 
     @Autowired
@@ -147,6 +148,9 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
+
+        http.csrf().ignoringAntMatchers("/h2-console/**");
+        http.headers().frameOptions().sameOrigin();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
