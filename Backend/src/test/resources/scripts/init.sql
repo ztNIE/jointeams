@@ -1,7 +1,3 @@
-CREATE SCHEMA `jointeams` ;
-
-USE `jointeams`;
-
 DROP TABLE IF EXISTS `semester`;
 CREATE TABLE `semester` (
                             `id` bigint NOT NULL,
@@ -36,7 +32,6 @@ CREATE TABLE `user` (
                         `self_tag` int DEFAULT NULL,
                         `university_id` bigint DEFAULT NULL,
                         PRIMARY KEY (`id`),
-                        UNIQUE KEY `email_unique` (`email`),
                         KEY `FKmv2iu0v3unar6uq2paxkmv492` (`university_id`),
                         CONSTRAINT `FKmv2iu0v3unar6uq2paxkmv492` FOREIGN KEY (`university_id`) REFERENCES `university` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
