@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = BackendApplication.class)
 @TestPropertySource(locations="classpath:application-test.properties")
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GroupServiceImplTest {
 
     @Autowired
@@ -59,10 +60,6 @@ public class GroupServiceImplTest {
 
     @Autowired
     private GroupService groupService;
-
-//    @Autowired
-//    private EntityManagerFactory entityManagerFactory;
-
     private static Semester semester;
     private static University university;
     private static Course course1;
@@ -239,7 +236,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getGroupByIdValidTest() {
@@ -255,7 +251,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getGroupByIdInvalidTest() {
@@ -267,7 +262,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllMembersValidTest() {
@@ -282,7 +276,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllMembersInvalidTest() {
@@ -294,7 +287,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateDescriptionValidTest() {
@@ -302,7 +294,7 @@ public class GroupServiceImplTest {
         JSONObject result1 = this.groupService.getGroupById(1L);
         JSONObject data1 = (JSONObject) result1.get("data");
         assertEquals(data1.get("id"), 1L);
-        assertEquals(data1.get("description"), null);
+        assertNull(data1.get("description"));
 
         JSONObject result2 = this.groupService.updateDescription(1L, "New Description");
         JSONObject data2 = (JSONObject) result2.get("data");
@@ -315,7 +307,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateDescriptionInvalidTest() {
@@ -325,7 +316,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void deleteAMemberTest() {
@@ -333,7 +323,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void isCommentFunctionAvailableTest() {
@@ -343,7 +332,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getCommentByIdValidTest() {
@@ -358,7 +346,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getCommentByIdInvalidTest() {
@@ -370,7 +357,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void leaveCommentValidTest() {
@@ -385,7 +371,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void leaveCommentInvalidTest1() {
@@ -397,7 +382,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void leaveCommentInvalidTest2() {
@@ -409,7 +393,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getStudentsNotInAGroupValidTest() {
@@ -424,7 +407,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getStudentsNotInAGroupInvalidTest() {
@@ -436,7 +418,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addInvitationNotificationValidTest() {
@@ -450,7 +431,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addInvitationNotificationStudentAlreadyInTheGroupTest() {
@@ -464,7 +444,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addInvitationNotificationSendInvitationTwiceTest() {
@@ -477,11 +456,9 @@ public class GroupServiceImplTest {
         JSONArray data = (JSONArray) result.get("data");
         assertNull(data);
     }
-
 //    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 //    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
-    @DirtiesContext
     public void addInvitationNotificationGroupFullTest() {
         this.userRepository.save(user4);
         Enrollment enrollment4 = new Enrollment();

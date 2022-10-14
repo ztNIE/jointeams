@@ -1,6 +1,7 @@
 package com.jointeams.backend.repositery;
 
 import com.jointeams.backend.pojo.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -38,6 +39,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 //    @Query("select u from User u where u.firstName like %?1% and u.lastName like %?2%")；
 //    public Optional<User> findByIncompleteFullName(String firstName, String lastName);
+
 
     @Query(value="alter table `user` AUTO_INCREMENT = 1", nativeQuery = true)
     public void resetIncrement();
