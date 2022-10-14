@@ -32,17 +32,21 @@
 
 -- DROP SCHEMA jointeams;
 --
-drop table if exists interested_course;
-drop table if exists notification;
-drop table if exists comment;
-drop table if exists group_user;
-drop table if exists `group`;
-drop table if exists enrollment;
-drop table if exists password_token;
-drop table if exists verification_token;
-drop table if exists `user`;
-drop table if exists course;
-drop table if exists university;
-drop table if exists semester;
+-- select u from  notification;
+drop table `unknown`;
+drop table interested_course;
+drop table notification;
+drop table comment;
+drop table group_user;
+drop table `group`;
+drop table enrollment;
+drop table password_token;
+drop table verification_token;
+drop table `user`;
+drop table course;
+drop table university;
+drop table semester;
+
+-- select u from  university;
 
 -- DROP SCHEMA `jointeams` ;
