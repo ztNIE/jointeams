@@ -40,6 +40,9 @@ public interface EnrollmentRepository extends CrudRepository<Enrollment, Long> {
     //    check if a student enrolled in a course
     @Query(value = "select e from Enrollment e where e.user.id = :userId and e.course.id=:courseId")
     List<Enrollment> findEnrollmentByUserIdAndCourseId(Long userId, Long courseId);
+
+    @Query(value="alter table `enrollment` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
 
 

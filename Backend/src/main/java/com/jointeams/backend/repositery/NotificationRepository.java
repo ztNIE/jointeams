@@ -23,6 +23,9 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
     @Transactional
     @Query("delete from Notification n where n.group.id = :groupId")
     void deleteAllByGroupId(long groupId);
+
+    @Query(value="alter table `Notification` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
 
 

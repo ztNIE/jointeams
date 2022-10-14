@@ -15,15 +15,18 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Query(value = "select c from Comment c where c.receiver.id = :userId")
     List<Comment> findAllCommentsByUserId(Long userId);
 
-    @Query(value = "select * from comment where group_id = ?1 and sender_id = ?2 and receiver_id = ?3", nativeQuery = true)
+    @Query("select c from Comment c where c.group.id = ?1 and c.sender.id = ?2 and c.receiver.id = ?3")
     public Optional<List<Comment>> getCommentByIds(Long groupId, Long senderId, Long receiverId);
 
     @Modifying
-    @Query(value = "delete from comment where group_id = ?1 and sender_id = ?2 and receiver_id = ?3", nativeQuery = true)
+    @Query("delete from Comment c where c.group.id = ?1 and c.sender.id = ?2 and c.receiver.id = ?3")
     public void deleteCommentByIds(Long groupId, Long senderId, Long receiverId);
 
     @Modifying
     @Transactional
     @Query("delete from Comment c where c.group.id = ?1")
     void deleteAllByGroupId(Long groupId);
+
+    @Query(value="alter table `comment` AUTO_INCREMENT = 1", nativeQuery = true)
+    public void resetIncrement();
 }
