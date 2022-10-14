@@ -368,8 +368,6 @@ public class GroupServiceImpl implements GroupService {
         return jsonResult;
     }
 
-
-
     @Override
     public JSONObject getAllCurrentGroupsOfAUser(Long userId) {
         JSONObject jsonResult = new JSONObject();
@@ -385,9 +383,8 @@ public class GroupServiceImpl implements GroupService {
         // select g.id, g.capacity, g.name_id, c.code, u.first_name, u.last_name, u.filename
         List<Long> addedGroupIds = new ArrayList<>();
         for(Object[] element: groupDetails) {
-            Long groupId = ((BigInteger) element[0]).longValue();
+            Long groupId = ((Long) element[0]).longValue();
             if(!addedGroupIds.contains(groupId)) {
-//                System.out.println("in");
                 JSONObject obj = new JSONObject();
                 obj.put("group_id", groupId);
                 obj.put("capacity", (Integer) element[1]);

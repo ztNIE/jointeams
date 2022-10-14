@@ -20,8 +20,6 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.BeforeClass;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -41,9 +39,6 @@ public class GroupServiceImplTest {
     private CommentRepository commentRepository;
 
     @Autowired
-    private NotificationRepository notificationRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -60,6 +55,7 @@ public class GroupServiceImplTest {
 
     @Autowired
     private GroupService groupService;
+
     private static Semester semester;
     private static University university;
     private static Course course1;
@@ -196,7 +192,7 @@ public class GroupServiceImplTest {
 
         groupUser2 = new GroupUser();
         groupUser2.setGroupUserId(groupUserId2);
-        groupUser2.setLeader(true);
+        groupUser2.setLeader(false);
 
         comment1 = new Comment();
         comment1.setId(1L);
@@ -236,10 +232,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getGroupByIdValidTest() {
-//        setup();
         JSONObject result = this.groupService.getGroupById(1L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "success");
@@ -251,10 +244,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getGroupByIdInvalidTest() {
-//        setup();
         JSONObject result = this.groupService.getGroupById(2L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "Unable to find this group!");
@@ -262,10 +252,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllMembersValidTest() {
-//        setup();
         JSONObject result = this.groupService.getAllMembers(1L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "success");
@@ -276,10 +263,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getAllMembersInvalidTest() {
-//        setup();
         JSONObject result = this.groupService.getAllMembers(2L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "Unable to find this group!");
@@ -287,14 +271,11 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateDescriptionValidTest() {
-//        setup();
         JSONObject result1 = this.groupService.getGroupById(1L);
         JSONObject data1 = (JSONObject) result1.get("data");
         assertEquals(data1.get("id"), 1L);
-        assertNull(data1.get("description"));
+        assertEquals(data1.get("description"), null);
 
         JSONObject result2 = this.groupService.updateDescription(1L, "New Description");
         JSONObject data2 = (JSONObject) result2.get("data");
@@ -307,49 +288,56 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateDescriptionInvalidTest() {
-//        setup();
         JSONObject result = this.groupService.updateDescription(2L, "New Description");
         assertEquals(result.get("msg"), "Unable to find this group!");
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void deleteAMemberTest() {
-//        setup();
+    public void deleteAMemberUnableToFindMemberTest() {
+        JSONObject result = this.groupService.deleteAMember(1L, 3L);
+        assertEquals("Unable to find this user in this group!", result.get("msg"));
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void deleteAMemberValidDeleteAMemberTest() {
+        JSONObject result = this.groupService.deleteAMember(1L, 2L);
+        assertEquals("Success!", result.get("msg"));
+    }
+
+    @Test
+    public void deleteAMemberValidDeleteTheLeaderTest() {
+        JSONObject result = this.groupService.deleteAMember(1L, 1L);
+        assertEquals("Success! Leadership is handed over.", result.get("msg"));
+    }
+
+    @Test
+    public void deleteAMemberValidDisbandTest() {
+        this.groupService.deleteAMember(1L, 1L);
+        JSONObject result = this.groupService.deleteAMember(1L, 2L);
+        assertEquals("Success! The group is disband!", result.get("msg"));
+    }
+
+    @Test
     public void isCommentFunctionAvailableTest() {
-//        setup();
         JSONObject result = this.groupService.isCommentFunctionAvailable();
         assertEquals(result.get("msg"), "Success");
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getCommentByIdValidTest() {
-//        JSONObject result = this.groupService.getCommentById(1L, 1L, 2L);
-//        assertNotNull(result);
-//        assertEquals(result.get("msg"), "Comment exists.");
-//
-//        JSONObject data = (JSONObject) result.get("data");
-//        assertNotNull(data);
-//        assertEquals(data.get("id"), 1L);
-//        assertEquals(data.get("content"), "Default");
+        JSONObject result = this.groupService.getCommentById(1L, 1L, 2L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "Comment exists.");
+
+        JSONObject data = (JSONObject) result.get("data");
+        assertNotNull(data);
+        assertEquals(data.get("id"), 1L);
+        assertEquals(data.get("content"), "Default");
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getCommentByIdInvalidTest() {
-//        setup();
         JSONObject result = this.groupService.getCommentById(1L, 2L, 1L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "No comment exists.");
@@ -357,8 +345,6 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void leaveCommentValidTest() {
         JSONObject result2 = this.groupService.leaveComment(1L, 1L, 2L, 1, "New Comment");
         JSONObject data2 = (JSONObject) result2.get("data");
@@ -371,10 +357,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void leaveCommentInvalidTest1() {
-//        setup();
         JSONObject result = this.groupService.leaveComment(2L, 1L, 2L, 1, "New comment");
         assertNotNull(result);
         assertEquals(result.get("msg"), "Unable to find such a group.");
@@ -382,10 +365,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void leaveCommentInvalidTest2() {
-//        setup();
         JSONObject result = this.groupService.leaveComment(1L, 4L, 2L, 1, "New comment");
         assertNotNull(result);
         assertEquals(result.get("msg"), "Unable to find such a user.");
@@ -393,10 +373,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getStudentsNotInAGroupValidTest() {
-//        setup();
         JSONObject result = this.groupService.getStudentsNotInAGroup(1L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "success");
@@ -407,10 +384,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void getStudentsNotInAGroupInvalidTest() {
-//        setup();
         JSONObject result = this.groupService.getStudentsNotInAGroup(2L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "No such a student!");
@@ -418,10 +392,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addInvitationNotificationValidTest() {
-//        setup();
         JSONObject result = this.groupService.addInvitationNotification(1L, 3L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "An invitation sent!");
@@ -431,10 +402,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addInvitationNotificationStudentAlreadyInTheGroupTest() {
-//        setup();
         JSONObject result = this.groupService.addInvitationNotification(1L, 2L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "This student is already in your group!");
@@ -444,10 +412,7 @@ public class GroupServiceImplTest {
     }
 
     @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void addInvitationNotificationSendInvitationTwiceTest() {
-//        setup();
         this.groupService.addInvitationNotification(1L, 3L);
         JSONObject result = this.groupService.addInvitationNotification(1L, 3L);
         assertNotNull(result);
@@ -456,8 +421,7 @@ public class GroupServiceImplTest {
         JSONArray data = (JSONArray) result.get("data");
         assertNull(data);
     }
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+
     @Test
     public void addInvitationNotificationGroupFullTest() {
         this.userRepository.save(user4);
@@ -486,17 +450,72 @@ public class GroupServiceImplTest {
         assertNull(data);
     }
 
-//    @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-//    public void addJoinRequestNotificationTest() {
-//
-//    }
-//
-//    @Test
-//    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-//    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-//    public void getAllCurrentGroupsOfAUserTest() {
-//
-//    }
+    @Test
+    public void addJoinRequestNotificationValidTest() {
+        JSONObject result = this.groupService.addJoinRequestNotification(1L, 3L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "An invitation sent!");
+
+        JSONArray data = (JSONArray) result.get("data");
+        assertNull(data);
+    }
+
+    @Test
+    public void addJoinRequestNotificationAlreadyInGroupTest() {
+        JSONObject result = this.groupService.addJoinRequestNotification(1L, 2L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "You are already in this group!");
+
+        JSONArray data = (JSONArray) result.get("data");
+        assertNull(data);
+    }
+
+    @Test
+    public void addJoinRequestNotificationSendTwiceTest() {
+        this.groupService.addJoinRequestNotification(1L, 3L);
+        JSONObject result = this.groupService.addJoinRequestNotification(1L, 3L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "You have already sent a joining request to this group!");
+
+        JSONArray data = (JSONArray) result.get("data");
+        assertNull(data);
+    }
+
+    @Test
+    public void addJoinRequestNotificationFullTest() {
+        this.userRepository.save(user4);
+        Enrollment enrollment4 = new Enrollment();
+        enrollment4.setId(4L);
+        enrollment4.setCourse(course1);
+        enrollment4.setSemester(semester);
+        enrollment4.setTutorial("CC02");
+        enrollment4.setUser(user4);
+        this.enrollmentRepository.save(enrollment4);
+
+        GroupUserId groupUserId3 = new GroupUserId();
+        groupUserId3.setGroupId(1L);
+        groupUserId3.setUserId(3L);
+
+        GroupUser groupUser3 = new GroupUser();
+        groupUser3.setGroupUserId(groupUserId3);
+        groupUser3.setLeader(true);
+        this.groupUserRepository.save(groupUser3);
+
+        JSONObject result = this.groupService.addJoinRequestNotification(1L, 4L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "This group is already full!");
+
+        JSONArray data = (JSONArray) result.get("data");
+        assertNull(data);
+    }
+
+    @Test
+    public void getAllCurrentGroupsOfAUserTest() {
+        JSONObject result = this.groupService.getAllCurrentGroupsOfAUser(1L);
+        assertNotNull(result);
+        assertEquals(result.get("msg"), "Success");
+
+        JSONArray data = (JSONArray) result.get("data");
+        assertEquals((Long)1L, (Long)((JSONObject)data.get(0)).get("group_id"));
+    }
 }

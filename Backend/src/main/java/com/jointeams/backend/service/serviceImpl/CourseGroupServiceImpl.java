@@ -39,7 +39,7 @@ public class CourseGroupServiceImpl implements CourseGroupService {
             jsonResult.put("data", null);
         } else {
             JSONObject currentUserGroupKey = null;
-            BigInteger targetGroupId = null;
+            Long targetGroupId = null;
             HashMap<JSONObject, ArrayList<JSONObject>> map = new HashMap<JSONObject, ArrayList<JSONObject>>();
             for(Object[] element : elements) {
                 JSONObject group = new JSONObject();
@@ -53,9 +53,9 @@ public class CourseGroupServiceImpl implements CourseGroupService {
                 member.put("avatar", element[10]);
                 member.put("id", element[11]);
 
-                if(((BigInteger) element[11]).longValue() == userId) {
+                if(((Long) element[11]).longValue() == userId) {
                     currentUserGroupKey = group;
-                    targetGroupId = (BigInteger) element[0];
+                    targetGroupId = (Long) element[0];
                 }
 
                 if(map.get(group) == null) {
@@ -116,14 +116,6 @@ public class CourseGroupServiceImpl implements CourseGroupService {
         List<Object[]> information = enrollmentRepository.getCurrentEnrollmentTutorialByCourseIdAndUserId(courseId, userId).orElse(null);
         String currentStudentTutorial = (String) null;
         Long currentSemester = (Long) null;
-//        if(information != null && information.size() > 0) {
-//            currentStudentTutorial = (String) information.get(0)[0];
-//            currentSemester = ((BigInteger) information.get(0)[1]).longValue();
-//        } else {
-//            jsonResult.put("msg", "You do not enroll in this course this semester!");
-//            jsonResult.put("data", null);
-//            return jsonResult;
-//        }
         if(information == null || information.size() == 0) {
             jsonResult.put("msg", "You do not enroll in this course this semester!");
             jsonResult.put("data", null);
@@ -146,8 +138,6 @@ public class CourseGroupServiceImpl implements CourseGroupService {
 
         // Add a group.
         Group newGroup = new Group();
-//        Course course = courseRepository.findById(courseId).orElse(null);
-        // Semester semester = semesterRepository.findById(currentSemester).orElse(null);
         newGroup.setCapacity(capacity);
         newGroup.setNameId(course.getNextGroupNameId());
         newGroup.setTutorial(currentStudentTutorial);

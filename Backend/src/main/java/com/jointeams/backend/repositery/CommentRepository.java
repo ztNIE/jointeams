@@ -9,16 +9,15 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public interface CommentRepository extends CrudRepository<Comment, Long> {
-    //    get current courses of a user
     @Query(value = "select c from Comment c where c.receiver.id = :userId")
     List<Comment> findAllCommentsByUserId(Long userId);
 
     @Query("select c from Comment c where c.group.id = ?1 and c.sender.id = ?2 and c.receiver.id = ?3")
-    public Optional<List<Comment>> getCommentByIds(Long groupId, Long senderId, Long receiverId);
+    Optional<List<Comment>> getCommentByIds(Long groupId, Long senderId, Long receiverId);
 
     @Modifying
+    @Transactional
     @Query("delete from Comment c where c.group.id = ?1 and c.sender.id = ?2 and c.receiver.id = ?3")
     public void deleteCommentByIds(Long groupId, Long senderId, Long receiverId);
 
@@ -27,6 +26,8 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     @Query("delete from Comment c where c.group.id = ?1")
     void deleteAllByGroupId(Long groupId);
 
-    @Query(value="alter table `comment` AUTO_INCREMENT = 1", nativeQuery = true)
-    public void resetIncrement();
+//    @Modifying
+//    @Transactional
+//    @Query("ALTER TABLE Comment ALTER COLUMN Comment.id RESTART WITH 1")
+//    public void resetIncrement();
 }

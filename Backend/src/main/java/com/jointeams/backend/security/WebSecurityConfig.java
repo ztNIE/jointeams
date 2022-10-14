@@ -97,7 +97,7 @@ public class WebSecurityConfig {
             "/",
             "/hello",
             "/auth/**",
-            "/h2-console/**",
+//            "/h2-console/**",
     };
 
     private static final String[] API_URLS = {
@@ -149,8 +149,8 @@ public class WebSecurityConfig {
 
         http.authenticationProvider(authenticationProvider());
 
-        http.csrf().ignoringAntMatchers("/h2-console/**");
-        http.headers().frameOptions().sameOrigin();
+//        http.csrf().ignoringAntMatchers("/h2-console/**");
+//        http.headers().frameOptions().sameOrigin();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

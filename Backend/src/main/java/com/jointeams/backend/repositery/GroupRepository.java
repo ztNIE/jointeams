@@ -52,9 +52,9 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
             "and g.course.id = ?1")
     public Optional<List<Object[]>> isStudentAlreadyInAGroup(Long courseId, Long semesterId, Long userId);
 
-//    @Modifying
-//    @Query(value = "TRUNCATE TABLE Group RESTART IDENTITY")
-//    public void resetIncrement();
+    @Modifying
+    @Query(nativeQuery = true, value = "ALTER TABLE Group ALTER COLUMN Group.id RESTART WITH 1")
+    public void resetIncrement();
 }
 
 
