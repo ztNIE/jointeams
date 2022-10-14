@@ -1,5 +1,5 @@
-DROP database if exists jointeamstest;
-DROP USER if exists 'test'@'localhost';
+DROP database jointeamstest;
+DROP USER 'test'@'localhost';
 
 CREATE database jointeamstest;
 USE jointeamstest;

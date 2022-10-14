@@ -74,12 +74,4 @@ public class AuthController {
                     .body(new StandardResponse<>("success",
                             new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), roles)));
     }
-
-    // Function Not Needed
-    @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser() {
-        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new StandardResponse<>("You are successfully logged out!", null));
-    }
 }

@@ -1,6 +1,6 @@
 ## Run Backend Application
 
-### IMPORTANT: If the schema has changed, please run the emptyDatabase.sql in mysql
+### IMPORTANT: If the schema has changed, please run the buildProdDB.sql in mysql
 
 1. application.properties has been changed to
 ```

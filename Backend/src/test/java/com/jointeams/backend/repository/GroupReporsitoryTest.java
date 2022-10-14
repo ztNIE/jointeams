@@ -1,54 +1,51 @@
-package com.jointeams.backend.service.serviceImpl;
+package com.jointeams.backend.repository;
 
-import com.jointeams.backend.BackendApplication;
 import com.jointeams.backend.pojo.*;
 import com.jointeams.backend.pojo.id.GroupUserId;
 import com.jointeams.backend.repositery.*;
-import com.jointeams.backend.service.CourseGroupService;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-import static org.junit.Assert.*;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = BackendApplication.class)
-@TestPropertySource(locations="classpath:application-test.properties")
-@Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class CourseGroupServiceImplTest {
+@DataJpaTest
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+public class GroupReporsitoryTest {
     @Autowired
     private GroupRepository groupRepository;
-
-    @Autowired
-    private EnrollmentRepository enrollmentRepository;
-
-    @Autowired
-    private CourseRepository courseRepository;
-
-    @Autowired
-    private SemesterRepository semesterRepository;
 
     @Autowired
     private GroupUserRepository groupUserRepository;
 
     @Autowired
-    private UniversityRepository universityRepository;
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private CourseGroupService courseGroupService;
+    private SemesterRepository semesterRepository;
+
+    @Autowired
+    private UniversityRepository universityRepository;
+
+    @Autowired
+    private CourseRepository courseRepository;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepository;
 
     private static Semester semester;
     private static University university;
@@ -66,6 +63,8 @@ public class CourseGroupServiceImplTest {
     private static GroupUserId groupUserId2;
     private static GroupUser groupUser1;
     private static GroupUser groupUser2;
+    private static Comment comment1;
+    private static Comment comment2;
 
     @BeforeClass
     public static void prepare(){
@@ -184,7 +183,25 @@ public class CourseGroupServiceImplTest {
 
         groupUser2 = new GroupUser();
         groupUser2.setGroupUserId(groupUserId2);
-        groupUser2.setLeader(false);
+        groupUser2.setLeader(true);
+
+        comment1 = new Comment();
+        comment1.setId(1L);
+        comment1.setGroup(group1);
+        comment1.setSender(user1);
+        comment1.setReceiver(user2);
+        comment1.setIsHide(false);
+        comment1.setTag(1);
+        comment1.setContent("Default");
+
+        comment2 = new Comment();
+        comment2.setId(2L);
+        comment2.setGroup(group1);
+        comment2.setSender(user2);
+        comment2.setReceiver(user1);
+        comment2.setIsHide(true);
+        comment2.setTag(1);
+        comment2.setContent("Default");
     }
 
     @Before
@@ -196,68 +213,20 @@ public class CourseGroupServiceImplTest {
         this.userRepository.save(user1);
         this.userRepository.save(user2);
         this.userRepository.save(user3);
-        this.userRepository.save(user4);
         this.enrollmentRepository.save(enrollment1);
         this.enrollmentRepository.save(enrollment2);
         this.enrollmentRepository.save(enrollment3);
         this.groupRepository.save(group1);
         this.groupUserRepository.save(groupUser1);
         this.groupUserRepository.save(groupUser2);
+        this.commentRepository.save(comment1);
     }
 
     @Test
-    public void getAllGroupsByCourseIdNoGroupInThisCourseTest() {
-        JSONObject result = this.courseGroupService.getAllGroupsByCourseId(2L, 1L);
-        assertEquals("No group in this course in this semester!", result.get("msg"));
-    }
-
-    @Test
-    public void getAllGroupsByCourseIdValidHasNoGroupTest() {
-        JSONObject result = this.courseGroupService.getAllGroupsByCourseId(1L, 3L);
-        assertEquals("success", result.get("msg"));
-
-        JSONArray data = (JSONArray) result.get("data");
-        assertEquals(1, data.size());
-        assertEquals((Long) 1L, (Long)((JSONObject)data.get(0)).get("group_id"));
-    }
-
-    @Test
-    public void getAllGroupsByCourseIdValidHasGroupTest() {
-        JSONObject result = this.courseGroupService.getAllGroupsByCourseId(1L, 1L);
-        assertEquals("success", result.get("msg"));
-
-        JSONArray data = (JSONArray) result.get("data");
-        assertEquals(1, data.size());
-        assertEquals((Long) 1L, (Long)((JSONObject)data.get(0)).get("group_id"));
-    }
-
-    @Test
-    public void addAGroupNotEnrollTest() {
-        JSONObject result1 = this.courseGroupService.addAGroup(1L, 4L, 1);
-        assertEquals("You do not enroll in this course this semester!", result1.get("msg"));
-
-        JSONObject result2 = this.courseGroupService.getAllGroupsByCourseId(1L, 1L);
-        JSONArray data2 = (JSONArray) result2.get("data");
-        assertEquals(1, data2.size());
-    }
-
-    @Test
-    public void addAGroupAlreadyInAGroupTest() {
-        JSONObject result1 = this.courseGroupService.addAGroup(1L, 1L, 1);
-        assertEquals("You are already in a group!", result1.get("msg"));
-
-        JSONObject result2 = this.courseGroupService.getAllGroupsByCourseId(1L, 1L);
-        JSONArray data2 = (JSONArray) result2.get("data");
-        assertEquals(1, data2.size());
-    }
-
-    @Test
-    public void addAGroupValidTest() {
-        JSONObject result1 = this.courseGroupService.addAGroup(1L, 3L, 1);
-        assertEquals("Success!", result1.get("msg"));
-
-        JSONObject result2 = this.courseGroupService.getAllGroupsByCourseId(1L, 3L);
-        JSONArray data2 = (JSONArray) result2.get("data");
-        assertEquals(2, data2.size());
+    @Sql(scripts = "/scripts/init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/drop.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void getAllGroupsTest() {
+        ArrayList<Long> group = (ArrayList<Long>) this.groupUserRepository.getAllGroups(1L);
+        assertEquals(1, group.size());
     }
 }

@@ -39,7 +39,7 @@ public class CourseGroupServiceImpl implements CourseGroupService {
             jsonResult.put("data", null);
         } else {
             JSONObject currentUserGroupKey = null;
-            BigInteger targetGroupId = null;
+            Long targetGroupId = null;
             HashMap<JSONObject, ArrayList<JSONObject>> map = new HashMap<JSONObject, ArrayList<JSONObject>>();
             for(Object[] element : elements) {
                 JSONObject group = new JSONObject();
@@ -53,9 +53,9 @@ public class CourseGroupServiceImpl implements CourseGroupService {
                 member.put("avatar", element[10]);
                 member.put("id", element[11]);
 
-                if(((BigInteger) element[11]).longValue() == userId) {
+                if(((Long) element[11]).longValue() == userId) {
                     currentUserGroupKey = group;
-                    targetGroupId = (BigInteger) element[0];
+                    targetGroupId = (Long) element[0];
                 }
 
                 if(map.get(group) == null) {
