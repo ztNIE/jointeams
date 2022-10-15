@@ -118,7 +118,7 @@ export default {
     },
     deleteACourse(course){
       ElMessageBox.confirm(
-          'You are going to delete this course?',
+          'Are you sure to delete this course?',
           'Warning',
           {
             confirmButtonText: 'Confirm',
