@@ -266,7 +266,6 @@ export default {
   methods: {
     jumpToStudentProfile(id) {
       this.$router.push(`/userProfile/${id}`)
-      console.log(id)
     },
     processAvatar(fileName) {
       let result = 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
@@ -276,7 +275,6 @@ export default {
       userAPI.getAvatar(fileName)
           .then((res) => {
             result = 'data:image/jpeg;base64,' + res.data.data.image
-            console.log(result)
           })
       return result
     },
@@ -366,7 +364,6 @@ export default {
           throw new Error(response.msg)
         }
       } catch (err) {
-        console.log(err)
         ElMessage("Please try again later")
       }
     },

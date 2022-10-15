@@ -129,7 +129,7 @@ export default {
         return !course.is_lock
       })
 
-      console.log(_this.currentCourse, _this.pastCourse, _this.interestedCourse)
+      // console.log(_this.currentCourse, _this.pastCourse, _this.interestedCourse)
     }).catch((err) => {
       ElMessage.error(err.data.msg)
     })

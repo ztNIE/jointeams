@@ -131,12 +131,8 @@ export default {
       let isValid = false;
       await this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log('Valid register input');
-          console.log(this.formModel);
           isValid = true;
         } else {
-          console.log('Submit failed');
-          console.log(this.formModel);
           return false;
         }
       })
@@ -154,7 +150,6 @@ export default {
           this.isRegisterSuccess = true;
           this.emailUrl = this.universities.find(university => university.id === this.formModel.university).emailUrl
         } catch (error) {
-          console.log(error);
           this.errorMsg = error.message;
         }
       }
@@ -164,7 +159,6 @@ export default {
     },
     confirmSuccess() {
       this.isRegisterSuccess = false
-      console.log(this.emailUrl)
       window.open(this.emailUrl);
       this.$router.replace("/landing")
     }
@@ -179,13 +173,11 @@ export default {
           callback(new Error('Invalid university email address'))
         } else {
           getEmailExist(value).then((result) => {
-            console.log(result)
             if (result.data.data.result) {
               callback(new Error('Email already registered'))
             }
             callback()
-          }).catch((reason) => {
-            console.log(reason)
+          }).catch(() => {
             callback()
           })
         }

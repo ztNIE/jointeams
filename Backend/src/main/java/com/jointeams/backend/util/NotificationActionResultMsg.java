@@ -55,7 +55,7 @@ public enum NotificationActionResultMsg {
     InvalidedAction(-1) {
         @Override
         public String toString() {
-            return "Invalided action!";
+            return "Invalid action!";
         }
     },
     ResponseLimitation(-2) {
@@ -91,7 +91,7 @@ public enum NotificationActionResultMsg {
     InvalidedNotificationType(-7) {
         @Override
         public String toString() {
-            return "Invalided notification type!";
+            return "Invalid notification type!";
         }
     };
 

@@ -48,7 +48,7 @@ export default {
   },
   created() {
     let _this = this
-    if (authUtil.isLogin() != null) {
+    if (authUtil.isLogin()) {
       userAPI.getUserInfo(this.$store.getters.userId).then((res) => {
         let data = res.data.data
         _this.currentUserName = data.firstName + ' ' + data.lastName

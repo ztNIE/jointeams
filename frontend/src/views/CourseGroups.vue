@@ -2,23 +2,67 @@
   <div class="common-layout">
     <el-card class="box-card">
       <template #header>
-        <div>
-          <div>
-            <span class="main_header">{{ course.code }}</span>&nbsp;&nbsp;
-            <span class="sub_header">{{ course.name }} - Groups</span>
-          </div>
-          <div class="divider_space"/>
-          <div>
-            <el-form :inline="true">
-              <el-form-item label="My Tutorial/Lab:" class="tutorial_form">
-                <el-input v-model="tutorial"/>
-              </el-form-item>
-              <el-form-item class="tutorial_form">
-                <el-button type="warning" @click="handleEditTutorial">Edit</el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </div>
+<!--        <div>-->
+<!--          <div>-->
+<!--            <span class="main_header">{{ course.code }}</span>&nbsp;&nbsp;-->
+<!--            <span class="sub_header">{{ course.name }} - Groups</span>-->
+<!--          </div>-->
+<!--          <div class="divider_space"/>-->
+<!--          <div>-->
+<!--            <el-form :inline="true">-->
+<!--              <el-form-item label="My Tutorial/Lab:" class="tutorial_form">-->
+<!--                <el-input v-model="tutorial"/>-->
+<!--              </el-form-item>-->
+<!--              <el-form-item class="tutorial_form">-->
+<!--                <el-button type="warning" @click="handleEditTutorial">Edit</el-button>-->
+<!--              </el-form-item>-->
+<!--            </el-form>-->
+<!--          </div>-->
+<!--        </div>-->
+        <el-row :gutter="20">
+          <el-col :span="24" class="course-name">
+            <span class="bold">{{ course.code }}</span> {{ course.name }}
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24" class="tutorial">
+            <div>
+              My Tutorial/Lab:
+              <el-input v-model="tutorialNumber"
+                        style="width: 110px"
+                        size="small"
+                        :maxlength="2"
+                        :disabled="!isEditing"
+                        class="tut-input"
+              >
+                <template #prepend>
+                  <el-select v-model="tutorialType"
+                             placeholder=" "
+                             style="width: 60px; font: inherit"
+                             size="small"
+                             :disabled="!isEditing"
+                  >
+                    <el-option label="RE" value="RE"/>
+                    <el-option label="CC" value="CC"/>
+                  </el-select>
+                </template>
+              </el-input>
+              <el-button type="warning"
+                         size="small"
+                         v-if="!isEditing"
+                         @click="toggleIsEditing"
+                         class="edit-btn"
+              >Edit
+              </el-button>
+              <el-button type="primary"
+                         size="small"
+                         v-else
+                         @click="editTutorial()"
+              >OK
+              </el-button>
+            </div>
+          </el-col>
+        </el-row>
       </template>
       <el-main>
         <div>
@@ -112,14 +156,21 @@ export default {
       },
       groups: [],
       members: [],
-      tutorial: "",
       search_term: "",
       search_tut: "",
       user_id: null,
       searchResult: [],
       dialogFormVisible: false,
       group_capacity: 1,
+      tutorialType: null,
+      tutorialNumber: null,
+      isEditing: false
     }
+  },
+  computed: {
+    tutorial() {
+      return this.tutorialType + this.tutorialNumber;
+    },
   },
   async created() {
     this.user_id = this.$store.getters.userId
@@ -127,7 +178,9 @@ export default {
 
     CourseGroupAPI.getTutorial(this.user_id, this.course.id).then((res) => {
       if (res !== null) {
-        this.tutorial = res.data.data.tutorial
+        let tutorial = res.data.data.tutorial
+        this.tutorialType = tutorial.substring(0,2)
+        this.tutorialNumber = tutorial.substring(2)
       }
     })
 
@@ -204,13 +257,41 @@ export default {
         this.searchResult = this.groups
       }
     },
-    handleEditTutorial() {
-      CourseGroupAPI.setTutorial(this.user_id, this.course.id, this.tutorial).then((res) => {
+    // handleEditTutorial() {
+    //   CourseGroupAPI.setTutorial(this.user_id, this.course.id, this.tutorial).then((res) => {
+    //     ElMessage({
+    //       type: res.data.msg,
+    //       message: "Edit success!",
+    //     })
+    //   })
+    // },
+    toggleIsEditing() {
+      this.isEditing = true;
+    },
+    async editTutorial(external = false) {
+      try {
+        if (!this.tutorialType || !this.tutorialNumber || this.tutorialNumber.length === 0) {
+          throw new Error("Please enter tutorial information")
+        }
+        if (this.tutorialNumber.length === 1) {
+          this.tutorialNumber = "0" + this.tutorialNumber
+        }
+        await courseDetailAPI.putSetTutorial(this.course.id, this.user_id, this.tutorial)
+        this.isEditing = false
         ElMessage({
-          type: res.data.msg,
-          message: "Edit success!",
+          type: "success",
+          message: `Set tutorial successfully`
         })
-      })
+      } catch (error) {
+        if (!external) {
+          ElMessage({
+            type: "info",
+            message: error.message
+          })
+        } else {
+          throw error
+        }
+      }
     },
     handleToDetail(group_id) {
       this.$router.push({name: "groupDetails", params: {group_id: group_id}});
@@ -280,7 +361,7 @@ export default {
     },
     getAvatar(id) {
       for(let i = 0; i < this.members.length; i++) {
-        if(this.members[i].id == id) {
+        if(this.members[i].id === id) {
           return this.members[i].avatar
         }
       }
@@ -370,5 +451,18 @@ export default {
 
 .createGroupBtn {
   text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.course-name {
+  font-size: 24px;
+}
+
+.tutorial {
+  font-size: 16px;
+  padding-top: 10px;
 }
 </style>

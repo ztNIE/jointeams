@@ -6,7 +6,7 @@
   >
     <span>{{ dialogMsg }}</span>
     <template #footer>
-      <el-button @click="closeDialog(dialogMsg)">Confirm</el-button>
+      <el-button @click="closeDialog()">Confirm</el-button>
     </template>
   </el-dialog>
 </template>
@@ -27,8 +27,7 @@ export default {
     }
   },
   methods: {
-    closeDialog(dialogMsg) {
-      console.log(dialogMsg)
+    closeDialog() {
       this.dialogMsg = null
       this.$router.replace('/sign-in')
     }
@@ -41,7 +40,6 @@ export default {
   beforeCreate() {
     const token = this.$route.params.token
     getRegistrationVerify(token).then((response) => {
-      console.log(response)
       if (response.status === 200) {
         this.isSuccess = true
         ElMessage("Account Activated")
@@ -49,8 +47,7 @@ export default {
       } else if (response.status === 202) {
         this.dialogMsg = response.data.msg
       }
-    }).catch((error) => {
-      console.log(error)
+    }).catch(() => {
       ElMessage("Invalid token")
       this.$router.replace('/landing')
     })

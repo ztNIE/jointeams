@@ -265,7 +265,7 @@ router.beforeEach(async (to, from, next) => {
 
                 localStorage.setItem('routes', JSON.stringify(temp))
                 store.commit('setAddRoutes', true)
-                console.log(router.getRoutes(), '查看现有路由')
+                // console.log(router.getRoutes(), '查看现有路由')
                 next({...to, replace: true})     //路由进行重定向放行
 
             } else {

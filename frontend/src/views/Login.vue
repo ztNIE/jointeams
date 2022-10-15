@@ -87,7 +87,6 @@ export default {
       }
       getEmailExist(value).then((response) => {
         const result = response.data.data.result;
-        console.log(result)
         if (!result) {
           callback(new Error('email not exist, please check again'))
         }
@@ -152,7 +151,6 @@ export default {
         })
         this.resetPasswordVisible = false
       } catch (error) {
-        console.log(error)
         this.resetPasswordVisible = false
       }
     },
@@ -178,7 +176,6 @@ export default {
           type: 'success'
         })
 
-        console.log(role)
         if (role === 'ROLE_USER'){
           this.$router.replace('/dashboard')
         } else {

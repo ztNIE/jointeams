@@ -15,7 +15,6 @@ export default {
     actions: {
         async loadUniversities(context) {
             const response = await getUniversities()
-            console.log(response)
             const universityData = response.data.data.filter((uni) => {
                 return uni.name !== "Test University"
             })
@@ -24,7 +23,6 @@ export default {
     },
     mutations: {
         loadUniversities(state, payload) {
-            console.log(payload)
             state.universities = payload;
         }
     }

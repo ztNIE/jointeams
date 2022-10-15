@@ -18,7 +18,10 @@
               <span id="time">{{parseTime(notification)}}</span>
               <div class="card-header">
                 <p id="type">{{notification.content}}</p>
-                <p id="from">From: {{from(notification.type, notification)}}</p>
+                <p id="from"
+                   @click="handleNotificationClick(notification)"
+
+                >From: {{from(notification.type, notification)}}</p>
               </div>
               <div class="card-content">
                 <span id="message">{{notification.message}}</span>
@@ -34,10 +37,10 @@
 </template>
 
 
-<script >
-import { parseTime } from '@/util/ParseTime'
+<script>
+import {parseTime} from '@/util/ParseTime'
 import notificationAPI from '../api/notification.js'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import {ElMessage, ElMessageBox} from 'element-plus'
 import store from "@/store";
 
 export default {
@@ -95,6 +98,14 @@ export default {
       else
         return notification.groupName
     },
+    handleNotificationClick(notification) {
+      console.log(notification)
+      if (notification.type === 1) {
+        this.$router.push(`userProfile/${notification.userId}`)
+      } else if (notification.type === 0) {
+        this.$router.push(`groupDetails/${notification.groupId}`)
+      }
+    }
   }
 }
 </script>
@@ -149,6 +160,7 @@ export default {
 #from{
   // min-width: 300px;
   color: gray;
+  cursor: pointer;
 }
 .action-button {
   text-align:right;
