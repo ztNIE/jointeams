@@ -124,8 +124,6 @@ export default {
     padding-right: 5px;
   }
   .member_avatar {
-    // height: 25px;
-    // width: 25px;
     vertical-align: middle;
     margin-right: 10px;
   }

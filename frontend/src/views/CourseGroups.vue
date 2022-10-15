@@ -2,23 +2,6 @@
   <div class="common-layout">
     <el-card class="box-card">
       <template #header>
-<!--        <div>-->
-<!--          <div>-->
-<!--            <span class="main_header">{{ course.code }}</span>&nbsp;&nbsp;-->
-<!--            <span class="sub_header">{{ course.name }} - Groups</span>-->
-<!--          </div>-->
-<!--          <div class="divider_space"/>-->
-<!--          <div>-->
-<!--            <el-form :inline="true">-->
-<!--              <el-form-item label="My Tutorial/Lab:" class="tutorial_form">-->
-<!--                <el-input v-model="tutorial"/>-->
-<!--              </el-form-item>-->
-<!--              <el-form-item class="tutorial_form">-->
-<!--                <el-button type="warning" @click="handleEditTutorial">Edit</el-button>-->
-<!--              </el-form-item>-->
-<!--            </el-form>-->
-<!--          </div>-->
-<!--        </div>-->
         <el-row :gutter="20">
           <el-col :span="24" class="course-name">
             <span class="bold">{{ course.code }}</span> {{ course.name }}
@@ -67,10 +50,10 @@
       <el-main>
         <div>
           <el-form :inline="true" class="demo-form-inline">
-            <el-form-item>
-              <el-input placeholder="Enter group name" v-model="search_term"/>
+            <el-form-item class="search-term">
+              <el-input class="search-input" placeholder="Enter group name" v-model="search_term"/>
             </el-form-item>
-            <el-form-item>
+            <el-form-item class="search-btn">
               <el-button type="primary" @click="handleSearch">Search</el-button>
             </el-form-item>
             <el-form-item>
@@ -90,18 +73,18 @@
         </div>
         <el-scrollbar max-height="300px" v-if="searchResult.length !== 0">
           <div v-for="group in searchResult" :key="group.group_id" class="text item">
-            <el-card class="group-card" @click="handleToDetail(group.group_id)">
+            <el-card class="group-card" @click="handleToDetail(group.group_id)" shadow="hover">
+              <el-icon id="detailBtn-icon">
+                <Right/>
+              </el-icon>
               <div class="card-header">
                 <span id="name">{{ group.group_name }}</span>
                 <span id="capacity">(Capacity: {{ group.capacity }})</span>
-                <el-icon id="detailBtn-icon">
-                  <Right/>
-                </el-icon>
               </div>
               <div class="divider_space"></div>
               <div class="card-content">
                 <span v-for="member in group.members" :key="member.name" class="member">
-                  <el-avatar class="member_avatar" :src="getAvatar(member.id)" />
+                  <el-avatar class="member_avatar" :size="40" :src="getAvatar(member.id)" />
                   <span class="member_name"> {{ member.name }} </span>
                 </span>
               </div>
@@ -379,6 +362,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .card-content {
@@ -396,6 +380,9 @@ export default {
 #detailBtn-icon {
   color: #2EC4B6;
   font-size: 3em;
+  position: absolute;
+  top: 40%;
+  right: 20px;
 }
 
 #name {
@@ -410,15 +397,16 @@ export default {
 }
 
 .member_avatar {
-  height: 25px;
-  width: 25px;
   vertical-align: middle;
   margin-right: 10px;
 }
 
 .member_name {
-  font-size: small;
-  vertical-align: center;
+  font-size: 16px;
+  position: relative;
+  top: 3px;
+  margin-left: 2px;
+  margin-right: 13px;
 }
 
 .divider_space {
@@ -427,8 +415,8 @@ export default {
 
 .main_header {
   color: black;
-  font-weight: bold;
-  font-size: xx-large;
+  font-weight: 500;
+  font-size: 23px;
 }
 
 .sub_header {
@@ -439,10 +427,17 @@ export default {
 
 .box-card {
   min-height: 580px;
+  height: 100%;
 }
 
 .group-card:hover {
   background-color: #CBF3F0;
+  cursor: pointer;
+}
+
+.group-card {
+  position: relative;
+  margin-bottom: 5px;
 }
 
 .el-form-item.asterisk-left.tutorial_form {
@@ -464,5 +459,25 @@ export default {
 .tutorial {
   font-size: 16px;
   padding-top: 10px;
+}
+
+.edit-btn {
+  margin-left: 5px;
+}
+
+.common-layout {
+  height: 100%;
+}
+
+.search-term {
+  margin-right: 8px;
+}
+
+.search-btn {
+  margin-right: 40px;
+}
+
+.search-input {
+  width: 200px;
 }
 </style>

@@ -147,7 +147,11 @@ export default {
       this.$router.push('/notification')
     },
     handleClickAvatar() {
-      this.$router.push('/myProfile')
+      if(authUtil.isLogin()) {
+        if(localStorage.getItem("role") === "ROLE_USER") {
+          this.$router.push('/myProfile')
+        }
+      }
     }
   }
 }
