@@ -234,11 +234,11 @@ export default {
               type: 'success',
               message: res.data.msg,
             })
-            CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then((res) => {
+            CourseGroupAPI.getAllGroupsInOneCourse(this.course.id, this.user_id).then(async (res) => {
               if (res.data.data === null) {
                 this.groups = []
               } else {
-                this.groups = res.data.data
+                await this.handleGetAvatar(res)
               }
               this.searchResult = this.groups
             })

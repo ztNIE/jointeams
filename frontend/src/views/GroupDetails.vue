@@ -118,11 +118,7 @@
         <div v-for="student in searchResult" :key="student.id">
           <el-card class="student_card">
             <div class="student_div">
-              <el-avatar class="student_avatar" src={{student.filename}} @error="errorHandler">
-                <img
-                    src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
-                />
-              </el-avatar>
+              <el-avatar class="student_avatar" :src="student.filename" :size="45" />
               <span class="student_name"> {{student.name}} </span>
               <span class="inviteBtn">
                 <el-button type="warning" @click="handleInvitationConfirm(student)">Invite</el-button>
@@ -185,6 +181,18 @@ export default {
 
       GroupAPI.listStudentsNotInAGroup(this.group.course_id).then((res) => {
         this.students = res.data.data
+
+        for (let i = 0; i < this.students.length; i++) {
+          if(this.students[i].filename == null) {
+            this.students[i].filename = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+          } else {
+            userAPI.getAvatar(this.students[i].filename).then((res) => {
+              this.students[i].filename = 'data:image/jpeg;base64,' + res.data.data.image
+            }).catch(() => {
+              ElMessage.error('Fail to load the avatar')
+            })
+          }
+        }
       })
     })
 

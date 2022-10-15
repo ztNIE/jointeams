@@ -115,8 +115,6 @@ update course set next_group_name_id = 2 where id = 1;
 insert into group_user (group_id, user_id, is_leader)
 values
     (1, 1, true),
-    (1, 2, false),
-    (2, 2, true),
     (2, 3, false),
     (3, 1, true),
     (4, 1, true),
@@ -127,8 +125,7 @@ insert into notification (content, message,
 values
     (NULL, NULL, '2022-09-14 10:35:13.000000', 0, 1, 3),
     (NULL, NULL, '2022-09-15 11:35:13.000000', 1, 2, 1),
-    (NULL, NULL, '2022-09-16 12:35:13.000000', 2, 2, 3),
-    (NULL, NULL, '2022-09-17 13:35:13.000000', 5, 3, 2);
+    (NULL, NULL, '2022-09-16 12:35:13.000000', 2, 2, 3);
 
 insert into `comment` (content, is_hide, tag,
                        timestamp, group_id, receiver_id, sender_id)

@@ -86,9 +86,6 @@ export default {
     background-color: #CBF3F0;
     height: 100%;
   }
-  // .el-card__body {
-  //   padding-top: 10px;
-  // }
   .card-header {
     display: flex;
     justify-content: space-between;
