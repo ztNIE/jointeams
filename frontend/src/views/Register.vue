@@ -104,14 +104,15 @@
 
 <script>
 import AuthLayout from "@/views/layout/AuthLayout";
-import {getEmailExist, postRegister} from "@/api/auth";
+import {getEmailExist, postRegister, postReCaptchaToken} from "@/api/auth";
 import {mapActions, mapGetters} from "vuex";
 import authUtil from '@/util/authUtil'
 
-
 export default {
   name: 'Register',
-  components: {AuthLayout},
+  components: {
+    AuthLayout,
+  },
   computed: {
     ...mapGetters(["isUser"]),
     ...mapGetters('university', ['universities']),
@@ -128,6 +129,7 @@ export default {
   methods: {
     ...mapActions('university', ['loadUniversities']),
     async submitForm(formName) {
+
       let isValid = false;
       await this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -138,6 +140,12 @@ export default {
       })
       if (isValid) {
         try {
+          await this.$recaptchaLoaded()
+          const token = await this.$recaptcha('register')
+          let reCaptchaResult = await postReCaptchaToken(token, this.captAction)
+          if (!reCaptchaResult.data || reCaptchaResult.data.msg !== 'success') {
+            throw new Error("Please try again later")
+          }
           await postRegister({
             firstName: this.formModel.firstname,
             lastName: this.formModel.lastname,
@@ -232,7 +240,7 @@ export default {
           {required: true, message: 'Please enter your degree', trigger: 'blur'}
         ],
         faculty: [
-            {required: true, message: 'Please choose your faculty'}
+          {required: true, message: 'Please choose your faculty'}
         ]
       },
       formModel: {
@@ -247,6 +255,7 @@ export default {
         major: '',
       },
       emailUrl: null,
+      captAction: "register"
     }
   }
 }
@@ -258,6 +267,7 @@ export default {
   text-align: center;
   padding: 15px 20px;
 }
+
 .register-btn {
   margin-top: 10px;
 }

@@ -2,6 +2,7 @@ package com.jointeams.backend.service.serviceImpl;
 
 import com.jointeams.backend.model.request.PasswordRequest;
 import com.jointeams.backend.model.request.RegisterUserRequest;
+import com.jointeams.backend.model.response.ReCaptchaResponse;
 import com.jointeams.backend.pojo.University;
 import com.jointeams.backend.pojo.User;
 import com.jointeams.backend.pojo.token.PasswordToken;
@@ -13,8 +14,12 @@ import com.jointeams.backend.repositery.VerificationTokenRepository;
 import com.jointeams.backend.service.RegisterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -27,16 +32,22 @@ public class RegisterServiceImpl implements RegisterService {
     private UserRepository userRepository;
 
     @Autowired
-    UniversityRepository universityRepository;
+    private UniversityRepository universityRepository;
 
     @Autowired
-    VerificationTokenRepository verificationTokenRepository;
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    PasswordTokenRepository passwordTokenRepository;
+    private PasswordTokenRepository passwordTokenRepository;
+
+    @Value("${jointeams.recaptcha-server}")
+    private String recaptchaServer;
+
+    @Value("${jointeams.secret-key}")
+    private String secretKey;
 
     @Override
     public String isUserModelValid(RegisterUserRequest registerUserRequest) {
@@ -138,7 +149,7 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public User findUserByEmail(String email) {
-        return (User) userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
@@ -177,5 +188,28 @@ public class RegisterServiceImpl implements RegisterService {
     public void savePassword(User user, PasswordRequest passwordRequest) {
         user.setPassword(passwordEncoder.encode(passwordRequest.getNewPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    public Boolean postReCaptchaToken(String token, String action) {
+
+        // Build request
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("secret", this.secretKey);
+        body.add("response", token);
+
+        // Send POST request
+        RestTemplate restTemplate = new RestTemplate();
+        ReCaptchaResponse response = restTemplate.postForObject(this.recaptchaServer, body, ReCaptchaResponse.class);
+        if (response == null) {
+            log.error("reCaptcha get null response");
+            return false;
+        }
+        log.info(response.toString());
+
+        if (!response.isSuccess()) {
+            return false;
+        }
+        return response.getScore() > 0.5;
     }
 }
