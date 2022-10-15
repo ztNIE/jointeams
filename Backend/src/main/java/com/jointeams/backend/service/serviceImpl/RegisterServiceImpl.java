@@ -67,7 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public User registerUser(RegisterUserRequest registerUserRequest){
+    public User registerUser(RegisterUserRequest registerUserRequest) {
         User user = new User();
 
         user.setFirstName(registerUserRequest.getFirstName());
@@ -81,6 +81,9 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         user.setEmail(registerUserRequest.getEmail());
+        user.setDescription(
+                "Hi, I'm " + registerUserRequest.getFirstName() + " " + registerUserRequest.getLastName() + " :)"
+        );
         user.setUniversity(university);
         user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
         userRepository.save(user);
