@@ -21,7 +21,7 @@ values
      'Engineering', null, 'Sarah',
      true, false, 'Lee',
      '$2a$10$vb7rO449.CdJDKGI24VgD.Qwl986ntbw7wlotLwOLOGjKiypH6yhO',
-     null, 1),
+     2, 1),
     ('Master of Information Technology', 'Hi, I am John Davis :)', 'devu0003@uni.sydney.edu.au',
      'Engineering', null, 'John',
      true, false, 'Davis',
@@ -131,5 +131,6 @@ insert into `comment` (content, is_hide, tag,
                        timestamp, group_id, receiver_id, sender_id)
 values
     ('Great collaboration experience! Hope to team up next time :) ', false, 3, '2022-09-23 09:23:27.000000', 1, 1, 3),
+    ('Great collaboration experience! Hope to team up next time :) ', false, 2, '2022-09-23 09:23:27.000000', 1, 3, 1),
     ('Good job!', true, 2, '2022-09-23 09:24:27.000000', 4, 1, 4);
 
