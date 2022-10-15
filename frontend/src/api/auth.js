@@ -1,4 +1,4 @@
-import {post, get} from './http'
+import {get, post} from './http'
 
 export const postRegister = async function (registerData) {
     return post('/register', registerData)
@@ -27,6 +27,12 @@ export const getRegistrationVerify = async function (token) {
 export const postBeginResetPassword = async function (email) {
     return post('/register/resetPassword', {
         email: email
+    })
+}
+
+export const postReCaptchaToken = async function (token, action) {
+    return post('auth/validReCaptchaToken', {
+        token, action
     })
 }
 

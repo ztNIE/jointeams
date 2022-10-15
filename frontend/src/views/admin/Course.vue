@@ -162,7 +162,7 @@ export default {
     },
     changeACourseLockStatus(course){
       ElMessageBox.confirm(
-          'You are going to lock/unlock this course?',
+          'Are you sure to lock/unlock this course?',
           'Warning',
           {
             confirmButtonText: 'Confirm',
