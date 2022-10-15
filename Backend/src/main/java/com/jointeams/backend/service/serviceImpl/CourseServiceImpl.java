@@ -567,6 +567,10 @@ public class CourseServiceImpl implements CourseService {
                 commentRepository.deleteAllByGroupId(group.getId());
                 groupUserRepository.deleteAllByGroupId(group.getId());
             });
+
+            // Enrollment
+            this.enrollmentRepository.deleteEnrollmentByCourseId(courseId);
+
             groupRepository.deleteAll(groups);
             courseRepository.delete(course);
             return 1;

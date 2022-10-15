@@ -3,8 +3,11 @@ package com.jointeams.backend.repositery;
 import com.jointeams.backend.pojo.Course;
 import com.jointeams.backend.pojo.Enrollment;
 import com.jointeams.backend.pojo.User;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 import java.util.List;
@@ -37,12 +40,14 @@ public interface EnrollmentRepository extends CrudRepository<Enrollment, Long> {
     @Query(value = "select e.user from Enrollment e where e.course.id = :courseId and e.semester.isCurrent=true")
     List<User> findAllCurrentStudentsByCourseId(Long courseId);
 
+    @Query("delete from Enrollment e where e.course.id=?1")
+    @Modifying
+    @Transactional
+    void deleteEnrollmentByCourseId(Long courseId);
+
     //    check if a student enrolled in a course
     @Query(value = "select e from Enrollment e where e.user.id = :userId and e.course.id=:courseId")
     List<Enrollment> findEnrollmentByUserIdAndCourseId(Long userId, Long courseId);
-
-    @Query(value="alter table `enrollment` AUTO_INCREMENT = 1", nativeQuery = true)
-    public void resetIncrement();
 }
 
 
