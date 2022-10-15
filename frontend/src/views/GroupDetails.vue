@@ -51,7 +51,7 @@
                     <p class="student_degree">{{member.degree}}</p>
                   </div>
                   <div class="member_div right">
-                    <el-button type="primary" :disabled="is_comment_available === false || member.id === user_id || is_member === false" @click="handleComment(member)">Comment</el-button>
+                    <el-button type="primary" :disabled="is_comment_available === false || member.id === user_id || is_member === false" @click="handleComment(member)" @click.stop="handleToProfile()">Comment</el-button>
                   </div>
                 </el-card>
                 <div class="divider_space"></div>
