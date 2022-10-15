@@ -70,7 +70,7 @@ public class AdminController {
     @PostMapping(path = "addACourse")
     public ResponseEntity<JSONObject> addACourse(@RequestBody AddCourseRequest courseRequest)
     {
-        JsonResult jsonResult = courseService.AddACourseFeedback(courseRequest.getCode(), courseRequest.getName(),
+        JsonResult jsonResult = courseService.addACourseFeedback(courseRequest.getCode(), courseRequest.getName(),
                 courseRequest.getUniversityId());
 
         if(jsonResult.getStatus() != 1) {

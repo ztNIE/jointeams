@@ -49,7 +49,7 @@ public class SemesterServiceImpl implements SemesterService {
         IsCommentAvailable.Flag.setValue(false);
     }
 
-    public int changeCurrentSemester(int year, int semesterNumber) {
+    private int changeCurrentSemester(int year, int semesterNumber) {
         Semester currentSemesterOld = semesterRepository.findSemestersByIsCurrent(true).orElse(null);
         if(currentSemesterOld == null)
         {

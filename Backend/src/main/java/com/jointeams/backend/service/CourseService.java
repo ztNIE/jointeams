@@ -22,7 +22,7 @@ public interface CourseService {
 
     public JsonResult findAllFeedback();
 
-    public JsonResult AddACourseFeedback(String code, String name, Long universityId);
+    public JsonResult addACourseFeedback(String code, String name, Long universityId);
 
     public JsonResult deleteACourseFeedback(Long courseId);
 

@@ -30,7 +30,7 @@ public class NotificationServiceImpl implements NotificationService {
     private GroupUserToolService groupUserToolService;
 
 
-    public List<Notification> findAllByUserId(Long userId) {
+    private List<Notification> findAllByUserId(Long userId) {
         List<Notification> result = notificationRepository.findAllByUserId(userId);
         List<GroupUser> groupUsers = groupUserToolService.findALLAsLeaderByUserId(userId);
         groupUsers.forEach(groupUser->result.addAll(notificationRepository.findAllByGroupId(groupUser.getGroupUserId().getGroupId())));
@@ -80,7 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
         return jsonResult;
     }
 
-    public int actionOnNotification(Long notificationId, int action) //action: 0: accept, 1: decline, 2: delete
+    private int actionOnNotification(Long notificationId, int action) //action: 0: accept, 1: decline, 2: delete
     {
         Notification notification = notificationRepository.findById(notificationId).orElse(null);
         if(notification == null)

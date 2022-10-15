@@ -5,16 +5,17 @@ import lombok.Setter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public enum IsCommentAvailable {
     Flag;
     private boolean value;
-    final private String path = "Backend/src/main/resources/config/globalConfig.json";
+    final private String path = "config/globalConfig.json";
     final private String key = "isCommentFunctionAvailable";
 
     IsCommentAvailable()
@@ -22,14 +23,18 @@ public enum IsCommentAvailable {
         JSONParser parser = new JSONParser();
         boolean isCommentAvailable = false;
         try {
-            FileReader reader = new FileReader(path);
+            //测试和打了jar包以后resource的文件都只能用流读写
+            ClassPathResource resource = new ClassPathResource("config/globalConfig.json");
+            InputStream inputStream = resource.getInputStream();
+            Reader reader = new InputStreamReader(inputStream);
             Object obj = parser.parse(reader);
             JSONObject jsonObj = (JSONObject) obj;
             isCommentAvailable = (boolean) jsonObj.get(key);
+            inputStream.close();
             reader.close();
 
         } catch (FileNotFoundException e) {
-//            e.printStackTrace();
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -53,22 +58,20 @@ public enum IsCommentAvailable {
     }
     public void saveValue()
     {
-        JSONParser parser = new JSONParser();
         try {
-            FileReader reader = new FileReader(path);
-            Object obj = parser.parse(reader);
-            JSONObject jsonObj = (JSONObject) obj;
+            JSONObject jsonObj = new JSONObject();
             jsonObj.put(key, this.value);
-            reader.close();
-            FileWriter writer = new FileWriter(path);
+            //测试和打了jar包以后resource的文件写入要用如下的类（PathResource+OutputStream）
+            WritableResource resource = new PathResource("src/main/resources/config/globalConfig.json");
+            OutputStream outputStream = resource.getOutputStream();
+            Writer writer = new OutputStreamWriter(outputStream);
             writer.write(jsonObj.toJSONString());
             writer.close();
+            outputStream.close();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
     }

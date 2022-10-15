@@ -511,7 +511,7 @@ public class CourseServiceImpl implements CourseService {
         return jsonResult;
     }
 
-    public int addACourse(String code, String name, Long universityId)
+    private int addACourse(String code, String name, Long universityId)
     {
         University university = universityToolService.findById(universityId);
         if(university == null)
@@ -536,7 +536,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public JsonResult AddACourseFeedback(String code, String name, Long universityId) {
+    public JsonResult addACourseFeedback(String code, String name, Long universityId) {
         int resultCode = addACourse(code, name, universityId);
         JsonResult jsonResult = new JsonResult();
         jsonResult.setStatus(resultCode);
@@ -555,7 +555,7 @@ public class CourseServiceImpl implements CourseService {
         return jsonResult;
     }
 
-    public int deleteACourse(Long courseId) {
+    private int deleteACourse(Long courseId) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null)
             return 0;
@@ -593,7 +593,7 @@ public class CourseServiceImpl implements CourseService {
         return jsonResult;
     }
 
-    public int changeCourseLockStatus(Long courseId, boolean isLocked) {
+    private int changeCourseLockStatus(Long courseId, boolean isLocked) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course == null)
             return 0;
