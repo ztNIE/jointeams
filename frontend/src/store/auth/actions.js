@@ -175,6 +175,5 @@ export default {
                 router.removeRoute(route.name)
             }
         })
-        console.log()
     },
 }
