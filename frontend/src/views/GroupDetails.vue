@@ -39,7 +39,7 @@
             <el-scrollbar height="300px">
               <div v-for="member in members" :key="member.id">
                 <el-card class="member_card" @click="handleToProfile(member.id)" shadow="hover">
-                  <div class="member_div left">
+                  <div class="member_div">
                     <el-avatar class="member_avatar" :src="member.filename" :size="45" />
                   </div>
                   <div class="member_div middle">
@@ -50,7 +50,7 @@
                     <p class="student_email">{{member.email}}</p>
                     <p class="student_degree">{{member.degree}}</p>
                   </div>
-                  <div class="member_div right">
+                  <div class="member_div comment-btn">
                     <el-button type="primary" :disabled="is_comment_available === false || member.id === user_id || is_member === false" @click="handleComment(member)" @click.stop="handleToProfile()">Comment</el-button>
                   </div>
                 </el-card>
@@ -479,6 +479,7 @@ export default {
   }
   .member_card {
     margin-bottom: 5px;
+    position: relative;
   }
   .student_card {
     height: 60px;
@@ -564,5 +565,13 @@ export default {
   }
   .common-layout {
     height: 100%;
+  }
+  .comment-btn {
+    position: absolute;
+    right: 20px;
+    top: 28%;
+  }
+  .member_avatar {
+    margin-right: 8px;
   }
 </style>

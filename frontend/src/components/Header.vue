@@ -73,6 +73,10 @@ export default {
     }
 
     this.handleInitNotification()
+
+    this.$emitter.on('updateHeaderAvatar', (newAvatar) => {
+      _this.avatar = newAvatar;
+    })
   },
   mounted() {
     this.handlePolling()
@@ -86,11 +90,6 @@ export default {
       this.startPolling = false
     },
     handleLogOut() {
-      // this.$store.commit('setAddRoutes', false)
-      // localStorage.removeItem('routes')
-      // localStorage.removeItem('email')
-      // localStorage.removeItem('userId')
-      // localStorage.removeItem('role')
       this.logout()
       this.$router.push('/landing')
       ElMessage({
