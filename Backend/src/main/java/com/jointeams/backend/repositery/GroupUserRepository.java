@@ -45,6 +45,7 @@ public interface GroupUserRepository extends CrudRepository<GroupUser, GroupUser
             "  and e.course.id = ?1\n" +
             "  and u.isActivate = true\n" +
             "  and g.course.id = ?1\n" +
+            "  and s.id = g.semester.id\n" +
             "  and u.isAdmin = false)")
     public Optional<List<Object[]>> getUserEnrolledInACurrentSemesterCourseWithoutAGroup(Long courseId);
 

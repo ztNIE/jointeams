@@ -115,7 +115,7 @@ update course set next_group_name_id = 2 where id = 1;
 insert into group_user (group_id, user_id, is_leader)
 values
     (1, 1, true),
-    (2, 3, false),
+    (2, 3, true),
     (3, 1, true),
     (4, 1, true),
     (4, 3, false);
