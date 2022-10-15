@@ -41,7 +41,7 @@ public enum NotificationType {
                         messageResult = "The Group " + groupName + "  invites you to join there group. For more information, please go to their group page.";
                         break;
                     case 1:
-                        messageResult = userName + " applied to join the Group " + groupName + ".  For more information, please go to his profile.";
+                        messageResult = userName + " applied to join the Group " + groupName + ".  For more information, please go to the applicant's profile.";
                         break;
                     case 2:
                         messageResult = groupName + " has accepted your join request. For more information, please go to the group page.";
