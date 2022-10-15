@@ -122,6 +122,7 @@ export default {
   display: block;
   justify-content: space-between;
   align-items: center;
+  width: 75%;
 }
 #name {
   font-size: large;
@@ -140,6 +141,7 @@ export default {
 .box-card {
   min-height: 580px;
   height: 100%;
+  min-width: 1200px;
 }
 .notification-card:hover {
   background-color: #CBF3F0;
