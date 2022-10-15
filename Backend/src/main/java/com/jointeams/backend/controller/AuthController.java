@@ -85,7 +85,6 @@ public class AuthController {
     @PostMapping("/validReCaptchaToken")
     public ResponseEntity<?> validReCaptchaToken(@RequestBody ReCaptchaRequest request) {
         Boolean response = registerService.postReCaptchaToken(request.getToken(), request.getAction());
-        log.info(response.toString());
         return ResponseEntity.ok().body(new StandardResponse<>(response ? "success" : "failed", null));
     }
 }
