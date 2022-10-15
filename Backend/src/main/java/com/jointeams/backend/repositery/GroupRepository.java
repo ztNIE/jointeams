@@ -55,6 +55,9 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "ALTER TABLE Group ALTER COLUMN Group.id RESTART WITH 1")
     public void resetIncrement();
+
+    @Query("select g from Group g where g.course.id = ?1")
+    List<Group> getGroupsByCourseId(Long courseId);
 }
 
 

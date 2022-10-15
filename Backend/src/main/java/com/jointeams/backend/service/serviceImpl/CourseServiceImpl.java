@@ -561,7 +561,7 @@ public class CourseServiceImpl implements CourseService {
             return 0;
         else
         {
-            List<Group> groups = course.getGroups();
+            List<Group> groups = this.groupRepository.getGroupsByCourseId(courseId);
             groups.forEach(group -> {
                 notificationRepository.deleteAllByGroupId(group.getId());
                 commentRepository.deleteAllByGroupId(group.getId());
