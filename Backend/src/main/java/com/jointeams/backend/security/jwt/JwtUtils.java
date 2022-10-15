@@ -1,4 +1,5 @@
-// TODO: reference ...
+// Reference:
+// JwtUtils.java is retrieved from https://github.com/only2dhir/spring-boot-jwt owned by Dhiraj Ray
 package com.jointeams.backend.security.jwt;
 
 import io.jsonwebtoken.*;
