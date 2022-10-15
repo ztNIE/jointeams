@@ -93,7 +93,7 @@ export default {
       else
       {
         ElMessageBox.confirm(
-            'You are going to reset the current semester?',
+            'Are you sure to reset the current semester?',
             'Warning',
             {
               confirmButtonText: 'Confirm',
@@ -125,7 +125,7 @@ export default {
       if (!this.isEditActive) {
         const action = (this.isCommentAvailable === true) ? 'Enable' : 'Disable'
         ElMessageBox.confirm(
-            'You are going to ' + action.toLowerCase() + ' the comment feature?',
+            'Are you sure to ' + action.toLowerCase() + ' the comment feature?',
             'Warning',
             {
               confirmButtonText: 'Confirm',
