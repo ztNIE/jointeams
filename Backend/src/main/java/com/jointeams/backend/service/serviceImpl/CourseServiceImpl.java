@@ -128,7 +128,6 @@ public class CourseServiceImpl implements CourseService {
             JSONObject newStudent = new JSONObject();
             newStudent.put("id", student.getId());
             newStudent.put("fullName", student.getFirstName() + " " + student.getLastName());
-//            newStudent.put("lastName", student.getLastName());
             newStudent.put("email", student.getEmail());
             newStudent.put("fileName", student.getFilename());
 
@@ -215,7 +214,6 @@ public class CourseServiceImpl implements CourseService {
                         JSONObject teammate = new JSONObject();
                         teammate.put("id", currentStudent.get("id"));
                         teammate.put("fullName", currentStudent.get("fullName"));
-//                        teammate.put("lastName", currentStudent.get("lastName"));
                         teammates.add(teammate);
                         break;
                     }
