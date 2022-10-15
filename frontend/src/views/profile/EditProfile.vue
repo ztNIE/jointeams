@@ -226,6 +226,7 @@ export default {
 
               userAPI.updateUserInfoById(this.$store.getters.userId, this.userInfo).then(() => {
                 ElMessage.success('Updated successfully!')
+                this.$emitter.emit('updateHeaderAvatar', this.avatar)
                 this.$router.push('/myProfile')
               }).catch(() => {
                 ElMessage.error('Failed to modify the profile.')
@@ -251,7 +252,7 @@ export default {
           return false;
         }
       });
-      location.reload()
+      // location.reload()
     },
     handleCancel() {
       ElMessage.info('Modification cancelled.')
