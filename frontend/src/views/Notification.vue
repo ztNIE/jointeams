@@ -24,7 +24,7 @@
                 >From: {{from(notification.type, notification)}}</p>
               </div>
               <div class="card-content">
-                <span id="message">{{notification.message}}</span>
+                <span id="message" @click="handleNotificationClick2(notification)">{{notification.message}}</span>
               </div>
             </el-card>
             <div class="divider_space"></div>
@@ -100,9 +100,17 @@ export default {
     },
     handleNotificationClick(notification) {
       console.log(notification)
-      if (notification.type === 1) {
+      if (notification.type === 1 || notification.type === 4 || notification.type === 5 ) {
         this.$router.push(`userProfile/${notification.userId}`)
-      } else if (notification.type === 0) {
+      } else if (notification.type === 0 || notification.type === 2 || notification.type === 3) {
+        this.$router.push(`groupDetails/${notification.groupId}`)
+      }
+    },
+    handleNotificationClick2(notification) {
+      console.log(notification)
+      if (notification.type === 1 || notification.type === 5 ) {
+        this.$router.push(`userProfile/${notification.userId}`)
+      } else if (notification.type === 0 || notification.type === 2 || notification.type === 3 || notification.type === 4) {
         this.$router.push(`groupDetails/${notification.groupId}`)
       }
     }
@@ -160,7 +168,7 @@ export default {
 }
 
 #from{
-  // min-width: 300px;
+  width: 30%;
   color: gray;
   cursor: pointer;
 }
@@ -189,6 +197,7 @@ export default {
   // min-width: 1000px;
   color: black;
   font-style: italic;
+  cursor: pointer;
 }
 .common-layout {
   height: 100%;
