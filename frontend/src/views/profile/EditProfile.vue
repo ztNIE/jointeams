@@ -368,6 +368,7 @@ export default {
       & .comment-content {
         font-style: italic;
         padding-top: 7px;
+        max-width: 85%;
       }
     }
   }
