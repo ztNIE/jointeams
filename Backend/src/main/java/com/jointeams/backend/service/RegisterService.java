@@ -24,4 +24,6 @@ public interface RegisterService {
     void savePassword(User user, PasswordRequest passwordRequest);
 
     String isUserModelValid(RegisterUserRequest registerUserRequest);
+
+    Boolean postReCaptchaToken(String token, String action);
 }
