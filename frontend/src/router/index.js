@@ -260,14 +260,11 @@ router.beforeEach(async (to, from, next) => {
                     redirect: '/404',
                 }
                 remove_not_found_route = router.addRoute(notFound)
-                // router.addRoute(notFound)
                 temp.push(notFound)
 
                 localStorage.setItem('routes', JSON.stringify(temp))
                 store.commit('setAddRoutes', true)
-                // console.log(router.getRoutes(), '查看现有路由')
-                next({...to, replace: true})     //路由进行重定向放行
-
+                next({...to, replace: true})
             } else {
                 next()
             }

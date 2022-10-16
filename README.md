@@ -53,7 +53,7 @@ vuex: "^4.0.2"
 1.  Login as normal user or admin
 2. Validate login information and give proper feedback
 3. Register a new account (activate the account via email verification)
-4. Validate register information and give proper * feedback
+4. Validate register information and give proper feedback
 5. Reset password (send reset password link via email with unique token)
 6. Detect mischief behaviours with reCAPTCHA
 7. Display user information on the profile page

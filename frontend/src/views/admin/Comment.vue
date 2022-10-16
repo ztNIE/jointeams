@@ -108,7 +108,6 @@ export default {
     searchComments(){
       this.commentsAfterSearch = this.comments.filter(
           comment => comment.content.match(this.input))
-      console.log(this.commentsAfterSearch)
     },
     findTagByTagType(comment){
       return json[comment.tag-1].label
