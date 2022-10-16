@@ -201,11 +201,8 @@ export default {
 }
 
 .btn {
-  text-align: center;
-  padding-left: 205px;
+  text-align: right;
+  width: 100%;
 }
-//.login-btn {
-//  position: absolute;
-//}
 
 </style>

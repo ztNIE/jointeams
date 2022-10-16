@@ -125,13 +125,6 @@ values
     (2, 3, false),
     (2, 4, false);
 
-insert into notification (content, message,
-                            timestamp, type, group_id, user_id)
-values
-    (NULL, NULL, '2022-09-14 10:35:13.000000', 0, 1, 3),
-    (NULL, NULL, '2022-09-15 11:35:13.000000', 1, 2, 1),
-    (NULL, NULL, '2022-09-16 12:35:13.000000', 2, 2, 3);
-
 insert into `comment` (content, is_hide, tag,
                        timestamp, group_id, receiver_id, sender_id)
 values
