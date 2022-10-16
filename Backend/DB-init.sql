@@ -14,7 +14,7 @@ values
      1, 1),
     (null, null, 'jointeamsspring@gmail.com',
      null, null, 'admin',
-     true, true, null,
+     true, true, 'lastname',
      '$2a$10$krU.5/cHT0Zzi.o3dYgM6.yELqTPG6FKrhOuYEyNhglosd67GCRNG',
      null, 2),
     ('Bachelor of Advanced Computing', 'Hi, I am Sarah Lee :)', 'devu0002@uni.sydney.edu.au',
