@@ -49,7 +49,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.com.jointeams.backend.service.serviceImpl in Backend">
+  <component name="RunManager" selected="Spring Boot.BackendApplication">
     <configuration name="CourseServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Backend" />
       <extension name="coverage">
