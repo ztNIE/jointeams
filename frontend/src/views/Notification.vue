@@ -99,7 +99,6 @@ export default {
         return notification.groupName
     },
     handleNotificationClick(notification) {
-      console.log(notification)
       if (notification.type === 1 || notification.type === 4 || notification.type === 5 ) {
         this.$router.push(`userProfile/${notification.userId}`)
       } else if (notification.type === 0 || notification.type === 2 || notification.type === 3) {
@@ -107,7 +106,6 @@ export default {
       }
     },
     handleNotificationClick2(notification) {
-      console.log(notification)
       if (notification.type === 1 || notification.type === 5 ) {
         this.$router.push(`userProfile/${notification.userId}`)
       } else if (notification.type === 0 || notification.type === 2 || notification.type === 3 || notification.type === 4) {

@@ -33,8 +33,7 @@ export default class CourseGroupAPI {
             var request = {
                 params: params
             }
-            // console.log(courseId)
-            // console.log(userId)
+
             const res = await get(`/courseGroup/getAllGroupsInOneCourse`, request)
             return res
         } catch(err) {

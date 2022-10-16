@@ -151,7 +151,6 @@ export default {
       this.coursesAfterSearch = this.courses.filter(
           course => course.code.toLowerCase().match(this.searchInput.toLowerCase())
                     || course.name.toLowerCase().match(this.searchInput.toLowerCase()))
-      console.log(this.coursesAfterSearch)
     },
     getLockButtonText(course){
       let status = course.isLocked
