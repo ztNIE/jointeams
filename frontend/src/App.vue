@@ -120,6 +120,7 @@ html, body, #app, .box{
 .el-aside {
   box-shadow: 3px 8px 10px #E8E8E8;
   min-height: 500px;
+  overflow: hidden!important;
 }
 #page-background {
   background-color: #CBF3F0;

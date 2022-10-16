@@ -14,7 +14,7 @@ values
      1, 1),
     (null, null, 'jointeamsspring@gmail.com',
      null, null, 'admin',
-     true, true, null,
+     true, true, 'lastname',
      '$2a$10$krU.5/cHT0Zzi.o3dYgM6.yELqTPG6FKrhOuYEyNhglosd67GCRNG',
      null, 2),
     ('Bachelor of Advanced Computing', 'Hi, I am Sarah Lee :)', 'devu0002@uni.sydney.edu.au',
@@ -76,6 +76,8 @@ values ('CC01', 1, 2, 1),
        ('RE02', 3, 2, 1),
        ('CC02', 4, 2, 1),
        ('CC02', 5, 1, 1),
+       ('CC02', 5, 1, 3),
+       ('CC02', 5, 1, 4),
        ('CC03', 6, 1, 1),
        ('RE01', 7, 1, 1),
        ('CC02', 8, 1, 1),
@@ -105,8 +107,9 @@ insert into `group` (course_id, name_id, semester_id,
                    tutorial, capacity, description)
 values
     (1, 1, 1, 'tutorial1', 4, 'description1'),
-    (2, 2, 2, 'tutorial2', 5, 'description2'),
-    (3, 3, 1, 'tutorial3', 6, 'description3'),
+    (5, 1, 1, 'tutorial2', 5, 'description2'),
+    (2, 2, 2, 'tutorial3', 5, 'description3'),
+    (3, 3, 1, 'tutorial4', 6, 'description4'),
     (1, 1, 2, 'CC02', 3, 'description4');
 -- 因为group是一个在sql种被定义了的单词，以必须用`符号包起来
 
@@ -117,7 +120,10 @@ values
     (1, 1, true),
     (3, 1, true),
     (4, 1, true),
-    (4, 3, false);
+    (4, 3, false),
+    (2, 1, true),
+    (2, 3, false),
+    (2, 4, false);
 
 insert into notification (content, message,
                             timestamp, type, group_id, user_id)
@@ -129,7 +135,7 @@ values
 insert into `comment` (content, is_hide, tag,
                        timestamp, group_id, receiver_id, sender_id)
 values
-    ('Great collaboration experience! Hope to team up next time :) ', false, 3, '2022-09-23 09:23:27.000000', 1, 1, 3),
-    ('Great collaboration experience! Hope to team up next time :) ', false, 2, '2022-09-23 09:23:27.000000', 1, 3, 1),
-    ('Good job!', true, 2, '2022-09-23 09:24:27.000000', 4, 1, 4);
+    ('Great collaboration experience! Hope to team up next time :) ', false, 3, '2022-09-23 09:23:27.000000', 2, 1, 3),
+    ('Great collaboration experience! Hope to team up next time :) ', false, 2, '2022-09-23 09:23:27.000000', 2, 3, 1),
+    ('Good job!', true, 2, '2022-09-23 09:24:27.000000', 2, 1, 4);
 
