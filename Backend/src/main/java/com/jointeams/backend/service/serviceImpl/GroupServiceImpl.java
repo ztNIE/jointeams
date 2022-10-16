@@ -7,15 +7,9 @@ import com.jointeams.backend.service.GroupService;
 import com.jointeams.backend.util.IsCommentAvailable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,6 +131,8 @@ public class GroupServiceImpl implements GroupService {
             } else {
                 List<GroupUser> members = groupUserRepository.getGroupUserByGroupId(groupId).orElse(null);
                 if(members.size() == 1) {
+                    commentRepository.deleteAllByGroupId(groupId);
+                    notificationRepository.deleteAllByGroupId(groupId);
                     groupUserRepository.deleteById(groupUserId);
                     groupRepository.deleteById(groupId);
                     jsonResult.put("msg", "Success! The group is disband!");
