@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);
-//    Iterable<User> findByIsAdminFalse();
     Boolean existsByEmail(String email);
 
     Boolean existsByEmailAndIsActivateTrue(String email);
@@ -31,15 +30,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 //            "    where s.is_current = true;", nativeQuery = true)
 //    nativeQuery必须为true
 /************************************************************************/
-//    public List<User> findAllUsersHavingGroupsInTheCurrentSemester1();
-//    public Optional<User> findByLastName(String lastName);
-//    public Optional<User> findByFirstNameAndLastName(String firstName, String lastName);
-//    @Query("select u from User u where u.firstName = ?1 and u.lastName = ?2")；
-//    public Optional<User> findByFullName(String firstName, String lastName);
-
-//    @Query("select u from User u where u.firstName like %?1% and u.lastName like %?2%")；
-//    public Optional<User> findByIncompleteFullName(String firstName, String lastName);
-
 
     @Query(value="alter table `user` AUTO_INCREMENT = 1", nativeQuery = true)
     public void resetIncrement();

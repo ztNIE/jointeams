@@ -17,8 +17,6 @@ public interface CourseService {
     public JSONObject checkMarkedCourse(Long userId, Long courseId);
     public JSONObject getTutorial(Long userId, Long courseId);
     public JSONObject setTutorial(Long userId, Long courseId, String tutorial);
-//    public JSONObject getCurrentCourseById(Long userId);
-//    public JSONObject getPreviousCourseById(Long userId);
 
     public JsonResult findAllFeedback();
 

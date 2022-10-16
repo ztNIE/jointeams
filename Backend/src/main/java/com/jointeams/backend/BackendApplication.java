@@ -35,43 +35,6 @@ public class BackendApplication {
     @Bean
     public CommandLineRunner CommandLineRunnerBean() {
         return (args) -> {
-//            // Add University data
-//            University usydUni = new University();
-//            usydUni.setName("University of Sydney");
-//            usydUni.setRegex("^[a-z]{4}[0-9]{4}@uni.sydney.edu.au$");
-//            if (universityRepository.findUniversityByName(usydUni.getName()).isEmpty()) {
-//                universityRepository.save(usydUni);
-//            }
-//            University adminUni = new University();
-//            adminUni.setName("Admin");
-//            adminUni.setRegex("^.+$");
-//            if (universityRepository.findUniversityByName(adminUni.getName()).isEmpty()) {
-//                universityRepository.save(adminUni);
-//            }
-//
-//            // Add User data
-//            User devUser = new User();
-//            devUser.setUniversity(usydUni);
-//            devUser.setEmail("devu0001@uni.sydney.edu.au");
-//            devUser.setAdmin(false);
-//            devUser.setActivate(true);
-//            devUser.setFirstName("firstname");
-//            devUser.setLastName("lastname");
-//            devUser.setPassword(passwordEncoder.encode("qwe123ASD"));
-//            if (userRepository.findByEmail(devUser.getEmail()).isEmpty()) {
-//                userRepository.save(devUser);
-//            }
-//            User adminUser = new User();
-//            adminUser.setUniversity(adminUni);
-//            adminUser.setAdmin(true);
-//            adminUser.setActivate(true);
-//            adminUser.setFirstName("admin");
-//            adminUser.setEmail("jointeamsspring@gmail.com");
-//            adminUser.setPassword(passwordEncoder.encode("qwe123ASD"));
-//            if (userRepository.findByEmail(adminUser.getEmail()).isEmpty()) {
-//                userRepository.save(adminUser);
-//            }
-
         };
     }
 

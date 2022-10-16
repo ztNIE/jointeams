@@ -16,14 +16,4 @@ import javax.persistence.*;
 public class InterestedCourse {
     @EmbeddedId
     InterestedCourseKey id;
-
-//    @ManyToOne
-//    @MapsId("userId")
-//    @JoinColumn(name = "user_id")
-//    User user;
-//
-//    @ManyToOne
-//    @MapsId("courseId")
-//    @JoinColumn(name = "course_id")
-//    Course course;
 }
