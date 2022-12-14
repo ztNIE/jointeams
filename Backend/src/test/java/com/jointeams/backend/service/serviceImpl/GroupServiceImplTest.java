@@ -396,7 +396,6 @@ public class GroupServiceImplTest {
         JSONObject result = this.groupService.addInvitationNotification(1L, 3L);
         assertNotNull(result);
         assertEquals(result.get("msg"), "An invitation sent!");
-
         JSONArray data = (JSONArray) result.get("data");
         assertNull(data);
     }

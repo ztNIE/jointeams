@@ -45,41 +45,41 @@ public class AuthController {
     private RegisterService registerService;
 
     @GetMapping("/validEmailExist")
-    public ResponseEntity<?> isEmailExist(@RequestParam(name="email") String email) {
+    public ResponseEntity<?> isEmailExist(@RequestParam(name = "email") String email) {
         Boolean result = userRepository.existsByEmail(email);
         return ResponseEntity.ok().body(new StandardResponse<>("Success", new CheckEmailResponse(result)));
     }
 
     @GetMapping("/validEmailActivate")
-    public ResponseEntity<?> isEmailActivate(@RequestParam(name="email") String email) {
+    public ResponseEntity<?> isEmailActivate(@RequestParam(name = "email") String email) {
         Boolean result = userRepository.existsByEmailAndIsActivateTrue(email);
         return ResponseEntity.ok().body(new StandardResponse<>("Success", new CheckEmailResponse(result)));
     }
 
     /**
-     *
-     * @param loginRequest  email & password
+     * @param loginRequest email & password
      * @return if success, body: userInfoResponse, status code: 200
-     *         if failed, body: message: Bad credentials, status code: 401
+     * if failed, body: message: Bad credentials, status code: 401
      */
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+                        loginRequest.getPassword()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-            ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
 
-            return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                    .body(new StandardResponse<>("success",
-                            new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), roles)));
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                .body(new StandardResponse<>("success",
+                        new UserInfoResponse(userDetails.getId(), userDetails.getUsername(), roles)));
     }
 
     @PostMapping("/validReCaptchaToken")
